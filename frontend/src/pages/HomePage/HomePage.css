@@ -1,0 +1,33 @@
+.wrap-bread-crumb {
+  margin: 32px 0 40px 0;
+  width: 100%;
+  height: 40px;
+}
+
+.wrap-bread-crumb .container {
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 15px;
+  margin: 0 auto;
+}
+
+.bread-crumb {
+  background: hsl(0, 0%, 93%);
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: 6px;
+}
+
+.bread-crumb a {
+  color: #555;
+}
+
+.bread-crumb>a::after {
+  margin: 0 6px;
+  content: "|";
+  color: #ccc;
+}
+
+.bread-crumb a:hover {
+  color: #de8ebe;
+}

@@ -36,7 +36,7 @@ const LatestProducts = () => {
                               <div class="tooltip">Yêu Thích</div>
                             </i>
                           </a>
-                          <a href="http://127.0.0.1:3000/DuAn/MatPetFamily/HTML/ChiTietPhocSoc.html">
+                          <a href="">
                             <i class="fa-solid fa-magnifying-glass">
                               <div class="tooltip">Xem Nhanh</div>
                             </i>
@@ -63,9 +63,7 @@ const LatestProducts = () => {
                         </div>
                       </div>
                       <h3>
-                        <a href="http://127.0.0.1:3000/DuAn/MatPetFamily/HTML/ChiTietPhocSoc.html">
-                          PHỐC SÓC TRẮNG ĐỰC
-                        </a>
+                        <a href="">PHỐC SÓC TRẮNG ĐỰC</a>
                       </h3>
                       <p>18.000.000₫</p>
                     </div>

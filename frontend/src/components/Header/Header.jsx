@@ -53,10 +53,7 @@ const Header = () => {
                     </a>
                   </li>
                   <li>
-                    <a
-                      href="http://127.0.0.1:3000/DuAn/MatPetFamily/HTML/ThuCung.html"
-                      className="dropdown"
-                    >
+                    <a href="" className="dropdown">
                       THÚ CƯNG
                     </a>
                     <ul className="dropdown-menu">
@@ -81,34 +78,23 @@ const Header = () => {
                     </ul>
                   </li>
                   <li>
-                    <a href="http://127.0.0.1:3000/DuAn/MatPetFamily/HTML/PhuKien.html">
-                      PHỤ KIỆN
-                    </a>
+                    <a href="">PHỤ KIỆN</a>
                   </li>
                   <li>
-                    <a
-                      href="http://127.0.0.1:3000/DuAn/MatPetFamily/HTML/DichVu.html"
-                      className="dropdown"
-                    >
+                    <a href="" className="dropdown">
                       DỊCH VỤ
                     </a>
                     <ul className="dropdown-menu">
                       <li>
-                        <a href="http://127.0.0.1:3000/DuAn/MatPetFamily/HTML/DichVu.html">
-                          ĐẤU GIÁ THÚ CƯNG - TỪ THIỆN
-                        </a>
+                        <a href="">ĐẤU GIÁ THÚ CƯNG - TỪ THIỆN</a>
                       </li>
                     </ul>
                   </li>
                   <li>
-                    <a href="http://127.0.0.1:3000/DuAn/MatPetFamily/HTML/GioiThieu.html">
-                      GIỚI THIỆU
-                    </a>
+                    <a href="">GIỚI THIỆU</a>
                   </li>
                   <li>
-                    <a href="http://127.0.0.1:3000/DuAn/MatPetFamily/HTML/LienHe.html">
-                      LIÊN HỆ
-                    </a>
+                    <a href="">LIÊN HỆ</a>
                   </li>
                 </ul>
               </div>
@@ -121,12 +107,8 @@ const Header = () => {
               </div>
               <div className="function-login">
                 <div className="login">
-                  <a href="http://127.0.0.1:3000/DuAn/MatPetFamily/HTML/DangNhap.html">
-                    Đăng Nhập
-                  </a>
-                  <a href="http://127.0.0.1:3000/DuAn/MatPetFamily/HTML/DangNhap.html">
-                    Đăng Ký
-                  </a>
+                  <a href="">Đăng Nhập</a>
+                  <a href="">Đăng Ký</a>
                 </div>
                 <p>{/* Hiển thị tên user nếu có */}</p>
               </div>
