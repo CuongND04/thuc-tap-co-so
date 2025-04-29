@@ -1,0 +1,1244 @@
+.hehe-main * {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-decoration: none;
+  color: black;
+  box-sizing: border-box;
+}
+
+.hehe-main body {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  width: 100%;
+}
+
+.hehe-main header {
+  width: 100%;
+  border-bottom: 1px solid #cf72aa;
+}
+
+.hehe-main .container {
+  padding: 0 138px;
+  display: flex;
+}
+
+.hehe-main .logo {
+  margin-top: 11px;
+  width: 25%;
+  display: flex;
+  justify-content: center;
+}
+
+.hehe-main nav {
+  width: 75%;
+  margin-left: 14px;
+}
+
+.hehe-main .function {
+  display: flex;
+}
+
+.hehe-main .menu .function-menu {
+  margin-top: 11px;
+  display: inline-flex;
+}
+
+.hehe-main .menu .function-menu li {
+  position: relative;
+  display: inline-block;
+  border-radius: 6px;
+  height: 40px;
+}
+
+.hehe-main .function-menu li a {
+  display: block;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 15px;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 14px;
+  font-family: 'Dosis', sans-serif;
+}
+
+.hehe-main .dropdown::after {
+  content: "\f107";
+  font-family: 'FontAwesome';
+  margin-left: 5px;
+  display: inline-block;
+}
+
+.hehe-main .dropdown-menu {
+  position: absolute;
+  display: none;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  z-index: 3;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+}
+
+.hehe-main .dropdown-menu li {
+  width: 200px;
+}
+
+.hehe-main .dropdown-menu li a {
+  border-bottom: 1px solid silver;
+  padding: 0 10px;
+  display: block;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-family: 'Dosis', sans-serif;
+}
+
+.hehe-main .function-menu li:hover .dropdown-menu {
+  display: block;
+}
+
+.hehe-main .function-menu li a:hover {
+  color: #de8ebe;
+}
+
+.hehe-main .dropdown-menu li:hover {
+  background-color: #de8ebe;
+  border-radius: 0;
+}
+
+.hehe-main .dropdown-menu li a:hover {
+  color: white;
+}
+
+.hehe-main .menu_Cart {
+  margin: 6px 10px 0 10px;
+  border-radius: 50%;
+  min-width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #de8ebe;
+}
+
+.hehe-main .menu_Cart_Boder {
+  border: 1px dotted white;
+  border-radius: 50%;
+  background-color: #cf72aa;
+}
+
+.hehe-main .menu_Cart_Boder button {
+  background-color: transparent;
+  border: none;
+  width: 45px;
+  font-size: 30px;
+  height: 45px;
+}
+
+.hehe-main .menu_Cart_Boder button i {
+  color: #fff;
+}
+
+.hehe-main .function-login {
+  position: relative;
+  margin: 6px 0;
+  display: flex;
+  height: 52px;
+  justify-content: center;
+  align-items: center;
+}
+
+.login a,
+.hehe-main .login p {
+  line-height: 52px;
+  font-size: 14px;
+  font-family: Coiny, cursive;
+  font-weight: 500;
+}
+
+.hehe-main .function-login p {
+  display: none;
+  position: absolute;
+}
+
+.hehe-main .login a:nth-child(1):after {
+  content: '/';
+  margin: 10px;
+}
+
+.hehe-main .login a:hover {
+  color: #cf72aa;
+}
+
+.hehe-main .cart {
+  display: none;
+  position: fixed;
+  margin-top: 5px;
+  top: 0;
+  right: 0;
+  min-height: 100vh;
+  width: 380px;
+  border: 1px solid #cf72aa;
+  z-index: 4;
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+.hehe-main .cart h2 {
+  margin: 20px;
+  text-align: center;
+  color: #cf72aa;
+  font-weight: 500;
+  font-size: 30px;
+  text-shadow: 0 2px black;
+  font-family: 'Coiny', cursive;
+}
+
+.hehe-main .cart ul {
+  margin: 0 10px;
+}
+
+.hehe-main .cart ul li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+  border: none;
+}
+
+.hehe-main .cart .remove-from-cart {
+  width: 35px;
+  height: 35px;
+  border: 1px solid #cf72aa;
+  background-color: #fff;
+  border-radius: 50%;
+}
+
+.hehe-main .cart #close {
+  margin-top: 5px;
+  border: none;
+  border-radius: 50%;
+}
+
+.hehe-main .cart #close i {
+  color: #fff;
+  font-size: 30px;
+  background-color: #de8ebe;
+  border-radius: 50%;
+}
+
+.hehe-main .cart #total {
+  width: 100%;
+  height: 36px;
+  background-color: #de8ebe;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+}
+
+.hehe-main .cart .info-cart {
+  color: #cf72aa;
+  font-size: 14px;
+  font-family: 'Coiny', cursive;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 300px;
+}
+
+.hehe-main .cart #ThanhToan {
+  width: 100%;
+  height: 36px;
+  font-family: Coiny, cursive;
+  font-weight: 500;
+  background-color: #ccc;
+  color: #fff;
+  font-size: 18px;
+  border: 1px solid #de8ebe;
+}
+
+.hehe-main .cart .function-close {
+  text-align: center;
+}
+
+.hehe-main .panel {
+  margin-top: 45px;
+  width: 100%;
+}
+
+.hehe-main .panel-item img {
+  width: 768px;
+  height: 267.15px;
+}
+
+.hehe-main .panel-button {
+  width: 768px;
+  position: absolute;
+  top: 32%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.hehe-main .panel-button button {
+  background-color: transparent;
+  border: 1px solid #fff;
+  color: white;
+  padding: 10px;
+  font-size: 30px;
+  cursor: pointer;
+  pointer-events: all;
+  transition: background-color 0.3s;
+}
+
+.hehe-main .panel-button .comeback {
+  margin-left: 10px;
+}
+
+.hehe-main .panel-button .next {
+  margin-right: 10px;
+}
+
+.hehe-main .function-search {
+  position: relative;
+  margin: 15px 0 25px;
+  display: flex;
+  justify-content: flex-end;
+  width: 768px;
+  height: 40px;
+}
+
+.hehe-main .select {
+  position: relative;
+  width: 170px;
+  height: 100%;
+  border: 1px solid #e5e5e5;
+  background-color: #fff;
+  z-index: 2;
+}
+
+.hehe-main .select span {
+  position: static;
+  display: inline-block;
+  padding: 10px 15px 11px;
+}
+
+.hehe-main .select span::after {
+  content: "\f107";
+  font-family: 'FontAwesome';
+  margin-left: 35px;
+}
+
+.hehe-main .select:hover .dropdown-combobox {
+  display: block;
+}
+
+.hehe-main .dropdown-combobox {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
+  z-index: 3;
+}
+
+.hehe-main .dropdown-combobox li {
+  background-color: #dfdddda5;
+  margin: 2px;
+}
+
+.hehe-main .dropdown-combobox li a {
+  text-decoration: none;
+  color: #000;
+  display: block;
+  padding: 10px;
+}
+
+.hehe-main .dropdown-combobox li:hover {
+  background-color: #cf72aa;
+}
+
+.hehe-main .dropdown-combobox li a:hover {
+  color: #fff;
+}
+
+.hehe-main .dropdown-combobox .active a {
+  background-color: #df412f;
+  color: #fff;
+}
+
+.hehe-main .search {
+  display: flex;
+  align-items: center;
+  z-index: 1;
+}
+
+.hehe-main .search input {
+  height: 100%;
+  width: 350px;
+  padding: 0 20px;
+  border: 1px solid #ccc;
+}
+
+.hehe-main .search input:focus {
+  outline: none;
+}
+
+.hehe-main .search button {
+  width: 60px;
+  height: 40px;
+  background-color: rgb(37, 37, 37);
+  cursor: pointer;
+  border-radius: 0 6px 6px 0;
+}
+
+.hehe-main .search button i {
+  color: #fff;
+}
+
+.hehe-main .wrap-bread-crumb {
+  margin: 32px 0 30px 0;
+  width: 100%;
+  height: 40px;
+}
+
+.hehe-main .wrap-bread-crumb .container {
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 15px;
+  margin: 0 auto;
+}
+
+.hehe-main .bread-crumb {
+  background: hsl(0, 0%, 93%);
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: 6px;
+}
+
+.hehe-main .bread-crumb a {
+  color: #555;
+}
+
+.hehe-main .bread-crumb>a::after {
+  margin: 0 6px;
+  content: "|";
+  color: #ccc;
+}
+
+.hehe-main .bread-crumb a:hover {
+  color: #de8ebe;
+}
+
+.hehe-main main {
+  width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-bottom: 3px solid #cf72aa;
+}
+
+.hehe-main section {
+  padding: 0 138px;
+  display: flex;
+}
+
+/* -----------------------------------Main: function left and right---------------------------------- */
+/* Trai */
+.hehe-main aside {
+  width: 25%;
+}
+
+.hehe-main .sidebar {
+  margin-right: 15px;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  padding: 20px;
+}
+
+.hehe-main .sidebar-info {
+  margin-bottom: 30px;
+}
+
+.hehe-main .sidebar h3 {
+  font-weight: 700;
+  font-size: 14px;
+  text-transform: uppercase;
+  margin-top: 0;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  font-family: 'Dosis', sans-serif;
+}
+
+.hehe-main .sidebar-info .product .product-pet-iteam {
+  position: relative;
+  margin-bottom: 10px;
+  padding: 5px 0;
+}
+
+.hehe-main .sidebar-info .product .product-pet-iteam a {
+  color: #555;
+  transition: all 0.3s ease-out 0s;
+  -webkit-transition: all 0.3s ease-out 0s;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+.hehe-main .sidebar-info .product .product-pet-iteam a:hover {
+  color: #cf72aa;
+}
+
+.hehe-main .sidebar-info .product .product-pet-iteam span {
+  position: absolute;
+  right: 0;
+  top: 0;
+  min-width: 20px;
+  font-size: 10px;
+  text-align: center;
+  line-height: 20px;
+  background: #f2f2f2;
+  border-radius: 10px;
+}
+
+.hehe-main .product-iteam-dog {
+  padding-left: 15px;
+  margin-top: 15px;
+}
+
+.hehe-main .product-iteam-dog li {
+  position: relative;
+  margin-bottom: 10px;
+  padding: 5px 0;
+}
+
+.hehe-main .price form {
+  display: block;
+  margin-top: 0em;
+  unicode-bidi: isolate;
+}
+
+.hehe-main .price .function-line-price {
+  background-color: #e5e5e5;
+  border-radius: 0;
+  height: 5px;
+  margin: 0 0 30px;
+}
+
+.hehe-main .line-price {
+  position: relative;
+  width: 100%;
+  height: 5px;
+  background-color: #de8ebe;
+}
+
+.tab-price-left,
+.hehe-main .tab-price-right {
+  position: absolute;
+  width: 17px;
+  height: 17px;
+  border: 2px solid black;
+  top: -6px;
+  cursor: pointer;
+}
+
+.hehe-main .function-price {
+  display: flex;
+  width: 100%;
+}
+
+.hehe-main .function-price button {
+  width: 95px;
+  background-color: #000;
+  color: #fff;
+  text-transform: uppercase;
+  height: 36px;
+  font-size: 14px;
+  line-height: 36px;
+  border-radius: 6px;
+}
+
+.hehe-main .function-price button:hover {
+  background-color: #de8ebe;
+  color: #fff;
+  border: none;
+}
+
+.hehe-main .function-price .span-price {
+  width: 100%;
+  float: right;
+  text-align: right;
+}
+
+.hehe-main .function-price span {
+  height: 36px;
+}
+
+/* Phai */
+.hehe-main article {
+  width: 75%;
+  margin-left: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.hehe-main article .title-page {
+  width: 100%;
+}
+
+.hehe-main article .title-page h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 700;
+  color: #333333;
+  font-family: 'Coiny', cursive !important
+}
+
+.hehe-main .title-page .function-page {
+  display: flex;
+  justify-content: right;
+}
+
+.hehe-main .function-page .function-page-iteam {
+  margin: 0 0 0 15px;
+}
+
+.hehe-main .title-page ul li span {
+  line-height: 36px;
+  margin: 0 10px;
+  color: #333333;
+}
+
+.hehe-main .function-page select {
+  z-index: inherit;
+  padding: 0 30px 0 15px;
+  height: 36px;
+  border: 1px solid #e5e5e5;
+}
+
+.hehe-main .function-page select:focus {
+  outline: none;
+}
+
+.hehe-main .function-page .dropdown-box {
+  position: relative;
+}
+
+.hehe-main .function-page .dropdown-box .dropdown-box-title {
+  display: inline-block;
+  position: relative;
+}
+
+.hehe-main .dropdown-box .silver-number {
+  position: relative;
+  height: 36px;
+  display: inline-block;
+  min-width: 70px;
+  line-height: 34px;
+  border: 1px solid #e5e5e5;
+  padding: 0 15px;
+}
+
+.hehe-main .dropdown-box .silver-number::after {
+  font-family: fontAwesome;
+  content: "\f107";
+  position: absolute;
+  right: 10px;
+  top: 1px;
+}
+
+.hehe-main .dropdown-box .dropdown-list {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-right: 10px;
+  background: #fff;
+  position: absolute;
+  width: 70px;
+  padding: 10px;
+  opacity: 0;
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.hehe-main .dropdown-box:hover .dropdown-list {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
+}
+
+.hehe-main .dropdown-list li {
+  background: #f9f9f9;
+}
+
+.hehe-main .dropdown-list li a {
+  text-align: center;
+  padding: 5px 10px;
+  display: block;
+  border-bottom: 1px solid #fff;
+  color: #555;
+}
+
+.dropdown-list li:hover,
+.hehe-main .dropdown-list li a:hover {
+  background-color: #de8ebe;
+  color: #fff;
+}
+
+.hehe-main .function-page-iteam .view-type a {
+  display: inline-block;
+  height: 36px;
+  line-height: 37px;
+  width: 40px;
+  border: 1px solid #e5e5e5;
+  text-align: center;
+  margin: 0 -2px;
+}
+
+.hehe-main .function-page-iteam .view-type .view-type-grid {
+  background-color: #cf72aa;
+}
+
+.hehe-main .function-page-iteam .view-type i {
+  font-size: 14px;
+  color: #cf72aa;
+}
+
+/* -------------------------------------Product---------------------------------------------- */
+.hehe-main .product {
+  margin-bottom: 25px;
+  border-bottom: 1px solid silver;
+}
+
+.hehe-main .article-product {
+  margin: 15px 15px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hehe-main .article-product .article-iteam {
+  display: flex;
+  width: 30%;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.hehe-main .product-thumb-img {
+  position: relative;
+  overflow: hidden;
+}
+
+.hehe-main .product-thumb-img .badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #8bc34a;
+  border-radius: 50%;
+}
+
+.hehe-main .product-thumb-img .badge p {
+  height: 35px;
+  width: 35px;
+  font-family: 'Dosis', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 1px dotted white;
+  color: #fff;
+}
+
+.hehe-main .function-icon {
+  position: absolute;
+  display: none;
+  top: 32%;
+  left: 27%;
+}
+
+.hehe-main .function-icon i {
+  margin: 0 10px;
+  background-color: #de8ebe;
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+}
+
+.product-thumb-img:hover .function-icon,
+.hehe-main .product-thumb-img:hover .function-buy {
+  display: block;
+}
+
+.hehe-main .product-thumb-img:hover .badge {
+  display: none;
+}
+
+.hehe-main .product-thumb-img img {
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.hehe-main .product-thumb-img:hover img {
+  transform: scale(1.1);
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.hehe-main .product-thumb-img img:hover {
+  background-color: #ffffffdf;
+}
+
+.hehe-main .product-thumb-img i:hover {
+  color: #de8ebe;
+  background-color: #fff;
+}
+
+.hehe-main .function-buy {
+  position: absolute;
+  display: none;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #de8ebe;
+  border-radius: 10px;
+}
+
+.hehe-main .function-buy span {
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.hehe-main .function-buy button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #de8ebe;
+  width: 130px;
+  height: 35px;
+  border-radius: 10px;
+  border: 1px dashed #fff;
+}
+
+.function-buy:hover,
+.hehe-main .function-buy button:hover {
+  background-color: #cf72aa;
+}
+
+.hehe-main .function-buy-boder {
+  display: flex;
+  width: 140px;
+  height: 40px;
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.hehe-main .function-buy span::after {
+  content: '\276F';
+  margin: 10px;
+  font-weight: 400;
+}
+
+.hehe-main .tooltip {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #de8ebe;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-family: 'Arial';
+  white-space: nowrap;
+  font-weight: 200;
+  display: none;
+  z-index: 100;
+}
+
+.hehe-main .function-icon i:hover .tooltip {
+  display: block;
+}
+
+.hehe-main .product-info-id {
+  position: relative;
+  margin: 15px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.hehe-main .product-info-id span {
+  font-weight: bold;
+  color: #de8ebe;
+  font-size: 12px;
+}
+
+.hehe-main .product-info h3 {
+  font-family: 'Coiny', cursive;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 250px;
+}
+
+.hehe-main .product-info a {
+  text-transform: uppercase;
+  font-size: 18px;
+}
+
+.hehe-main .product-info h3 a:hover {
+  color: #cf72aa;
+}
+
+.hehe-main .product-info p {
+  font-family: Arial;
+  font-size: 18px;
+  padding: 0 2px;
+  margin: 20px 0;
+  font-weight: bolder;
+  color: #cf72aa;
+}
+
+.hehe-main .product-info .product-info-rate i {
+  color: silver;
+}
+
+.hehe-main .product-info .product-info-rate {
+  position: absolute;
+  display: none;
+  right: 0;
+}
+
+.hehe-main .article-product .article-iteam:hover .product-info-rate {
+  display: block;
+}
+
+/* ---------------------------------------------------NEXT Trang------------------------------------------- */
+.hehe-main .next-page {
+  width: 100%;
+  text-align: center;
+  padding-bottom: 5rem;
+}
+
+.hehe-main .next-page span {
+  height: 30px;
+  line-height: 30px;
+  min-width: 30px;
+  text-align: center;
+  border-radius: 50%;
+  font-weight: 700;
+}
+
+.hehe-main .next-page .next-page-one {
+  background-color: #cf72aa;
+  display: inline-block;
+  height: 30px;
+  line-height: 30px;
+  min-width: 30px;
+  text-align: center;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 700;
+}
+
+.hehe-main .next-page a {
+  display: inline-block;
+  height: 30px;
+  line-height: 30px;
+  border: 1px solid transparent;
+  min-width: 30px;
+  text-align: center;
+  border-radius: 50%;
+  font-weight: 700;
+}
+
+.hehe-main .next-page .function-next {
+  border-color: #e5e5e5;
+  font-weight: 400;
+}
+
+/*---------------------------Thông tin liên hệ  and Footer------------------------------------------*/
+.hehe-main .phone {
+  display: block;
+  position: fixed;
+  bottom: 25px;
+  right: 0;
+  z-index: 99;
+  border: none;
+}
+
+.hehe-main .phone img {
+  max-width: 100%;
+  height: auto;
+}
+
+.hehe-main .network {
+  display: block;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background: white;
+  width: 100%;
+  z-index: 99;
+  box-shadow: 2px 1px 9px #dedede;
+  border-top: 1px solid #eaeaea;
+  background-color: #de8ebe;
+}
+
+.hehe-main .network ul {
+  display: flex;
+  width: 100%;
+}
+
+.hehe-main .network ul li {
+  width: 25%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hehe-main .network img {
+  width: 72px;
+  height: 72px;
+}
+
+.hehe-main .footer-slide {
+  width: 100%;
+  padding-top: 4rem;
+  position: relative;
+}
+
+.hehe-main .footer-slide::before {
+  background-color: #cf72aa;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 36px;
+  height: 3px;
+  content: "";
+  display: block;
+}
+
+.hehe-main .footer-slide-iteam {
+  padding: 0 138px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.hehe-main .footer-slide-iteam .iteam {
+  width: 146px;
+}
+
+.hehe-main .iteam-info {
+  position: relative;
+  padding-top: 75px;
+}
+
+.hehe-main .info-adv-footer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transition: all 0.3s ease-out 0s;
+  -webkit-transition: all 0.3s ease-out 0s;
+  opacity: 0;
+  visibility: hidden;
+  transform: rotate(-90deg) translate(-60px, -60px);
+  -webkit-transform: rotate(-90deg) translate(-60px, -60px);
+}
+
+.hehe-main .info-adv-footer h3 {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.hehe-main .info-adv-footer p {
+  color: #555;
+  margin: 0;
+  line-height: 24px;
+}
+
+.hehe-main .info-adv-footer::after {
+  content: url(https://matpetfamily.com/wp-content/themes/haustiere/assets/css/images/icon/arrow.png);
+  position: absolute;
+  right: 0;
+  top: 100%;
+}
+
+.hehe-main .iteam-info img {
+  width: 150px;
+  height: 185px;
+  transition: transform 0.1s ease-in-out;
+}
+
+.hehe-main .iteam-info img:hover {
+  animation: shake 0.5s infinite;
+}
+
+.hehe-main .iteam-info:hover .info-adv-footer {
+  opacity: 1;
+  visibility: visible;
+  transform: rotate(0) translate(0, 0);
+  -webkit-transform: rotate(0) translate(0, 0);
+}
+
+.hehe-main .thongtin {
+  width: 100%;
+  background-color: #fbfbfb;
+  ;
+}
+
+.hehe-main .function-thongtin {
+  display: flex;
+  gap: 13px;
+  padding: 0 138px;
+  justify-content: space-between;
+}
+
+.hehe-main .function-thongtin .lienlac {
+  width: 25%;
+}
+
+.hehe-main .function-thongtin h2 {
+  font-family: 'Coiny', cursive;
+  margin-bottom: 22px;
+  font-weight: 700;
+}
+
+.hehe-main .contact-address {
+  margin-bottom: 25px;
+}
+
+.hehe-main .contact-address i {
+  color: #cf72aa;
+  position: absolute;
+  top: 10px;
+  left: 0;
+  font-size: 30px;
+}
+
+.hehe-main .contact-address p {
+  position: relative;
+  padding: 10px 0 10px 45px;
+  border-top: 1px dashed #e5e5e5;
+  color: #555;
+  margin: 0;
+  line-height: 24px;
+}
+
+.hehe-main .follow a {
+  margin: 0 5px;
+  display: inline-block;
+  height: 40px;
+  line-height: 52px;
+  border-radius: 50%;
+  border: 1px solid #de8ebe;
+  width: 40px;
+  text-align: center;
+}
+
+.hehe-main .follow a i {
+  color: #cf72aa;
+  font-size: 30px;
+}
+
+.hehe-main .follow a:hover {
+  background-color: #cf72aa;
+}
+
+.hehe-main .follow a i:hover {
+  color: #fff;
+}
+
+.hehe-main .function-thongtin p:last-child {
+  border-bottom: 1px dashed #e5e5e5;
+}
+
+.hehe-main .function-thongtin a:hover {
+  color: #de8ebe;
+}
+
+.hehe-main .function-thongtin .instagram {
+  width: 25%;
+}
+
+.hehe-main .function-thongtin .facebook {
+  width: 25%;
+}
+
+.hehe-main .contact-facebook {
+  display: flex;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+}
+
+.hehe-main .contact-facebook img {
+  border: 1px solid black;
+  margin-right: 5px;
+}
+
+.hehe-main .contact-facebook p {
+  color: #365899;
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.hehe-main .info-facebook button {
+  margin-top: 2px;
+  font-weight: bolder;
+  padding: 2px;
+}
+
+.hehe-main .function-thongtin .youtube {
+  width: 25%;
+}
+
+.hehe-main footer {
+  width: 100%;
+}
+
+.hehe-main footer .contact-footer {
+  margin: 20px 0;
+  padding: 0 138px;
+  display: flex;
+}
+
+.hehe-main .contact-footer ul {
+  display: flex;
+}
+
+.hehe-main .contact-footer ul li:not(:last-child)::after {
+  content: '\2212';
+  margin: 0 10px;
+  color: #cf72aa;
+}
+
+.hehe-main .contact-footer p {
+  margin-top: 10px;
+}
+
+.contact-footer a,
+.hehe-main p {
+  color: #333;
+  ;
+  font-family: 'Open Sans', sans-serif;
+}

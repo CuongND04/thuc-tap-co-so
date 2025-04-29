@@ -35,7 +35,7 @@ const Header = () => {
       <header>
         <div className="container">
           <div className="logo">
-            <a href="">
+            <a href="/">
               <img
                 src="https://raw.githubusercontent.com/DoanQuocHuy2308/MatPetFamiLy/refs/heads/master/IMG/TrangChu/TrangChu08.png"
                 style={{ width: "215px", height: "213px" }}
@@ -72,7 +72,7 @@ const Header = () => {
                         "Mèo Tai Cụp",
                       ].map((item, index) => (
                         <li key={index}>
-                          <a href="#">{item}</a>
+                          <a href="/danh-muc-cun">{item}</a>
                         </li>
                       ))}
                     </ul>
