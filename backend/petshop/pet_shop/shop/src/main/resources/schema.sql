@@ -18,7 +18,7 @@ BEGIN
         [dia_chi] NVARCHAR(200) NULL,
         [quyen_truy_cap] NVARCHAR(50) NULL,
         [mat_khau] NVARCHAR(100) NULL,
-        [ten_dang_nhap] DATETIME2 NULL
+        [ten_dang_nhap] NVARCHAR(100) UNIQUE NULL
     );
 END
 

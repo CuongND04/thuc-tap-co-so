@@ -33,8 +33,8 @@ public class NguoiDung {
     @Column(name = "mat_khau", length = 100)
     private String matKhau;
 
-    @Column(name = "ten_dang_nhap")
-    private LocalDateTime tenDangNhap;
+    @Column(name = "ten_dang_nhap", unique = true, length = 100)
+    private String tenDangNhap;
 
     @OneToMany(mappedBy = "nguoiDung", cascade = CascadeType.ALL)
     private List<GioHang> gioHangs;
