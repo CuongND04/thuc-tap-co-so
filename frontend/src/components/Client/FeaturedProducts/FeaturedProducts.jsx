@@ -4,20 +4,20 @@ const FeaturedProducts = () => {
   return (
     <main>
       <section>
-        <div class="row">
-          <div class="row-content">
-            <div class="row-title">
+        <div className="row">
+          <div className="row-content">
+            <div className="row-title">
               <a href="#">
                 <strong>Sản Phẩm Nổi Bật</strong>
               </a>
             </div>
             <article>
-              <div class="article-iteam">
-                <div class="product-iteam">
-                  <div class="product-thumb">
-                    <div class="product-thumb-img">
+              <div className="article-iteam">
+                <div className="product-iteam">
+                  <div className="product-thumb">
+                    <div className="product-thumb-img">
                       <a href="#">
-                        <div class="img">
+                        <div className="img">
                           <img
                             src="/IMG/TrangChu/TrangChu20.jpg"
                             alt="img"
@@ -26,20 +26,20 @@ const FeaturedProducts = () => {
                           />
                         </div>
                       </a>
-                      <div class="function-icon">
+                      <div className="function-icon">
                         <a href="#">
-                          <i class="fa-regular fa-heart">
-                            <div class="tooltip">Yêu Thích</div>
+                          <i className="fa-regular fa-heart">
+                            <div className="tooltip">Yêu Thích</div>
                           </i>
                         </a>
                         <a href="#">
-                          <i class="fa-solid fa-magnifying-glass">
-                            <div class="tooltip">Xem Nhanh</div>
+                          <i className="fa-solid fa-magnifying-glass">
+                            <div className="tooltip">Xem Nhanh</div>
                           </i>
                         </a>
                       </div>
-                      <div class="function-buy">
-                        <div class="function-buy-boder">
+                      <div className="function-buy">
+                        <div className="function-buy-boder">
                           <button onclick="buy(this)">
                             <span>Mua Hàng</span>
                           </button>
@@ -47,15 +47,15 @@ const FeaturedProducts = () => {
                       </div>
                     </div>
                   </div>
-                  <div class="product-info">
-                    <div class="product-info-id">
+                  <div className="product-info">
+                    <div className="product-info-id">
                       <span>ID:SP00370</span>
-                      <div class="product-info-rate">
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
+                      <div className="product-info-rate">
+                        <i className="fa-regular fa-star"></i>
+                        <i className="fa-regular fa-star"></i>
+                        <i className="fa-regular fa-star"></i>
+                        <i className="fa-regular fa-star"></i>
+                        <i className="fa-regular fa-star"></i>
                       </div>
                     </div>
                     <h3>
@@ -65,12 +65,12 @@ const FeaturedProducts = () => {
                   </div>
                 </div>
               </div>
-              <div class="article-iteam">
-                <div class="product-iteam">
-                  <div class="product-thumb">
-                    <div class="product-thumb-img">
+              <div className="article-iteam">
+                <div className="product-iteam">
+                  <div className="product-thumb">
+                    <div className="product-thumb-img">
                       <a href="#">
-                        <div class="img">
+                        <div className="img">
                           <img
                             src="/IMG/TrangChu/TrangChu17.jpg"
                             alt="img"
@@ -79,20 +79,20 @@ const FeaturedProducts = () => {
                           />
                         </div>
                       </a>
-                      <div class="function-icon">
+                      <div className="function-icon">
                         <a href="#">
-                          <i class="fa-regular fa-heart">
-                            <div class="tooltip">Yêu Thích</div>
+                          <i className="fa-regular fa-heart">
+                            <div className="tooltip">Yêu Thích</div>
                           </i>
                         </a>
                         <a href="#">
-                          <i class="fa-solid fa-magnifying-glass">
-                            <div class="tooltip">Xem Nhanh</div>
+                          <i className="fa-solid fa-magnifying-glass">
+                            <div className="tooltip">Xem Nhanh</div>
                           </i>
                         </a>
                       </div>
-                      <div class="function-buy">
-                        <div class="function-buy-boder">
+                      <div className="function-buy">
+                        <div className="function-buy-boder">
                           <button onclick="buy(this)">
                             <span>Mua Hàng</span>
                           </button>
@@ -100,15 +100,15 @@ const FeaturedProducts = () => {
                       </div>
                     </div>
                   </div>
-                  <div class="product-info">
-                    <div class="product-info-id">
+                  <div className="product-info">
+                    <div className="product-info-id">
                       <span>ID:SP00364</span>
-                      <div class="product-info-rate">
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
+                      <div className="product-info-rate">
+                        <i className="fa-regular fa-star"></i>
+                        <i className="fa-regular fa-star"></i>
+                        <i className="fa-regular fa-star"></i>
+                        <i className="fa-regular fa-star"></i>
+                        <i className="fa-regular fa-star"></i>
                       </div>
                     </div>
                     <h3>
@@ -118,12 +118,12 @@ const FeaturedProducts = () => {
                   </div>
                 </div>
               </div>
-              <div class="article-iteam">
-                <div class="product-iteam">
-                  <div class="product-thumb">
-                    <div class="product-thumb-img">
+              <div className="article-iteam">
+                <div className="product-iteam">
+                  <div className="product-thumb">
+                    <div className="product-thumb-img">
                       <a href="#">
-                        <div class="img">
+                        <div className="img">
                           <img
                             src="/IMG/TrangChu/TrangChu22.jpeg"
                             alt="img"
@@ -132,20 +132,20 @@ const FeaturedProducts = () => {
                           />
                         </div>
                       </a>
-                      <div class="function-icon">
+                      <div className="function-icon">
                         <a href="#">
-                          <i class="fa-regular fa-heart">
-                            <div class="tooltip">Yêu Thích</div>
+                          <i className="fa-regular fa-heart">
+                            <div className="tooltip">Yêu Thích</div>
                           </i>
                         </a>
                         <a href="#">
-                          <i class="fa-solid fa-magnifying-glass">
-                            <div class="tooltip">Xem Nhanh</div>
+                          <i className="fa-solid fa-magnifying-glass">
+                            <div className="tooltip">Xem Nhanh</div>
                           </i>
                         </a>
                       </div>
-                      <div class="function-buy">
-                        <div class="function-buy-boder">
+                      <div className="function-buy">
+                        <div className="function-buy-boder">
                           <button onclick="buy(this)">
                             <span>Mua Hàng</span>
                           </button>
@@ -153,15 +153,15 @@ const FeaturedProducts = () => {
                       </div>
                     </div>
                   </div>
-                  <div class="product-info">
-                    <div class="product-info-id">
+                  <div className="product-info">
+                    <div className="product-info-id">
                       <span>ID:SP00362</span>
-                      <div class="product-info-rate">
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
+                      <div className="product-info-rate">
+                        <i className="fa-regular fa-star"></i>
+                        <i className="fa-regular fa-star"></i>
+                        <i className="fa-regular fa-star"></i>
+                        <i className="fa-regular fa-star"></i>
+                        <i className="fa-regular fa-star"></i>
                       </div>
                     </div>
                     <h3>
@@ -171,12 +171,12 @@ const FeaturedProducts = () => {
                   </div>
                 </div>
               </div>
-              <div class="article-iteam">
-                <div class="product-iteam">
-                  <div class="product-thumb">
-                    <div class="product-thumb-img">
+              <div className="article-iteam">
+                <div className="product-iteam">
+                  <div className="product-thumb">
+                    <div className="product-thumb-img">
                       <a href="#">
-                        <div class="img">
+                        <div className="img">
                           <img
                             src="/IMG/TrangChu/TrangChu26.jpg"
                             alt="img"
@@ -185,20 +185,20 @@ const FeaturedProducts = () => {
                           />
                         </div>
                       </a>
-                      <div class="function-icon">
+                      <div className="function-icon">
                         <a href="#">
-                          <i class="fa-regular fa-heart">
-                            <div class="tooltip">Yêu Thích</div>
+                          <i className="fa-regular fa-heart">
+                            <div className="tooltip">Yêu Thích</div>
                           </i>
                         </a>
                         <a href="#">
-                          <i class="fa-solid fa-magnifying-glass">
-                            <div class="tooltip">Xem Nhanh</div>
+                          <i className="fa-solid fa-magnifying-glass">
+                            <div className="tooltip">Xem Nhanh</div>
                           </i>
                         </a>
                       </div>
-                      <div class="function-buy">
-                        <div class="function-buy-boder">
+                      <div className="function-buy">
+                        <div className="function-buy-boder">
                           <button onclick="buy(this)">
                             <span>Mua Hàng</span>
                           </button>
@@ -206,15 +206,15 @@ const FeaturedProducts = () => {
                       </div>
                     </div>
                   </div>
-                  <div class="product-info">
-                    <div class="product-info-id">
+                  <div className="product-info">
+                    <div className="product-info-id">
                       <span>ID:SP00605</span>
-                      <div class="product-info-rate">
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
+                      <div className="product-info-rate">
+                        <i className="fa-regular fa-star"></i>
+                        <i className="fa-regular fa-star"></i>
+                        <i className="fa-regular fa-star"></i>
+                        <i className="fa-regular fa-star"></i>
+                        <i className="fa-regular fa-star"></i>
                       </div>
                     </div>
                     <h3>
@@ -225,8 +225,8 @@ const FeaturedProducts = () => {
                 </div>
               </div>
             </article>
-            <div class="continue">
-              <div class="continue-boder">
+            <div className="continue">
+              <div className="continue-boder">
                 <a href="#">Xem Thêm</a>
               </div>
             </div>

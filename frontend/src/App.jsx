@@ -1,11 +1,10 @@
 import React from "react";
-import Header from "./components/Header/Header";
+import Header from "./components/Client/Header/Header";
 import { Route, Routes } from "react-router-dom";
-import HomePage from "./pages/HomePage/HomePage";
-import Footer from "./components/Footer/Footer";
-import DogCategory from "./pages/DogCategory/DogCategory";
-import Login from "./pages/Login/Login";
-
+import HomePage from "./pages/Client/HomePage/HomePage";
+import Footer from "./components/Client/Footer/Footer";
+import DogCategory from "./pages/Client/DogCategory/DogCategory";
+import Login from "./pages/Client/Login/Login";
 
 const App = () => {
   return (

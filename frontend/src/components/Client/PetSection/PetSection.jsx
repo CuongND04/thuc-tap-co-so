@@ -4,24 +4,24 @@ const PetSection = () => {
   return (
     <main>
       <section>
-        <div class="row">
-          <div class="row-content">
-            <div class="row-title">
+        <div className="row">
+          <div className="row-content">
+            <div className="row-title">
               <a href="#">
                 <strong>SHOP BÁN CHÓ MÈO CẢNH</strong>
               </a>
             </div>
-            <div class="row1">
+            <div className="row1">
               <article>
-                <div class="article-iteam">
-                  <div class="product-iteam">
-                    <div class="product-thumb">
-                      <div class="product-thumb-img">
+                <div className="article-iteam">
+                  <div className="product-iteam">
+                    <div className="product-thumb">
+                      <div className="product-thumb-img">
                         <a href="#">
-                          <div class="badge">
+                          <div className="badge">
                             <p>New</p>
                           </div>
-                          <div class="img">
+                          <div className="img">
                             <img
                               src="../IMG/TrangChu/TrangChu591.jpg"
                               alt="img"
@@ -30,20 +30,20 @@ const PetSection = () => {
                             />
                           </div>
                         </a>
-                        <div class="function-icon">
+                        <div className="function-icon">
                           <a href="#">
-                            <i class="fa-regular fa-heart">
-                              <div class="tooltip">Yêu Thích</div>
+                            <i className="fa-regular fa-heart">
+                              <div className="tooltip">Yêu Thích</div>
                             </i>
                           </a>
                           <a href="#">
-                            <i class="fa-solid fa-magnifying-glass">
-                              <div class="tooltip">Xem Nhanh</div>
+                            <i className="fa-solid fa-magnifying-glass">
+                              <div className="tooltip">Xem Nhanh</div>
                             </i>
                           </a>
                         </div>
-                        <div class="function-buy">
-                          <div class="function-buy-boder">
+                        <div className="function-buy">
+                          <div className="function-buy-boder">
                             <button onclick="buy(this)">
                               <span>Mua Hàng</span>
                             </button>
@@ -51,15 +51,15 @@ const PetSection = () => {
                         </div>
                       </div>
                     </div>
-                    <div class="product-info">
-                      <div class="product-info-id">
+                    <div className="product-info">
+                      <div className="product-info-id">
                         <span>ID:SP00612</span>
-                        <div class="product-info-rate">
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
+                        <div className="product-info-rate">
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
                         </div>
                       </div>
                       <h3>
@@ -69,15 +69,15 @@ const PetSection = () => {
                     </div>
                   </div>
                 </div>
-                <div class="article-iteam">
-                  <div class="product-iteam">
-                    <div class="product-thumb">
-                      <div class="product-thumb-img">
+                <div className="article-iteam">
+                  <div className="product-iteam">
+                    <div className="product-thumb">
+                      <div className="product-thumb-img">
                         <a href="#">
-                          <div class="badge">
+                          <div className="badge">
                             <p>New</p>
                           </div>
-                          <div class="img">
+                          <div className="img">
                             <img
                               src="../IMG/TrangChu/TrangChu15.jpg"
                               alt="img"
@@ -86,20 +86,20 @@ const PetSection = () => {
                             />
                           </div>
                         </a>
-                        <div class="function-icon">
+                        <div className="function-icon">
                           <a href="#">
-                            <i class="fa-regular fa-heart">
-                              <div class="tooltip">Yêu Thích</div>
+                            <i className="fa-regular fa-heart">
+                              <div className="tooltip">Yêu Thích</div>
                             </i>
                           </a>
                           <a href="#">
-                            <i class="fa-solid fa-magnifying-glass">
-                              <div class="tooltip">Xem Nhanh</div>
+                            <i className="fa-solid fa-magnifying-glass">
+                              <div className="tooltip">Xem Nhanh</div>
                             </i>
                           </a>
                         </div>
-                        <div class="function-buy">
-                          <div class="function-buy-boder">
+                        <div className="function-buy">
+                          <div className="function-buy-boder">
                             <button onclick="buy(this)">
                               <span>Mua Hàng</span>
                             </button>
@@ -107,15 +107,15 @@ const PetSection = () => {
                         </div>
                       </div>
                     </div>
-                    <div class="product-info">
-                      <div class="product-info-id">
+                    <div className="product-info">
+                      <div className="product-info-id">
                         <span>ID:SP00611</span>
-                        <div class="product-info-rate">
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
+                        <div className="product-info-rate">
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
                         </div>
                       </div>
                       <h3>
@@ -125,15 +125,15 @@ const PetSection = () => {
                     </div>
                   </div>
                 </div>
-                <div class="article-iteam">
-                  <div class="product-iteam">
-                    <div class="product-thumb">
-                      <div class="product-thumb-img">
+                <div className="article-iteam">
+                  <div className="product-iteam">
+                    <div className="product-thumb">
+                      <div className="product-thumb-img">
                         <a href="#">
-                          <div class="badge">
+                          <div className="badge">
                             <p>New</p>
                           </div>
-                          <div class="img">
+                          <div className="img">
                             <img
                               src="../IMG/TrangChu/TrangChu17.jpg"
                               alt="img"
@@ -142,20 +142,20 @@ const PetSection = () => {
                             />
                           </div>
                         </a>
-                        <div class="function-icon">
+                        <div className="function-icon">
                           <a href="#">
-                            <i class="fa-regular fa-heart">
-                              <div class="tooltip">Yêu Thích</div>
+                            <i className="fa-regular fa-heart">
+                              <div className="tooltip">Yêu Thích</div>
                             </i>
                           </a>
                           <a href="#">
-                            <i class="fa-solid fa-magnifying-glass">
-                              <div class="tooltip">Xem Nhanh</div>
+                            <i className="fa-solid fa-magnifying-glass">
+                              <div className="tooltip">Xem Nhanh</div>
                             </i>
                           </a>
                         </div>
-                        <div class="function-buy">
-                          <div class="function-buy-boder">
+                        <div className="function-buy">
+                          <div className="function-buy-boder">
                             <button onclick="buy(this)">
                               <span>Mua Hàng</span>
                             </button>
@@ -163,15 +163,15 @@ const PetSection = () => {
                         </div>
                       </div>
                     </div>
-                    <div class="product-info">
-                      <div class="product-info-id">
+                    <div className="product-info">
+                      <div className="product-info-id">
                         <span>ID:SP00610</span>
-                        <div class="product-info-rate">
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
+                        <div className="product-info-rate">
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
                         </div>
                       </div>
                       <h3>
@@ -181,15 +181,15 @@ const PetSection = () => {
                     </div>
                   </div>
                 </div>
-                <div class="article-iteam">
-                  <div class="product-iteam">
-                    <div class="product-thumb">
-                      <div class="product-thumb-img">
+                <div className="article-iteam">
+                  <div className="product-iteam">
+                    <div className="product-thumb">
+                      <div className="product-thumb-img">
                         <a href="#">
-                          <div class="badge">
+                          <div className="badge">
                             <p>New</p>
                           </div>
-                          <div class="img">
+                          <div className="img">
                             <img
                               src="../IMG/TrangChu/TrangChu18.jpg"
                               alt="img"
@@ -198,20 +198,20 @@ const PetSection = () => {
                             />
                           </div>
                         </a>
-                        <div class="function-icon">
+                        <div className="function-icon">
                           <a href="#">
-                            <i class="fa-regular fa-heart">
-                              <div class="tooltip">Yêu Thích</div>
+                            <i className="fa-regular fa-heart">
+                              <div className="tooltip">Yêu Thích</div>
                             </i>
                           </a>
                           <a href="#">
-                            <i class="fa-solid fa-magnifying-glass">
-                              <div class="tooltip">Xem Nhanh</div>
+                            <i className="fa-solid fa-magnifying-glass">
+                              <div className="tooltip">Xem Nhanh</div>
                             </i>
                           </a>
                         </div>
-                        <div class="function-buy">
-                          <div class="function-buy-boder">
+                        <div className="function-buy">
+                          <div className="function-buy-boder">
                             <button onclick="buy(this)">
                               <span>Mua Hàng</span>
                             </button>
@@ -219,15 +219,15 @@ const PetSection = () => {
                         </div>
                       </div>
                     </div>
-                    <div class="product-info">
-                      <div class="product-info-id">
+                    <div className="product-info">
+                      <div className="product-info-id">
                         <span>ID:SP00609</span>
-                        <div class="product-info-rate">
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
+                        <div className="product-info-rate">
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
                         </div>
                       </div>
                       <h3>
@@ -239,17 +239,17 @@ const PetSection = () => {
                 </div>
               </article>
             </div>
-            <div class="row2">
+            <div className="row2">
               <article>
-                <div class="article-iteam">
-                  <div class="product-iteam">
-                    <div class="product-thumb">
-                      <div class="product-thumb-img">
+                <div className="article-iteam">
+                  <div className="product-iteam">
+                    <div className="product-thumb">
+                      <div className="product-thumb-img">
                         <a href="#">
-                          <div class="badge">
+                          <div className="badge">
                             <p>New</p>
                           </div>
-                          <div class="img">
+                          <div className="img">
                             <img
                               src="../IMG/TrangChu/TrangChu19.jpg"
                               alt="img"
@@ -258,20 +258,20 @@ const PetSection = () => {
                             />
                           </div>
                         </a>
-                        <div class="function-icon">
+                        <div className="function-icon">
                           <a href="#">
-                            <i class="fa-regular fa-heart">
-                              <div class="tooltip">Yêu Thích</div>
+                            <i className="fa-regular fa-heart">
+                              <div className="tooltip">Yêu Thích</div>
                             </i>
                           </a>
                           <a href="#">
-                            <i class="fa-solid fa-magnifying-glass">
-                              <div class="tooltip">Xem Nhanh</div>
+                            <i className="fa-solid fa-magnifying-glass">
+                              <div className="tooltip">Xem Nhanh</div>
                             </i>
                           </a>
                         </div>
-                        <div class="function-buy">
-                          <div class="function-buy-boder">
+                        <div className="function-buy">
+                          <div className="function-buy-boder">
                             <button onclick="buy(this)">
                               <span>Mua Hàng</span>
                             </button>
@@ -279,15 +279,15 @@ const PetSection = () => {
                         </div>
                       </div>
                     </div>
-                    <div class="product-info">
-                      <div class="product-info-id">
+                    <div className="product-info">
+                      <div className="product-info-id">
                         <span>ID:SP00608</span>
-                        <div class="product-info-rate">
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
+                        <div className="product-info-rate">
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
                         </div>
                       </div>
                       <h3>
@@ -297,15 +297,15 @@ const PetSection = () => {
                     </div>
                   </div>
                 </div>
-                <div class="article-iteam">
-                  <div class="product-iteam">
-                    <div class="product-thumb">
-                      <div class="product-thumb-img">
+                <div className="article-iteam">
+                  <div className="product-iteam">
+                    <div className="product-thumb">
+                      <div className="product-thumb-img">
                         <a href="#">
-                          <div class="badge">
+                          <div className="badge">
                             <p>New</p>
                           </div>
-                          <div class="img">
+                          <div className="img">
                             <img
                               src="../IMG/TrangChu/TrangChu24.jpg"
                               alt="img"
@@ -314,20 +314,20 @@ const PetSection = () => {
                             />
                           </div>
                         </a>
-                        <div class="function-icon">
+                        <div className="function-icon">
                           <a href="#">
-                            <i class="fa-regular fa-heart">
-                              <div class="tooltip">Yêu Thích</div>
+                            <i className="fa-regular fa-heart">
+                              <div className="tooltip">Yêu Thích</div>
                             </i>
                           </a>
                           <a href="#">
-                            <i class="fa-solid fa-magnifying-glass">
-                              <div class="tooltip">Xem Nhanh</div>
+                            <i className="fa-solid fa-magnifying-glass">
+                              <div className="tooltip">Xem Nhanh</div>
                             </i>
                           </a>
                         </div>
-                        <div class="function-buy">
-                          <div class="function-buy-boder">
+                        <div className="function-buy">
+                          <div className="function-buy-boder">
                             <button onclick="buy(this)">
                               <span>Mua Hàng</span>
                             </button>
@@ -335,15 +335,15 @@ const PetSection = () => {
                         </div>
                       </div>
                     </div>
-                    <div class="product-info">
-                      <div class="product-info-id">
+                    <div className="product-info">
+                      <div className="product-info-id">
                         <span>ID:SP00607</span>
-                        <div class="product-info-rate">
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
+                        <div className="product-info-rate">
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
                         </div>
                       </div>
                       <h3>
@@ -353,15 +353,15 @@ const PetSection = () => {
                     </div>
                   </div>
                 </div>
-                <div class="article-iteam">
-                  <div class="product-iteam">
-                    <div class="product-thumb">
-                      <div class="product-thumb-img">
+                <div className="article-iteam">
+                  <div className="product-iteam">
+                    <div className="product-thumb">
+                      <div className="product-thumb-img">
                         <a href="#">
-                          <div class="badge">
+                          <div className="badge">
                             <p>New</p>
                           </div>
-                          <div class="img">
+                          <div className="img">
                             <img
                               src="../IMG/TrangChu/TrangChu25.jpg"
                               alt="img"
@@ -370,20 +370,20 @@ const PetSection = () => {
                             />
                           </div>
                         </a>
-                        <div class="function-icon">
+                        <div className="function-icon">
                           <a href="#">
-                            <i class="fa-regular fa-heart">
-                              <div class="tooltip">Yêu Thích</div>
+                            <i className="fa-regular fa-heart">
+                              <div className="tooltip">Yêu Thích</div>
                             </i>
                           </a>
                           <a href="#">
-                            <i class="fa-solid fa-magnifying-glass">
-                              <div class="tooltip">Xem Nhanh</div>
+                            <i className="fa-solid fa-magnifying-glass">
+                              <div className="tooltip">Xem Nhanh</div>
                             </i>
                           </a>
                         </div>
-                        <div class="function-buy">
-                          <div class="function-buy-boder">
+                        <div className="function-buy">
+                          <div className="function-buy-boder">
                             <button onclick="buy(this)">
                               <span>Mua Hàng</span>
                             </button>
@@ -391,15 +391,15 @@ const PetSection = () => {
                         </div>
                       </div>
                     </div>
-                    <div class="product-info">
-                      <div class="product-info-id">
+                    <div className="product-info">
+                      <div className="product-info-id">
                         <span>ID:SP00606</span>
-                        <div class="product-info-rate">
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
+                        <div className="product-info-rate">
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
                         </div>
                       </div>
                       <h3>
@@ -409,15 +409,15 @@ const PetSection = () => {
                     </div>
                   </div>
                 </div>
-                <div class="article-iteam">
-                  <div class="product-iteam">
-                    <div class="product-thumb">
-                      <div class="product-thumb-img">
+                <div className="article-iteam">
+                  <div className="product-iteam">
+                    <div className="product-thumb">
+                      <div className="product-thumb-img">
                         <a href="#">
-                          <div class="badge">
+                          <div className="badge">
                             <p>New</p>
                           </div>
-                          <div class="img">
+                          <div className="img">
                             <img
                               src="../IMG/TrangChu/TrangChu26.jpg"
                               alt="img"
@@ -426,20 +426,20 @@ const PetSection = () => {
                             />
                           </div>
                         </a>
-                        <div class="function-icon">
+                        <div className="function-icon">
                           <a href="#">
-                            <i class="fa-regular fa-heart">
-                              <div class="tooltip">Yêu Thích</div>
+                            <i className="fa-regular fa-heart">
+                              <div className="tooltip">Yêu Thích</div>
                             </i>
                           </a>
                           <a href="#">
-                            <i class="fa-solid fa-magnifying-glass">
-                              <div class="tooltip">Xem Nhanh</div>
+                            <i className="fa-solid fa-magnifying-glass">
+                              <div className="tooltip">Xem Nhanh</div>
                             </i>
                           </a>
                         </div>
-                        <div class="function-buy">
-                          <div class="function-buy-boder">
+                        <div className="function-buy">
+                          <div className="function-buy-boder">
                             <button onclick="buy(this)">
                               <span>Mua Hàng</span>
                             </button>
@@ -447,15 +447,15 @@ const PetSection = () => {
                         </div>
                       </div>
                     </div>
-                    <div class="product-info">
-                      <div class="product-info-id">
+                    <div className="product-info">
+                      <div className="product-info-id">
                         <span>ID:SP00605</span>
-                        <div class="product-info-rate">
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
+                        <div className="product-info-rate">
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
                         </div>
                       </div>
                       <h3>
@@ -467,12 +467,12 @@ const PetSection = () => {
                 </div>
               </article>
               <article>
-                <div class="article-iteam">
-                  <div class="product-iteam">
-                    <div class="product-thumb">
-                      <div class="product-thumb-img">
+                <div className="article-iteam">
+                  <div className="product-iteam">
+                    <div className="product-thumb">
+                      <div className="product-thumb-img">
                         <a href="#">
-                          <div class="img">
+                          <div className="img">
                             <img
                               src="../IMG/TrangChu/TrangChu28.jpg"
                               alt="img"
@@ -481,20 +481,20 @@ const PetSection = () => {
                             />
                           </div>
                         </a>
-                        <div class="function-icon">
+                        <div className="function-icon">
                           <a href="#">
-                            <i class="fa-regular fa-heart">
-                              <div class="tooltip">Yêu Thích</div>
+                            <i className="fa-regular fa-heart">
+                              <div className="tooltip">Yêu Thích</div>
                             </i>
                           </a>
                           <a href="#">
-                            <i class="fa-solid fa-magnifying-glass">
-                              <div class="tooltip">Xem Nhanh</div>
+                            <i className="fa-solid fa-magnifying-glass">
+                              <div className="tooltip">Xem Nhanh</div>
                             </i>
                           </a>
                         </div>
-                        <div class="function-buy">
-                          <div class="function-buy-boder">
+                        <div className="function-buy">
+                          <div className="function-buy-boder">
                             <button onclick="buy(this)">
                               <span>Mua Hàng</span>
                             </button>
@@ -502,15 +502,15 @@ const PetSection = () => {
                         </div>
                       </div>
                     </div>
-                    <div class="product-info">
-                      <div class="product-info-id">
+                    <div className="product-info">
+                      <div className="product-info-id">
                         <span>ID:SP00598</span>
-                        <div class="product-info-rate">
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
+                        <div className="product-info-rate">
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
                         </div>
                       </div>
                       <h3>
@@ -520,12 +520,12 @@ const PetSection = () => {
                     </div>
                   </div>
                 </div>
-                <div class="article-iteam">
-                  <div class="product-iteam">
-                    <div class="product-thumb">
-                      <div class="product-thumb-img">
+                <div className="article-iteam">
+                  <div className="product-iteam">
+                    <div className="product-thumb">
+                      <div className="product-thumb-img">
                         <a href="#">
-                          <div class="img">
+                          <div className="img">
                             <img
                               src="../IMG/TrangChu/TrangChu29.jpg"
                               alt="img"
@@ -534,20 +534,20 @@ const PetSection = () => {
                             />
                           </div>
                         </a>
-                        <div class="function-icon">
+                        <div className="function-icon">
                           <a href="#">
-                            <i class="fa-regular fa-heart">
-                              <div class="tooltip">Yêu Thích</div>
+                            <i className="fa-regular fa-heart">
+                              <div className="tooltip">Yêu Thích</div>
                             </i>
                           </a>
                           <a href="#">
-                            <i class="fa-solid fa-magnifying-glass">
-                              <div class="tooltip">Xem Nhanh</div>
+                            <i className="fa-solid fa-magnifying-glass">
+                              <div className="tooltip">Xem Nhanh</div>
                             </i>
                           </a>
                         </div>
-                        <div class="function-buy">
-                          <div class="function-buy-boder">
+                        <div className="function-buy">
+                          <div className="function-buy-boder">
                             <button onclick="buy(this)">
                               <span>Mua Hàng</span>
                             </button>
@@ -555,15 +555,15 @@ const PetSection = () => {
                         </div>
                       </div>
                     </div>
-                    <div class="product-info">
-                      <div class="product-info-id">
+                    <div className="product-info">
+                      <div className="product-info-id">
                         <span>ID:SP00597</span>
-                        <div class="product-info-rate">
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
+                        <div className="product-info-rate">
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
                         </div>
                       </div>
                       <h3>
@@ -573,12 +573,12 @@ const PetSection = () => {
                     </div>
                   </div>
                 </div>
-                <div class="article-iteam">
-                  <div class="product-iteam">
-                    <div class="product-thumb">
-                      <div class="product-thumb-img">
+                <div className="article-iteam">
+                  <div className="product-iteam">
+                    <div className="product-thumb">
+                      <div className="product-thumb-img">
                         <a href="#">
-                          <div class="img">
+                          <div className="img">
                             <img
                               src="../IMG/TrangChu/TrangChu30.jpg"
                               alt="img"
@@ -587,20 +587,20 @@ const PetSection = () => {
                             />
                           </div>
                         </a>
-                        <div class="function-icon">
+                        <div className="function-icon">
                           <a href="#">
-                            <i class="fa-regular fa-heart">
-                              <div class="tooltip">Yêu Thích</div>
+                            <i className="fa-regular fa-heart">
+                              <div className="tooltip">Yêu Thích</div>
                             </i>
                           </a>
                           <a href="#">
-                            <i class="fa-solid fa-magnifying-glass">
-                              <div class="tooltip">Xem Nhanh</div>
+                            <i className="fa-solid fa-magnifying-glass">
+                              <div className="tooltip">Xem Nhanh</div>
                             </i>
                           </a>
                         </div>
-                        <div class="function-buy">
-                          <div class="function-buy-boder">
+                        <div className="function-buy">
+                          <div className="function-buy-boder">
                             <button onclick="buy(this)">
                               <span>Mua Hàng</span>
                             </button>
@@ -608,15 +608,15 @@ const PetSection = () => {
                         </div>
                       </div>
                     </div>
-                    <div class="product-info">
-                      <div class="product-info-id">
+                    <div className="product-info">
+                      <div className="product-info-id">
                         <span>ID:SP00593</span>
-                        <div class="product-info-rate">
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
+                        <div className="product-info-rate">
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
                         </div>
                       </div>
                       <h3>
@@ -626,12 +626,12 @@ const PetSection = () => {
                     </div>
                   </div>
                 </div>
-                <div class="article-iteam">
-                  <div class="product-iteam">
-                    <div class="product-thumb">
-                      <div class="product-thumb-img">
+                <div className="article-iteam">
+                  <div className="product-iteam">
+                    <div className="product-thumb">
+                      <div className="product-thumb-img">
                         <a href="#">
-                          <div class="img">
+                          <div className="img">
                             <img
                               src="../IMG/TrangChu/TrangChu31.jpg"
                               alt="img"
@@ -640,20 +640,20 @@ const PetSection = () => {
                             />
                           </div>
                         </a>
-                        <div class="function-icon">
+                        <div className="function-icon">
                           <a href="#">
-                            <i class="fa-regular fa-heart">
-                              <div class="tooltip">Yêu Thích</div>
+                            <i className="fa-regular fa-heart">
+                              <div className="tooltip">Yêu Thích</div>
                             </i>
                           </a>
                           <a href="#">
-                            <i class="fa-solid fa-magnifying-glass">
-                              <div class="tooltip">Xem Nhanh</div>
+                            <i className="fa-solid fa-magnifying-glass">
+                              <div className="tooltip">Xem Nhanh</div>
                             </i>
                           </a>
                         </div>
-                        <div class="function-buy">
-                          <div class="function-buy-boder">
+                        <div className="function-buy">
+                          <div className="function-buy-boder">
                             <button onclick="buy(this)">
                               <span>Mua Hàng</span>
                             </button>
@@ -661,15 +661,15 @@ const PetSection = () => {
                         </div>
                       </div>
                     </div>
-                    <div class="product-info">
-                      <div class="product-info-id">
+                    <div className="product-info">
+                      <div className="product-info-id">
                         <span>ID:SP00582</span>
-                        <div class="product-info-rate">
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
+                        <div className="product-info-rate">
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
                         </div>
                       </div>
                       <h3>
@@ -681,12 +681,12 @@ const PetSection = () => {
                 </div>
               </article>
               <article>
-                <div class="article-iteam">
-                  <div class="product-iteam">
-                    <div class="product-thumb">
-                      <div class="product-thumb-img">
+                <div className="article-iteam">
+                  <div className="product-iteam">
+                    <div className="product-thumb">
+                      <div className="product-thumb-img">
                         <a href="#">
-                          <div class="img">
+                          <div className="img">
                             <img
                               src="../IMG/TrangChu/TrangChu32.jpg"
                               alt="img"
@@ -695,20 +695,20 @@ const PetSection = () => {
                             />
                           </div>
                         </a>
-                        <div class="function-icon">
+                        <div className="function-icon">
                           <a href="#">
-                            <i class="fa-regular fa-heart">
-                              <div class="tooltip">Yêu Thích</div>
+                            <i className="fa-regular fa-heart">
+                              <div className="tooltip">Yêu Thích</div>
                             </i>
                           </a>
                           <a href="#">
-                            <i class="fa-solid fa-magnifying-glass">
-                              <div class="tooltip">Xem Nhanh</div>
+                            <i className="fa-solid fa-magnifying-glass">
+                              <div className="tooltip">Xem Nhanh</div>
                             </i>
                           </a>
                         </div>
-                        <div class="function-buy">
-                          <div class="function-buy-boder">
+                        <div className="function-buy">
+                          <div className="function-buy-boder">
                             <button onclick="buy(this)">
                               <span>Mua Hàng</span>
                             </button>
@@ -716,15 +716,15 @@ const PetSection = () => {
                         </div>
                       </div>
                     </div>
-                    <div class="product-info">
-                      <div class="product-info-id">
+                    <div className="product-info">
+                      <div className="product-info-id">
                         <span>ID:SP00581</span>
-                        <div class="product-info-rate">
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
+                        <div className="product-info-rate">
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
                         </div>
                       </div>
                       <h3>
@@ -734,12 +734,12 @@ const PetSection = () => {
                     </div>
                   </div>
                 </div>
-                <div class="article-iteam">
-                  <div class="product-iteam">
-                    <div class="product-thumb">
-                      <div class="product-thumb-img">
+                <div className="article-iteam">
+                  <div className="product-iteam">
+                    <div className="product-thumb">
+                      <div className="product-thumb-img">
                         <a href="#">
-                          <div class="img">
+                          <div className="img">
                             <img
                               src="../IMG/TrangChu/TrangChu33.jpg"
                               alt="img"
@@ -748,20 +748,20 @@ const PetSection = () => {
                             />
                           </div>
                         </a>
-                        <div class="function-icon">
+                        <div className="function-icon">
                           <a href="#">
-                            <i class="fa-regular fa-heart">
-                              <div class="tooltip">Yêu Thích</div>
+                            <i className="fa-regular fa-heart">
+                              <div className="tooltip">Yêu Thích</div>
                             </i>
                           </a>
                           <a href="#">
-                            <i class="fa-solid fa-magnifying-glass">
-                              <div class="tooltip">Xem Nhanh</div>
+                            <i className="fa-solid fa-magnifying-glass">
+                              <div className="tooltip">Xem Nhanh</div>
                             </i>
                           </a>
                         </div>
-                        <div class="function-buy">
-                          <div class="function-buy-boder">
+                        <div className="function-buy">
+                          <div className="function-buy-boder">
                             <button onclick="buy(this)">
                               <span>Mua Hàng</span>
                             </button>
@@ -769,15 +769,15 @@ const PetSection = () => {
                         </div>
                       </div>
                     </div>
-                    <div class="product-info">
-                      <div class="product-info-id">
+                    <div className="product-info">
+                      <div className="product-info-id">
                         <span>ID:SP00558</span>
-                        <div class="product-info-rate">
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
+                        <div className="product-info-rate">
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
                         </div>
                       </div>
                       <h3>
@@ -787,12 +787,12 @@ const PetSection = () => {
                     </div>
                   </div>
                 </div>
-                <div class="article-iteam">
-                  <div class="product-iteam">
-                    <div class="product-thumb">
-                      <div class="product-thumb-img">
+                <div className="article-iteam">
+                  <div className="product-iteam">
+                    <div className="product-thumb">
+                      <div className="product-thumb-img">
                         <a href="#">
-                          <div class="img">
+                          <div className="img">
                             <img
                               src="../IMG/TrangChu/TrangChu34.jpg"
                               alt="img"
@@ -801,20 +801,20 @@ const PetSection = () => {
                             />
                           </div>
                         </a>
-                        <div class="function-icon">
+                        <div className="function-icon">
                           <a href="#">
-                            <i class="fa-regular fa-heart">
-                              <div class="tooltip">Yêu Thích</div>
+                            <i className="fa-regular fa-heart">
+                              <div className="tooltip">Yêu Thích</div>
                             </i>
                           </a>
                           <a href="#">
-                            <i class="fa-solid fa-magnifying-glass">
-                              <div class="tooltip">Xem Nhanh</div>
+                            <i className="fa-solid fa-magnifying-glass">
+                              <div className="tooltip">Xem Nhanh</div>
                             </i>
                           </a>
                         </div>
-                        <div class="function-buy">
-                          <div class="function-buy-boder">
+                        <div className="function-buy">
+                          <div className="function-buy-boder">
                             <button onclick="buy(this)">
                               <span>Mua Hàng</span>
                             </button>
@@ -822,15 +822,15 @@ const PetSection = () => {
                         </div>
                       </div>
                     </div>
-                    <div class="product-info">
-                      <div class="product-info-id">
+                    <div className="product-info">
+                      <div className="product-info-id">
                         <span>ID:SP00535</span>
-                        <div class="product-info-rate">
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
+                        <div className="product-info-rate">
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
                         </div>
                       </div>
                       <h3>
@@ -840,12 +840,12 @@ const PetSection = () => {
                     </div>
                   </div>
                 </div>
-                <div class="article-iteam">
-                  <div class="product-iteam">
-                    <div class="product-thumb">
-                      <div class="product-thumb-img">
+                <div className="article-iteam">
+                  <div className="product-iteam">
+                    <div className="product-thumb">
+                      <div className="product-thumb-img">
                         <a href="#">
-                          <div class="img">
+                          <div className="img">
                             <img
                               src="../IMG/TrangChu/TrangChu35.jpg"
                               alt="img"
@@ -854,20 +854,20 @@ const PetSection = () => {
                             />
                           </div>
                         </a>
-                        <div class="function-icon">
+                        <div className="function-icon">
                           <a href="#">
-                            <i class="fa-regular fa-heart">
-                              <div class="tooltip">Yêu Thích</div>
+                            <i className="fa-regular fa-heart">
+                              <div className="tooltip">Yêu Thích</div>
                             </i>
                           </a>
                           <a href="#">
-                            <i class="fa-solid fa-magnifying-glass">
-                              <div class="tooltip">Xem Nhanh</div>
+                            <i className="fa-solid fa-magnifying-glass">
+                              <div className="tooltip">Xem Nhanh</div>
                             </i>
                           </a>
                         </div>
-                        <div class="function-buy">
-                          <div class="function-buy-boder">
+                        <div className="function-buy">
+                          <div className="function-buy-boder">
                             <button onclick="buy(this)">
                               <span>Mua Hàng</span>
                             </button>
@@ -875,15 +875,15 @@ const PetSection = () => {
                         </div>
                       </div>
                     </div>
-                    <div class="product-info">
-                      <div class="product-info-id">
+                    <div className="product-info">
+                      <div className="product-info-id">
                         <span>ID:SP00528</span>
-                        <div class="product-info-rate">
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
-                          <i class="fa-regular fa-star"></i>
+                        <div className="product-info-rate">
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
+                          <i className="fa-regular fa-star"></i>
                         </div>
                       </div>
                       <h3>
@@ -895,8 +895,8 @@ const PetSection = () => {
                 </div>
               </article>
             </div>
-            <div class="continue">
-              <div class="continue-boder">
+            <div className="continue">
+              <div className="continue-boder">
                 <a href="#">Xem Thêm</a>
               </div>
             </div>
