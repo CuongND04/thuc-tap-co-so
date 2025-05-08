@@ -107,7 +107,7 @@ const Header = () => {
               </div>
               <div className="function-login">
                 <div className="login">
-                  <a href="">Đăng Nhập</a>
+                  <a href="/dang-nhap">Đăng Nhập</a>
                   <a href="">Đăng Ký</a>
                 </div>
                 <p>{/* Hiển thị tên user nếu có */}</p>
