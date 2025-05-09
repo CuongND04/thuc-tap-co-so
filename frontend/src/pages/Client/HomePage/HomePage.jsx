@@ -10,7 +10,7 @@ const HomePage = () => {
         <div className="container">
           <div className="bread-crumb">
             <a href="">Trang chủ</a>
-            <span>Danh mục sản phẩm</span>
+            <span className="">Danh mục sản phẩm</span>
           </div>
         </div>
       </div>
