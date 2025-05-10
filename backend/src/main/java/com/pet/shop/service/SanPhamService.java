@@ -1,5 +1,6 @@
 package com.pet.shop.service;
 
+import com.pet.shop.dto.ChiTietSanPhamDTO;
 import com.pet.shop.models.SanPham;
 import com.pet.shop.repositories.SanPhamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SanPhamService {
@@ -56,5 +58,64 @@ public class SanPhamService {
 
     public List<SanPham> searchProducts(String tenSanPham, Long maDanhMuc, BigDecimal minPrice, BigDecimal maxPrice) {
         return sanPhamRepository.searchProducts(tenSanPham, maDanhMuc, minPrice, maxPrice);
+    }
+
+    public Optional<ChiTietSanPhamDTO> getChiTietSanPham(Long maSanPham) {
+        return sanPhamRepository.findById(maSanPham)
+                .map(this::convertToChiTietSanPhamDTO);
+    }
+
+    private ChiTietSanPhamDTO convertToChiTietSanPhamDTO(SanPham sanPham) {
+        ChiTietSanPhamDTO dto = new ChiTietSanPhamDTO();
+        
+        // Basic product information
+        dto.setMaSanPham(sanPham.getMaSanPham());
+        dto.setTenSanPham(sanPham.getTenSanPham());
+        dto.setHinhAnh(sanPham.getHinhAnh());
+        dto.setMoTa(sanPham.getMoTa());
+        dto.setGiaBan(sanPham.getGiaBan());
+        
+        // Category information
+        dto.setMaDanhMuc(sanPham.getDanhMuc().getMaDanhMuc());
+        dto.setTenDanhMuc(sanPham.getDanhMuc().getTenDanhMuc());
+        
+        // Pet information (if exists)
+        if (sanPham.getThuCung() != null) {
+            dto.setGiong(sanPham.getThuCung().getGiong());
+            dto.setGioiTinh(sanPham.getThuCung().getGioiTinh());
+            dto.setTuoi(sanPham.getThuCung().getTuoi());
+            dto.setTrangThaiTiem(sanPham.getThuCung().getTrangThaiTiem());
+            dto.setSoLuongThuCung(sanPham.getThuCung().getSoLuongTonKho());
+        }
+        
+        // Accessory information (if exists)
+        if (sanPham.getPhuKien() != null) {
+            dto.setLoaiPhuKien(sanPham.getPhuKien().getLoaiPhuKien());
+            dto.setSoLuongPhuKien(sanPham.getPhuKien().getSoLuongTonKho());
+        }
+        
+        // Reviews
+        if (sanPham.getDanhGias() != null) {
+            dto.setDanhGias(sanPham.getDanhGias().stream()
+                    .map(danhGia -> {
+                        ChiTietSanPhamDTO.DanhGiaDTO danhGiaDTO = new ChiTietSanPhamDTO.DanhGiaDTO();
+                        danhGiaDTO.setMaDanhGia(danhGia.getMaDanhGia());
+                        danhGiaDTO.setNoiDung(danhGia.getNoiDung());
+                        danhGiaDTO.setDiem(danhGia.getSoSao()); 
+                        danhGiaDTO.setTenNguoiDung(danhGia.getNguoiDung().getHoTen());  
+                        danhGiaDTO.setNgayDanhGia(danhGia.getNgayDanhGia().toString());
+                        return danhGiaDTO;
+                    })
+                    .collect(Collectors.toList()));
+            
+            // Calculate average rating
+            double diemTrungBinh = sanPham.getDanhGias().stream()
+                    .mapToInt(danhGia -> danhGia.getSoSao())
+                    .average()
+                    .orElse(0.0);
+            dto.setDiemTrungBinh(diemTrungBinh);
+        }
+        
+        return dto;
     }
 }

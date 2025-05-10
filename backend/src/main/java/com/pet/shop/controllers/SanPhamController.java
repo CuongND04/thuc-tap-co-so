@@ -1,5 +1,7 @@
 package com.pet.shop.controllers;
 
+import com.pet.shop.dto.ChiTietSanPhamDTO;
+import com.pet.shop.models.ResponseObject;
 import com.pet.shop.models.SanPham;
 import com.pet.shop.service.SanPhamService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,84 +23,116 @@ public class SanPhamController {
     }
 
     @GetMapping
-    public ResponseEntity<List<SanPham>> getAllSanPham() {
+    public ResponseEntity<ResponseObject> getAllSanPham() {
         List<SanPham> sanPhams = sanPhamService.findAll();
-        return new ResponseEntity<>(sanPhams, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ResponseObject("success", "Get all products successfully", sanPhams)
+        );
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SanPham> getSanPhamById(@PathVariable Long id) {
+    public ResponseEntity<ResponseObject> getSanPhamById(@PathVariable Long id) {
         return sanPhamService.findById(id)
-                .map(sanPham -> new ResponseEntity<>(sanPham, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(sanPham -> ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("success", "Get product successfully", sanPham)
+                ))
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject("failed", "Cannot find product with id = " + id, "")
+                ));
     }
 
     @PostMapping
-    public ResponseEntity<SanPham> createSanPham(@RequestBody SanPham sanPham) {
+    public ResponseEntity<ResponseObject> createSanPham(@RequestBody SanPham sanPham) {
         SanPham savedSanPham = sanPhamService.save(sanPham);
-        return new ResponseEntity<>(savedSanPham, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+            new ResponseObject("success", "Create product successfully", savedSanPham)
+        );
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SanPham> updateSanPham(@PathVariable Long id, @RequestBody SanPham sanPham) {
+    public ResponseEntity<ResponseObject> updateSanPham(@PathVariable Long id, @RequestBody SanPham sanPham) {
         return sanPhamService.findById(id)
                 .map(existingSanPham -> {
                     sanPham.setMaSanPham(id);
                     SanPham updatedSanPham = sanPhamService.save(sanPham);
-                    return new ResponseEntity<>(updatedSanPham, HttpStatus.OK);
+                    return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject("success", "Update product successfully", updatedSanPham)
+                    );
                 })
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject("failed", "Cannot find product with id = " + id, "")
+                ));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSanPham(@PathVariable Long id) {
+    public ResponseEntity<ResponseObject> deleteSanPham(@PathVariable Long id) {
         return sanPhamService.findById(id)
                 .map(sanPham -> {
                     sanPhamService.deleteById(id);
-                    return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+                    return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject("success", "Delete product successfully", "")
+                    );
                 })
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject("failed", "Cannot find product with id = " + id, "")
+                ));
     }
 
     @GetMapping("/danh-muc/{maDanhMuc}")
-    public ResponseEntity<List<SanPham>> getSanPhamByDanhMuc(@PathVariable Long maDanhMuc) {
+    public ResponseEntity<ResponseObject> getSanPhamByDanhMuc(@PathVariable Long maDanhMuc) {
         List<SanPham> sanPhams = sanPhamService.findByDanhMuc(maDanhMuc);
-        return new ResponseEntity<>(sanPhams, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ResponseObject("success", "Get products by category successfully", sanPhams)
+        );
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<SanPham>> searchProducts(
+    public ResponseEntity<ResponseObject> searchProducts(
             @RequestParam(required = false) String tenSanPham,
             @RequestParam(required = false) Long maDanhMuc,
             @RequestParam(required = false) BigDecimal minPrice,
             @RequestParam(required = false) BigDecimal maxPrice) {
         
+        List<SanPham> results;
+        
         // If all parameters are provided
         if (tenSanPham != null && maDanhMuc != null && minPrice != null && maxPrice != null) {
-            return new ResponseEntity<>(sanPhamService.searchProducts(tenSanPham, maDanhMuc, minPrice, maxPrice), HttpStatus.OK);
+            results = sanPhamService.searchProducts(tenSanPham, maDanhMuc, minPrice, maxPrice);
         }
-        
         // Search by name and category
-        if (tenSanPham != null && maDanhMuc != null) {
-            return new ResponseEntity<>(sanPhamService.searchByTenAndCategory(tenSanPham, maDanhMuc), HttpStatus.OK);
+        else if (tenSanPham != null && maDanhMuc != null) {
+            results = sanPhamService.searchByTenAndCategory(tenSanPham, maDanhMuc);
         }
-        
         // Search by category and price range
-        if (maDanhMuc != null && minPrice != null && maxPrice != null) {
-            return new ResponseEntity<>(sanPhamService.searchByCategoryAndPrice(maDanhMuc, minPrice, maxPrice), HttpStatus.OK);
+        else if (maDanhMuc != null && minPrice != null && maxPrice != null) {
+            results = sanPhamService.searchByCategoryAndPrice(maDanhMuc, minPrice, maxPrice);
         }
-        
         // Search by price range only
-        if (minPrice != null && maxPrice != null) {
-            return new ResponseEntity<>(sanPhamService.searchByPriceRange(minPrice, maxPrice), HttpStatus.OK);
+        else if (minPrice != null && maxPrice != null) {
+            results = sanPhamService.searchByPriceRange(minPrice, maxPrice);
         }
-        
         // Search by name only
-        if (tenSanPham != null) {
-            return new ResponseEntity<>(sanPhamService.searchByTenSanPham(tenSanPham), HttpStatus.OK);
+        else if (tenSanPham != null) {
+            results = sanPhamService.searchByTenSanPham(tenSanPham);
+        }
+        // If no search parameters provided, return all products
+        else {
+            results = sanPhamService.findAll();
         }
         
-        // If no search parameters provided, return all products
-        return new ResponseEntity<>(sanPhamService.findAll(), HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ResponseObject("success", "Search products successfully", results)
+        );
+    }
+
+    @GetMapping("/{id}/chi-tiet")
+    public ResponseEntity<ResponseObject> getChiTietSanPham(@PathVariable Long id) {
+        return sanPhamService.getChiTietSanPham(id)
+                .map(dto -> ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("success", "Get product detail successfully", dto)
+                ))
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject("failed", "Cannot find product detail with id = " + id, "")
+                ));
     }
 }
