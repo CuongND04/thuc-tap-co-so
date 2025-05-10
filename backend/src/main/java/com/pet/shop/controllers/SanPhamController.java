@@ -1,9 +1,8 @@
 package com.pet.shop.controllers;
 
-import com.pet.shop.dto.ChiTietSanPhamDTO;
 import com.pet.shop.models.ResponseObject;
 import com.pet.shop.models.SanPham;
-import com.pet.shop.service.SanPhamService;
+import com.pet.shop.services.SanPhamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

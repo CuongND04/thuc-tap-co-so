@@ -1,4 +1,4 @@
-package com.pet.shop.service;
+package com.pet.shop.services;
 
 import com.pet.shop.dto.ChiTietSanPhamDTO;
 import com.pet.shop.models.SanPham;
@@ -101,7 +101,7 @@ public class SanPhamService {
                         ChiTietSanPhamDTO.DanhGiaDTO danhGiaDTO = new ChiTietSanPhamDTO.DanhGiaDTO();
                         danhGiaDTO.setMaDanhGia(danhGia.getMaDanhGia());
                         danhGiaDTO.setNoiDung(danhGia.getNoiDung());
-                        danhGiaDTO.setDiem(danhGia.getSoSao()); 
+                        danhGiaDTO.setSoSao(danhGia.getSoSao()); 
                         danhGiaDTO.setTenNguoiDung(danhGia.getNguoiDung().getHoTen());  
                         danhGiaDTO.setNgayDanhGia(danhGia.getNgayDanhGia().toString());
                         return danhGiaDTO;

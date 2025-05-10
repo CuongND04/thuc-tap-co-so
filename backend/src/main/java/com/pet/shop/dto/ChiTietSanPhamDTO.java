@@ -37,7 +37,7 @@ public class ChiTietSanPhamDTO {
     public static class DanhGiaDTO {
         private Long maDanhGia;
         private String noiDung;
-        private Integer diem;
+        private Integer soSao;
         private String tenNguoiDung;
         private String ngayDanhGia;
     }

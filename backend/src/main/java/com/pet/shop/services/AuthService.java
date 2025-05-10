@@ -1,4 +1,4 @@
-package com.pet.shop.service;
+package com.pet.shop.services;
 
 import com.pet.shop.dto.AuthResponse;
 import com.pet.shop.dto.LoginRequest;
