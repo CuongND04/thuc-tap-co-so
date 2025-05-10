@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+/* để tắt scroll theo chiều ngang */
+body {
+  overflow-x: hidden;
+}
