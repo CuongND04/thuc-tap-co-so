@@ -1,6 +1,5 @@
 package com.pet.shop.controllers;
 
-import com.pet.shop.dto.ChiTietSanPhamDTO;
 import com.pet.shop.models.ResponseObject;
 import com.pet.shop.models.SanPham;
 import com.pet.shop.service.SanPhamService;
