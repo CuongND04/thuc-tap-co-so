@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -63,5 +64,41 @@ public class SanPhamController {
     public ResponseEntity<List<SanPham>> getSanPhamByDanhMuc(@PathVariable Long maDanhMuc) {
         List<SanPham> sanPhams = sanPhamService.findByDanhMuc(maDanhMuc);
         return new ResponseEntity<>(sanPhams, HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<SanPham>> searchProducts(
+            @RequestParam(required = false) String tenSanPham,
+            @RequestParam(required = false) Long maDanhMuc,
+            @RequestParam(required = false) BigDecimal minPrice,
+            @RequestParam(required = false) BigDecimal maxPrice) {
+        
+        // If all parameters are provided
+        if (tenSanPham != null && maDanhMuc != null && minPrice != null && maxPrice != null) {
+            return new ResponseEntity<>(sanPhamService.searchProducts(tenSanPham, maDanhMuc, minPrice, maxPrice), HttpStatus.OK);
+        }
+        
+        // Search by name and category
+        if (tenSanPham != null && maDanhMuc != null) {
+            return new ResponseEntity<>(sanPhamService.searchByTenAndCategory(tenSanPham, maDanhMuc), HttpStatus.OK);
+        }
+        
+        // Search by category and price range
+        if (maDanhMuc != null && minPrice != null && maxPrice != null) {
+            return new ResponseEntity<>(sanPhamService.searchByCategoryAndPrice(maDanhMuc, minPrice, maxPrice), HttpStatus.OK);
+        }
+        
+        // Search by price range only
+        if (minPrice != null && maxPrice != null) {
+            return new ResponseEntity<>(sanPhamService.searchByPriceRange(minPrice, maxPrice), HttpStatus.OK);
+        }
+        
+        // Search by name only
+        if (tenSanPham != null) {
+            return new ResponseEntity<>(sanPhamService.searchByTenSanPham(tenSanPham), HttpStatus.OK);
+        }
+        
+        // If no search parameters provided, return all products
+        return new ResponseEntity<>(sanPhamService.findAll(), HttpStatus.OK);
     }
 }
