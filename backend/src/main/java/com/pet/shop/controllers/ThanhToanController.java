@@ -3,7 +3,7 @@ package com.pet.shop.controllers;
 import com.pet.shop.dto.ThanhToanRequestDTO;
 import com.pet.shop.dto.ThanhToanResponseDTO;
 import com.pet.shop.models.ResponseObject;
-import com.pet.shop.service.ThanhToanService;
+import com.pet.shop.services.ThanhToanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -2,7 +2,7 @@ package com.pet.shop.controllers;
 
 import com.pet.shop.dto.SanPhamYeuThichDTO;
 import com.pet.shop.models.ResponseObject;
-import com.pet.shop.service.YeuThichService;
+import com.pet.shop.services.YeuThichService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,4 +1,4 @@
-package com.pet.shop.service;
+package com.pet.shop.services;
 
 import com.pet.shop.dto.SanPhamYeuThichDTO;
 import com.pet.shop.models.*;
