@@ -43,8 +43,8 @@ export const Header = ({ collapsed, setCollapsed }) => {
             />
           </div>
         </div>
-        <div className="flex gap-x-3">
-          <button className="btn-ghost size-10">
+        <div className="flex gap-x-5 px-4">
+          <button className="btn-ghost size-10 border rounded-full border-gray-500">
             <BellOutlined size={20} />
           </button>
           <div className="relative" ref={dropdownRef}>
