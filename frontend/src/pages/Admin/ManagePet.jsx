@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -54,7 +54,18 @@ const tableData = [
     image: "/IMG/ThuCung/ThuCung05.jpg", // Replace with actual image URL
   },
 ];
+import { useProductStore } from "../../store/useProductStore.js";
 const ManagePet = () => {
+  const { getAllProducts } = useProductStore();
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const product = await getAllProducts();
+      setProducts(product);
+    };
+    fetchProduct(); // Gọi hàm async bên trong useEffect
+  }, []);
+  console.log("products: ", products);
   return (
     <div className="">
       <div className="bg-white p-4 rounded-xl mb-10">
