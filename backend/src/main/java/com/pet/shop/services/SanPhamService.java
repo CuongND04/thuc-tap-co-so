@@ -1,6 +1,7 @@
 package com.pet.shop.services;
 
 import com.pet.shop.dto.ChiTietSanPhamDTO;
+import com.pet.shop.dto.SanPhamListDTO;
 import com.pet.shop.models.SanPham;
 import com.pet.shop.repositories.SanPhamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,10 @@ public class SanPhamService {
         this.sanPhamRepository = sanPhamRepository;
     }
 
-    public List<SanPham> findAll() {
-        return sanPhamRepository.findAll();
+    public List<SanPhamListDTO> findAll() {
+        return sanPhamRepository.findAll().stream()
+            .map(this::convertToSanPhamListDTO)
+            .collect(Collectors.toList());
     }
 
     public Optional<SanPham> findById(Long id) {
@@ -63,6 +66,18 @@ public class SanPhamService {
     public Optional<ChiTietSanPhamDTO> getChiTietSanPham(Long maSanPham) {
         return sanPhamRepository.findById(maSanPham)
                 .map(this::convertToChiTietSanPhamDTO);
+    }
+
+    private SanPhamListDTO convertToSanPhamListDTO(SanPham sanPham) {
+        SanPhamListDTO dto = new SanPhamListDTO();
+        dto.setMaSanPham(sanPham.getMaSanPham());
+        dto.setTenSanPham(sanPham.getTenSanPham());
+        dto.setHinhAnh(sanPham.getHinhAnh());
+        dto.setMoTa(sanPham.getMoTa());
+        dto.setGiaBan(sanPham.getGiaBan());
+        dto.setMaDanhMuc(sanPham.getDanhMuc().getMaDanhMuc());
+        dto.setTenDanhMuc(sanPham.getDanhMuc().getTenDanhMuc());
+        return dto;
     }
 
     private ChiTietSanPhamDTO convertToChiTietSanPhamDTO(SanPham sanPham) {

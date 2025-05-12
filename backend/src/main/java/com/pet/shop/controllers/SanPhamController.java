@@ -2,6 +2,7 @@ package com.pet.shop.controllers;
 
 import com.pet.shop.models.ResponseObject;
 import com.pet.shop.models.SanPham;
+import com.pet.shop.dto.SanPhamListDTO;
 import com.pet.shop.services.SanPhamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/san-pham")
@@ -23,7 +25,7 @@ public class SanPhamController {
 
     @GetMapping
     public ResponseEntity<ResponseObject> getAllSanPham() {
-        List<SanPham> sanPhams = sanPhamService.findAll();
+        List<SanPhamListDTO> sanPhams = sanPhamService.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(
             new ResponseObject("success", "Get all products successfully", sanPhams)
         );
@@ -92,32 +94,52 @@ public class SanPhamController {
             @RequestParam(required = false) BigDecimal minPrice,
             @RequestParam(required = false) BigDecimal maxPrice) {
         
-        List<SanPham> results;
+        List<SanPham> searchResults;
+        List<SanPhamListDTO> results;
         
         // If all parameters are provided
         if (tenSanPham != null && maDanhMuc != null && minPrice != null && maxPrice != null) {
-            results = sanPhamService.searchProducts(tenSanPham, maDanhMuc, minPrice, maxPrice);
+            searchResults = sanPhamService.searchProducts(tenSanPham, maDanhMuc, minPrice, maxPrice);
         }
         // Search by name and category
         else if (tenSanPham != null && maDanhMuc != null) {
-            results = sanPhamService.searchByTenAndCategory(tenSanPham, maDanhMuc);
+            searchResults = sanPhamService.searchByTenAndCategory(tenSanPham, maDanhMuc);
         }
         // Search by category and price range
         else if (maDanhMuc != null && minPrice != null && maxPrice != null) {
-            results = sanPhamService.searchByCategoryAndPrice(maDanhMuc, minPrice, maxPrice);
+            searchResults = sanPhamService.searchByCategoryAndPrice(maDanhMuc, minPrice, maxPrice);
         }
         // Search by price range only
         else if (minPrice != null && maxPrice != null) {
-            results = sanPhamService.searchByPriceRange(minPrice, maxPrice);
+            searchResults = sanPhamService.searchByPriceRange(minPrice, maxPrice);
         }
         // Search by name only
         else if (tenSanPham != null) {
-            results = sanPhamService.searchByTenSanPham(tenSanPham);
+            searchResults = sanPhamService.searchByTenSanPham(tenSanPham);
         }
         // If no search parameters provided, return all products
         else {
-            results = sanPhamService.findAll();
+            return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("success", "Search products successfully", sanPhamService.findAll())
+            );
         }
+
+        // Convert SanPham list to SanPhamListDTO list
+        results = searchResults.stream()
+                .map(sanPham -> {
+                    SanPhamListDTO dto = new SanPhamListDTO();
+                    dto.setMaSanPham(sanPham.getMaSanPham());
+                    dto.setTenSanPham(sanPham.getTenSanPham());
+                    dto.setHinhAnh(sanPham.getHinhAnh());
+                    dto.setMoTa(sanPham.getMoTa());
+                    dto.setGiaBan(sanPham.getGiaBan());
+                    if (sanPham.getDanhMuc() != null) {
+                        dto.setMaDanhMuc(sanPham.getDanhMuc().getMaDanhMuc());
+                        dto.setTenDanhMuc(sanPham.getDanhMuc().getTenDanhMuc());
+                    }
+                    return dto;
+                })
+                .collect(Collectors.toList());
         
         return ResponseEntity.status(HttpStatus.OK).body(
             new ResponseObject("success", "Search products successfully", results)

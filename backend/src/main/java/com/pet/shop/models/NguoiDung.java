@@ -23,7 +23,7 @@ public class NguoiDung {
     @Column(length = 100)
     private String email;
 
-    @Column(length = 200)
+    @Column(name = "dia_chi",length = 200)
     private String diaChi;
 
     @Column(name = "quyen_truy_cap", length = 50)
