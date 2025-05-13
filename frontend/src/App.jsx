@@ -18,6 +18,7 @@ import RevenueReports from "./pages/Admin/RevenueReports.jsx";
 import UserProfile from "./pages/Admin/UserProfile.jsx";
 import ManagePet from "./pages/Admin/ManagePet.jsx";
 import ManageAccessory from "./pages/Admin/ManageAccessory.jsx";
+import Registeration from "./components/Client/Registration.jsx";
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
           <Route index element={<HomePage />} />
           <Route path="danh-muc-cun" element={<DogCategory />} />
           <Route path="dang-nhap" element={<Login />} />
+          <Route path="dang-ky" element={<Registeration />} />
         </Route>
         {/* admin route */}
         <Route path="/admin" element={<AdminLayout />}>

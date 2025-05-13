@@ -1,17 +1,21 @@
 import React, {useState} from "react";
 import LabelComp from "./LabelComp";
+import { authService } from "../../../service/api";
 
 const Registeration = () => {
     const[loading, setLoading] = useState(false);
     const [errMsg, setErrMsg] = useState("");
 
-    const handleRegistration = (e) => {
+    const handleRegistration = async (e) => {
         e.preventDefault();
         setLoading(true);
         const formData = new FormData(e.target);
         const {fullName, username, password, email, phoneNumber, address} = Object.fromEntries(formData);
 
         try {
+            const response = await authService.register();
+
+            setLoading(false);
             
         } catch (error) {
             
@@ -61,7 +65,7 @@ const Registeration = () => {
                 </div>
                 <button type="submit" className="mt-7 py-2 bg-[#de8ebe] text-white w-full uppercase font-bold text-lg tracking-wider rounded-md hover:text-white hover:bg-[#de8ebe]/87 duration-200">Đăng ký</button>
 
-                <p className="mt-5 py-2 bg-red-400 text-red-800 text-center rounded-md text-lg tracking-wide font-semibold">Error msg here!</p>
+                {errMsg && (<p className="mt-5 py-2 bg-red-400 text-red-800 text-center rounded-md text-lg tracking-wide font-semibold">{errMsg}</p>)}
             </div>
             </form>
             <p className="text-center py-2 text-lg">Đã có tài khoản? <a href="/dang-nhap"><button className="text-blue-500 hover:text-blue-900 duration-200">Đăng nhập</button></a></p>
