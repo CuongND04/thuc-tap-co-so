@@ -29,24 +29,13 @@ public class GioHangController {
         }
     }
 
-    @PostMapping("/{maKhachHang}/them")
-    public ResponseEntity<ResponseObject> themSanPham(
-            @PathVariable Long maKhachHang,
-            @RequestBody ThemGioHangDTO themGioHangDTO) {
-        try {
-            GioHangDTO gioHang = gioHangService.themSanPham(maKhachHang, themGioHangDTO);
-            return ResponseEntity.ok(new ResponseObject("success", "Thêm sản phẩm vào giỏ hàng thành công", gioHang));
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest()
-                    .body(new ResponseObject("error", e.getMessage(), null));
-        }
-    }
-
-    @PutMapping("/{maKhachHang}/cap-nhat")
+    @PutMapping("/{maKhachHang}/cap-nhat/{maSanPham}")
     public ResponseEntity<ResponseObject> capNhatSoLuong(
             @PathVariable Long maKhachHang,
+            @PathVariable Long maSanPham,
             @RequestBody ThemGioHangDTO capNhatGioHangDTO) {
         try {
+            capNhatGioHangDTO.setMaSanPham(maSanPham);
             GioHangDTO gioHang = gioHangService.capNhatSoLuong(maKhachHang, capNhatGioHangDTO);
             return ResponseEntity.ok(new ResponseObject("success", "Cập nhật số lượng sản phẩm thành công", gioHang));
         } catch (RuntimeException e) {
@@ -67,4 +56,17 @@ public class GioHangController {
                     .body(new ResponseObject("error", e.getMessage(), null));
         }
     }
-} 
+
+    @PostMapping("/them-vao-gio")
+    public ResponseEntity<ResponseObject> themSanPhamVaoGioHangChiDinh(
+            @RequestParam Long maGioHang,
+            @RequestParam Long maSanPham,
+            @RequestParam Integer soLuong) {
+        try {
+            GioHangDTO gioHangDTO = gioHangService.themSanPhamVaoGio(maGioHang, maSanPham, soLuong);
+            return ResponseEntity.ok(new ResponseObject("success", "Thêm sản phẩm vào giỏ hàng chỉ định thành công", gioHangDTO));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ResponseObject("error", e.getMessage(), null));
+        }
+    }
+}

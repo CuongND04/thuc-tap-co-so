@@ -18,8 +18,9 @@ public interface ThongKeRepository extends JpaRepository<DonHang, Long> {
            "SUM(ctdh.soLuong) as soSanPhamDaBan " +
            "FROM DonHang dh " +
            "JOIN dh.chiTietDonHangs ctdh " +
+           "JOIN dh.thanhToans tt " +
            "WHERE YEAR(dh.ngayDatHang) = :nam " +
-           "AND dh.trangThaiDonHang = 'HOAN_THANH' " +
+           "AND tt.trangThaiGiaoDich = 'Thành công' " +
            "GROUP BY YEAR(dh.ngayDatHang), QUARTER(dh.ngayDatHang) " +
            "ORDER BY YEAR(dh.ngayDatHang), QUARTER(dh.ngayDatHang)")
     List<Object[]> thongKeTheoQuy(@Param("nam") Integer nam);
@@ -31,7 +32,8 @@ public interface ThongKeRepository extends JpaRepository<DonHang, Long> {
            "SUM(ctdh.soLuong) as soSanPhamDaBan " +
            "FROM DonHang dh " +
            "JOIN dh.chiTietDonHangs ctdh " +
-           "WHERE dh.trangThaiDonHang = 'HOAN_THANH' " +
+           "JOIN dh.thanhToans tt " +
+           "WHERE tt.trangThaiGiaoDich = 'Thành công' " +
            "GROUP BY YEAR(dh.ngayDatHang) " +
            "ORDER BY YEAR(dh.ngayDatHang)")
     List<Object[]> thongKeTheoNam();
@@ -43,7 +45,9 @@ public interface ThongKeRepository extends JpaRepository<DonHang, Long> {
            "JOIN dh.chiTietDonHangs ctdh " +
            "JOIN ctdh.sanPham sp " +
            "JOIN sp.danhMuc dm " +
+           "JOIN dh.thanhToans tt " +
            "WHERE dh.trangThaiDonHang = 'HOAN_THANH' " +
+           "AND tt.trangThaiGiaoDich = 'THANH_CONG' " +
            "GROUP BY sp.maSanPham, sp.tenSanPham, sp.hinhAnh, dm.tenDanhMuc, sp.giaBan " +
            "ORDER BY soLuongDaBan DESC")
     List<Object[]> thongKeSanPhamBanChay();

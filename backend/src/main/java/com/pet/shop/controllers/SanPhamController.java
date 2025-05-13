@@ -31,59 +31,26 @@ public class SanPhamController {
         );
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ResponseObject> getSanPhamById(@PathVariable Long id) {
-        return sanPhamService.findById(id)
-                .map(sanPham -> ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("success", "Get product successfully", sanPham)
-                ))
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject("failed", "Cannot find product with id = " + id, "")
-                ));
-    }
-
-    @PostMapping
-    public ResponseEntity<ResponseObject> createSanPham(@RequestBody SanPham sanPham) {
-        SanPham savedSanPham = sanPhamService.save(sanPham);
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-            new ResponseObject("success", "Create product successfully", savedSanPham)
-        );
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<ResponseObject> updateSanPham(@PathVariable Long id, @RequestBody SanPham sanPham) {
-        return sanPhamService.findById(id)
-                .map(existingSanPham -> {
-                    sanPham.setMaSanPham(id);
-                    SanPham updatedSanPham = sanPhamService.save(sanPham);
-                    return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject("success", "Update product successfully", updatedSanPham)
-                    );
-                })
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject("failed", "Cannot find product with id = " + id, "")
-                ));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseObject> deleteSanPham(@PathVariable Long id) {
-        return sanPhamService.findById(id)
-                .map(sanPham -> {
-                    sanPhamService.deleteById(id);
-                    return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject("success", "Delete product successfully", "")
-                    );
-                })
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject("failed", "Cannot find product with id = " + id, "")
-                ));
-    }
-
     @GetMapping("/danh-muc/{maDanhMuc}")
     public ResponseEntity<ResponseObject> getSanPhamByDanhMuc(@PathVariable Long maDanhMuc) {
         List<SanPham> sanPhams = sanPhamService.findByDanhMuc(maDanhMuc);
+        List<SanPhamListDTO> sanPhamDTOs = sanPhams.stream()
+            .map(sanPham -> {
+                SanPhamListDTO dto = new SanPhamListDTO();
+                dto.setMaSanPham(sanPham.getMaSanPham());
+                dto.setTenSanPham(sanPham.getTenSanPham());
+                dto.setHinhAnh(sanPham.getHinhAnh());
+                dto.setMoTa(sanPham.getMoTa());
+                dto.setGiaBan(sanPham.getGiaBan());
+                if (sanPham.getDanhMuc() != null) {
+                    dto.setMaDanhMuc(sanPham.getDanhMuc().getMaDanhMuc());
+                    dto.setTenDanhMuc(sanPham.getDanhMuc().getTenDanhMuc());
+                }
+                return dto;
+            })
+            .collect(Collectors.toList());
         return ResponseEntity.status(HttpStatus.OK).body(
-            new ResponseObject("success", "Get products by category successfully", sanPhams)
+            new ResponseObject("success", "Get products by category successfully", sanPhamDTOs)
         );
     }
 
