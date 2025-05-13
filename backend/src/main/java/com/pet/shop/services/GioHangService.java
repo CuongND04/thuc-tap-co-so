@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -141,13 +143,36 @@ public class GioHangService {
         return convertToDTO(gioHang);
     }
 
+    public GioHangDTO themSanPhamVaoGio(Long maGioHang, Long maSanPham, Integer soLuong) {
+        GioHang gioHang = gioHangRepository.findById(maGioHang)
+            .orElseThrow(() -> new RuntimeException("Không tìm thấy giỏ hàng"));
+
+        SanPham sanPham = sanPhamRepository.findById(maSanPham)
+            .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm"));
+
+        // Tìm hoặc tạo mới chi tiết giỏ hàng
+        ChiTietGioHangId id = new ChiTietGioHangId();
+        id.setMaGioHang(maGioHang);
+        id.setMaSanPham(maSanPham);
+
+        ChiTietGioHang chiTiet = chiTietGioHangRepository.findById(id)
+            .orElse(new ChiTietGioHang(gioHang, sanPham, 0));
+
+        chiTiet.setSoLuong(chiTiet.getSoLuong() + soLuong);
+        chiTietGioHangRepository.save(chiTiet);
+
+        return convertToDTO(gioHang);
+    }
+
     private GioHangDTO convertToDTO(GioHang gioHang) {
         GioHangDTO dto = new GioHangDTO();
         dto.setMaGioHang(gioHang.getMaGioHang());
         dto.setMaKhachHang(gioHang.getNguoiDung().getMaNguoiDung());
         dto.setTenKhachHang(gioHang.getNguoiDung().getHoTen());
 
-        List<GioHangItemDTO> items = gioHang.getChiTietGioHangs().stream()
+        List<GioHangItemDTO> items = Optional.ofNullable(gioHang.getChiTietGioHangs())
+            .orElse(Collections.emptyList())
+            .stream()
                 .map(chiTiet -> {
                     GioHangItemDTO itemDTO = new GioHangItemDTO();
                     itemDTO.setMaSanPham(chiTiet.getSanPham().getMaSanPham());
