@@ -48,7 +48,7 @@ const Header = () => {
               <div className="menu">
                 <ul className="function-menu">
                   <li style={{ backgroundColor: "#de8ebe" }}>
-                    <a href="#" style={{ color: "#fff" }}>
+                    <a href="/" style={{ color: "#fff" }}>
                       TRANG CHỦ
                     </a>
                   </li>

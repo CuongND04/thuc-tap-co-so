@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import HomePage from "./pages/Client/HomePage/HomePage";
 import Footer from "./components/Client/Footer/Footer";
 import DogCategory from "./pages/Client/DogCategory/DogCategory";
-import Login from "./pages/Client/Login/Login";
+import Login from "./pages/Client/Login.jsx";
 import Dashboard from "./pages/Admin/Dashboard.jsx";
 import AdminLayout from "./components/Admin/AdminLayout";
 import ClientLayout from "./components/Client/ClientLayout/ClientLayout";
@@ -18,7 +18,7 @@ import RevenueReports from "./pages/Admin/RevenueReports.jsx";
 import UserProfile from "./pages/Admin/UserProfile.jsx";
 import ManagePet from "./pages/Admin/ManagePet.jsx";
 import ManageAccessory from "./pages/Admin/ManageAccessory.jsx";
-import Registeration from "./components/Client/Registration.jsx";
+import Registeration from "./pages/Client/Registration.jsx";
 
 const App = () => {
   return (

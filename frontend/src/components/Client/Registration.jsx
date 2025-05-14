@@ -1,10 +1,16 @@
 import React, {useState} from "react";
+import { useNavigate } from "react-router-dom";
 import LabelComp from "./LabelComp";
-import { authService } from "../../../service/api";
+import { axiosInstance } from "../../lib/axios";
+import { useAuthStore } from "../../store/useAuthStore";
 
 const Registeration = () => {
-    const[loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [errMsg, setErrMsg] = useState("");
+    const [successMsg, setSuccessMsg] = useState("");
+    const isSigningUp = useAuthStore((state) => state.isSigningUp);
+    const updateISU = useAuthStore((state) => state.updateIsSigningUp);
+    const navigate = useNavigate();
 
     const handleRegistration = async (e) => {
         e.preventDefault();
@@ -13,12 +19,33 @@ const Registeration = () => {
         const {fullName, username, password, email, phoneNumber, address} = Object.fromEntries(formData);
 
         try {
-            const response = await authService.register();
+            const response = await axiosInstance.post('/auth/register',{
+                  "hoTen": fullName,
+                  "soDienThoai": phoneNumber,
+                  "email": email,
+                  "diaChi": address,
+                  "matKhau": password,
+                  "tenDangNhap": username,
+                  "quyenTruyCap": "customer"
+                }
+                );
 
             setLoading(false);
+            if(errMsg) setErrMsg("");
+            setSuccessMsg(response.data.message);
+            updateISU(true);
+            if(isSigningUp)
+            {
+                navigate("/dang-nhap");   
+            }
             
         } catch (error) {
-            
+            if(successMsg) setSuccessMsg("")
+            if(error.response.data.message) setErrMsg(error.response.data.message);
+        }
+        finally{
+            setLoading(false);
+            updateISU(false);
         }
     };
 
@@ -66,6 +93,7 @@ const Registeration = () => {
                 <button type="submit" className="mt-7 py-2 bg-[#de8ebe] text-white w-full uppercase font-bold text-lg tracking-wider rounded-md hover:text-white hover:bg-[#de8ebe]/87 duration-200">Đăng ký</button>
 
                 {errMsg && (<p className="mt-5 py-2 bg-red-400 text-red-800 text-center rounded-md text-lg tracking-wide font-semibold">{errMsg}</p>)}
+                {successMsg && (<p className="mt-5 py-2 bg-green-400 text-green-800 text-center rounded-md text-lg tracking-wide font-semibold">{successMsg}</p>)}
             </div>
             </form>
             <p className="text-center py-2 text-lg">Đã có tài khoản? <a href="/dang-nhap"><button className="text-blue-500 hover:text-blue-900 duration-200">Đăng nhập</button></a></p>

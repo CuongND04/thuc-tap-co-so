@@ -11,7 +11,7 @@ export const useAuthStore = create((set) => ({
   isUpdatingProfile: false,
 
   isCheckingAuth: true,
-
+  
   checkAuth: async () => {
     try {
       // build api to check if user is authenticated
@@ -25,4 +25,7 @@ export const useAuthStore = create((set) => ({
       set({ isCheckingAuth: false });
     }
   },
+
+  updateIsSigningUp: (isSigningUp) => set(() => ({ isSigningUp: isSigningUp })),
+  updateIsLoggingIn: (isLoggingIn) => set(() => ({ isLoggingIn: isLoggingIn })),
 }));
