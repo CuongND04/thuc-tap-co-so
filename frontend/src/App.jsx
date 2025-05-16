@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "./components/Client/Header/Header";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/Client/HomePage/HomePage";
 import Footer from "./components/Client/Footer/Footer";
 import DogCategory from "./pages/Client/DogCategory/DogCategory";
@@ -19,8 +19,21 @@ import UserProfile from "./pages/Admin/UserProfile.jsx";
 import ManagePet from "./pages/Admin/ManagePet.jsx";
 import ManageAccessory from "./pages/Admin/ManageAccessory.jsx";
 import Registeration from "./pages/Client/Registration.jsx";
-
+import { useAuthStore } from "./store/useAuthStore.js";
+import { Loader } from "lucide-react";
+import { Toaster } from "react-hot-toast";
+import LoginAdmin from "./pages/Admin/LoginAdmin.jsx";
+import ProtectedRoute from "./components/Admin/ProtectedRoute.jsx";
 const App = () => {
+  const { authUser, isCheckingAuth } = useAuthStore();
+  // display spin load if it is checking
+  // if (isCheckingAuth && !authUser) {
+  //   return (
+  //     <div className="flex items-center justify-center h-screen">
+  //       <Loader className="size-10 animate-spin" />
+  //     </div>
+  //   );
+  // }
   return (
     <div>
       <Routes>
@@ -31,20 +44,27 @@ const App = () => {
           <Route path="dang-nhap" element={<Login />} />
           <Route path="dang-ky" element={<Registeration />} />
         </Route>
-        {/* admin route */}
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="pet" element={<ManagePet />} />
-          <Route path="accessory" element={<ManageAccessory />} />
-          <Route path="categories" element={<ManageCategories />} />
-          <Route path="import" element={<ImportOrders />} />
-          <Route path="sales" element={<SalesOrders />} />
-          <Route path="users" element={<ManageUsers />} />
-          <Route path="suppliers" element={<ManageSuppliers />} />
-          <Route path="reports" element={<RevenueReports />} />
-          <Route path="profile" element={<UserProfile />} />
+
+        {/* Admin route */}
+        <Route path="/admin/login" element={<LoginAdmin />} />
+
+        {/* Bọc tất cả route cần bảo vệ trong ProtectedRoute */}
+        <Route path="/admin" element={<ProtectedRoute />}>
+          <Route element={<AdminLayout />}>
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="pet" element={<ManagePet />} />
+            <Route path="accessory" element={<ManageAccessory />} />
+            <Route path="categories" element={<ManageCategories />} />
+            <Route path="import" element={<ImportOrders />} />
+            <Route path="sales" element={<SalesOrders />} />
+            <Route path="users" element={<ManageUsers />} />
+            <Route path="suppliers" element={<ManageSuppliers />} />
+            <Route path="reports" element={<RevenueReports />} />
+            <Route path="profile" element={<UserProfile />} />
+          </Route>
         </Route>
       </Routes>
+      <Toaster />
     </div>
   );
 };
