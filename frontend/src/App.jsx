@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "./components/Client/Header/Header";
 import { Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/Client/HomePage/HomePage";
@@ -25,15 +25,19 @@ import { Toaster } from "react-hot-toast";
 import LoginAdmin from "./pages/Admin/LoginAdmin.jsx";
 import ProtectedRoute from "./components/Admin/ProtectedRoute.jsx";
 const App = () => {
-  const { authUser, isCheckingAuth } = useAuthStore();
-  // display spin load if it is checking
-  // if (isCheckingAuth && !authUser) {
-  //   return (
-  //     <div className="flex items-center justify-center h-screen">
-  //       <Loader className="size-10 animate-spin" />
-  //     </div>
-  //   );
-  // }
+  const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+  if (isCheckingAuth && !authUser) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader className="size-10 animate-spin" />
+      </div>
+    );
+  }
+  // console.log("isCheckingAuth:", isCheckingAuth);
+  console.log("authUser:", authUser);
   return (
     <div>
       <Routes>
@@ -46,7 +50,16 @@ const App = () => {
         </Route>
 
         {/* Admin route */}
-        <Route path="/admin/login" element={<LoginAdmin />} />
+        <Route
+          path="/admin/login"
+          element={
+            authUser ? (
+              <Navigate to="/admin/dashboard" replace />
+            ) : (
+              <LoginAdmin />
+            )
+          }
+        />
 
         {/* Bọc tất cả route cần bảo vệ trong ProtectedRoute */}
         <Route path="/admin" element={<ProtectedRoute />}>

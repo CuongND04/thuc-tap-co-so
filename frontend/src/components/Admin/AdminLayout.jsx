@@ -53,6 +53,7 @@ const items = [
 const AdminLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
+
   const navigate = useNavigate();
   const pathSnippets = location.pathname.split("/").filter((i) => i);
 

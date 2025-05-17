@@ -8,9 +8,12 @@ import {
 } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuthStore } from "../../store/useAuthStore";
 export const Header = ({ collapsed, setCollapsed }) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef();
+
+  const { logout } = useAuthStore();
 
   // Đóng dropdown khi click ra ngoài
   useEffect(() => {
@@ -81,13 +84,13 @@ export const Header = ({ collapsed, setCollapsed }) => {
                     </Link>
                   </li>
                   <li>
-                    <Link
-                      to="/logout"
+                    <div
                       className="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100 !text-gray-700"
+                      onClick={logout}
                     >
                       <LogoutOutlined />
                       Đăng xuất
-                    </Link>
+                    </div>
                   </li>
                 </ul>
               </div>

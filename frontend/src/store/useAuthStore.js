@@ -1,24 +1,28 @@
 import { create } from "zustand";
-import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
+import { setAuthToken } from "../utils/auth";
+import axiosInstance from "../lib/axios";
 
 // just create it in one place and use it in any other components
 export const useAuthStore = create((set) => ({
-  // init value
-  authUser: null, // if user is not authenticated
+  authUser: JSON.parse(localStorage.getItem("auth_user") || "null"),
 
   isSigningUp: false,
   isLoggingIn: false,
   isUpdatingProfile: false,
+  isCheckingAuth: true, // mặc định là true, sau khi xác thực xong mới set trạng thái là false
 
-  isCheckingAuth: true,
-
+  // đây là hàm để lấy ra thông tin user đã đăng nhập từ local storage
   checkAuth: async () => {
     try {
-      // build api to check if user is authenticated
-      // don't write base url because it is indicated in axios.js
-      const res = await axiosInstance.get("/auth/check");
-      set({ authUser: res.data });
+      const storedUser = localStorage.getItem("auth_user");
+      const storedToken = localStorage.getItem("auth_token");
+
+      if (storedUser && storedToken) {
+        set({ authUser: JSON.parse(storedUser) });
+      } else {
+        set({ authUser: null });
+      }
     } catch (error) {
       console.log("Error in checkAuth: ", error);
       set({ authUser: null });
@@ -33,28 +37,31 @@ export const useAuthStore = create((set) => ({
       console.log("data: ", data);
       const res = await axiosInstance.post("/auth/login", data);
       console.log("res: ", res);
+      localStorage.setItem("auth_user", JSON.stringify(res.data.data));
       set({ authUser: res.data.data });
       toast.success("Đăng nhập thành công");
-
+      setAuthToken(res.data.data.token);
       return true;
     } catch (error) {
-      toast.error(error.response.data.message);
-      console.log("error.response.data.message: ", error.response.data.message);
+      if (error?.response?.data?.message)
+        toast.error(error.response.data.message);
+      console.log("error: ", error);
 
       return false;
     } finally {
       set({ isLoggingIn: false });
     }
   },
+
+  //**TODO: sau phải gọi api logout để xác thực chứ không được làm thô như này */
   logout: async () => {
     try {
-      await axiosInstance.post("/auth/logout");
+      localStorage.removeItem("auth_user"); // Xóa user trong localStorage
+      localStorage.removeItem("auth_token");
       set({ authUser: null });
-      toast.success("Logged out successfully");
-
-      get().disconnectSocket();
+      toast.success("Đăng xuất thành công");
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error?.response?.data?.message);
     }
   },
 
