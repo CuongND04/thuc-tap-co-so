@@ -14,6 +14,8 @@ export const useAuthStore = create((set) => ({
 
   // đây là hàm để lấy ra thông tin user đã đăng nhập từ local storage
   isCheckingAuth: true,
+
+  // **TODO: username lấy từ authUser không lưu thuộc tính trùng lặp
   userName: "",
 
   checkAuth: async () => {
@@ -40,10 +42,14 @@ export const useAuthStore = create((set) => ({
       console.log("data: ", data);
       const res = await axiosInstance.post("/auth/login", data);
       console.log("res: ", res);
+
+      // lưu vào auth user vào local storage
       localStorage.setItem("auth_user", JSON.stringify(res.data.data));
+      // lưu token vào local storage
+      setAuthToken(res.data.data.token);
+
       set({ authUser: res.data.data });
       toast.success("Đăng nhập thành công");
-      setAuthToken(res.data.data.token);
       return true;
     } catch (error) {
       if (error?.response?.data?.message)
@@ -67,7 +73,7 @@ export const useAuthStore = create((set) => ({
       toast.error(error?.response?.data?.message);
     }
   },
-
+  // ** TODO: các biến này khi gọi hàm cập nhật luôn cũng được, không cần viết hàm riêng
   updateIsSigningUp: (isSigningUp) => set(() => ({ isSigningUp: isSigningUp })),
   updateIsLoggingIn: (isLoggingIn) => set(() => ({ isLoggingIn: isLoggingIn })),
   updateUserName: (userName) => set(() => ({ userName: userName })),
