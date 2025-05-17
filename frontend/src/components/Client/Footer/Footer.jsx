@@ -201,7 +201,7 @@ const Footer = () => {
               </div>
             </div> */}
           </div>
-          <div className="youtube">
+          {/* <div className="youtube">
             <h2>YOUTUBE</h2>
             <iframe
               width="270"
@@ -213,7 +213,7 @@ const Footer = () => {
               referrerpolicy="strict-origin-when-cross-origin"
               allowfullscreen
             ></iframe>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="phone">

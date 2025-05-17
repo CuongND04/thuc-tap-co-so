@@ -8,8 +8,8 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
     const [errMsg, setErrMsg] = useState("");
     const [successMsg, setSuccessMsg] = useState("");
-    const isLoggingIn = useAuthStore((state) => state.isLoggingIn);
     const updateILI = useAuthStore((state) => state.updateIsLoggingIn);
+    const updateUserName = useAuthStore((state) => state.updateUserName);
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
@@ -28,13 +28,11 @@ const Login = () => {
             setLoading(false);
             if(errMsg) setErrMsg("");
             setSuccessMsg(response.data.message);
-            console.log(response.data.data.token);
             updateILI(true);
+            updateUserName(response.data.data.hoTen);
 
-            if(isLoggingIn)
-            {
-               navigate("/");  
-            }
+            navigate("/");
+        
             
         } catch (error) {
             if(successMsg) setSuccessMsg("")
@@ -42,7 +40,6 @@ const Login = () => {
         }
         finally{
             setLoading(false);
-            updateILI(false);
         }
     };
 
