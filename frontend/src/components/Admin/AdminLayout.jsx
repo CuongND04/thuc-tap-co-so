@@ -99,7 +99,6 @@ const AdminLayout = () => {
         />
       </Sider>
       <Layout>
-        {/* <Header style={{ padding: 0, background: colorBgContainer }} /> */}
         <Header collapsed={collapsed} setCollapsed={setCollapsed} />
         <Content style={{ margin: "0 16px" }}>
           <Breadcrumb style={{ margin: "16px 0" }}>

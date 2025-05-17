@@ -8,7 +8,6 @@ const Registeration = () => {
     const [loading, setLoading] = useState(false);
     const [errMsg, setErrMsg] = useState("");
     const [successMsg, setSuccessMsg] = useState("");
-    const isSigningUp = useAuthStore((state) => state.isSigningUp);
     const updateISU = useAuthStore((state) => state.updateIsSigningUp);
     const navigate = useNavigate();
 
@@ -34,10 +33,9 @@ const Registeration = () => {
             if(errMsg) setErrMsg("");
             setSuccessMsg(response.data.message);
             updateISU(true);
-            if(isSigningUp)
-            {
-                navigate("/dang-nhap");   
-            }
+
+            navigate("/dang-nhap");   
+
             
         } catch (error) {
             if(successMsg) setSuccessMsg("")
