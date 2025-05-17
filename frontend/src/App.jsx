@@ -7,7 +7,7 @@ import DogCategory from "./pages/Client/DogCategory/DogCategory";
 import Login from "./pages/Client/Login.jsx";
 import Dashboard from "./pages/Admin/Dashboard.jsx";
 import AdminLayout from "./components/Admin/AdminLayout";
-import ClientLayout from "./components/Client/ClientLayout/ClientLayout";
+import ClientLayout from "./components/Client/ClientLayout.jsx";
 import ManageProducts from "./pages/Admin/ManageAccessory.jsx";
 import ManageCategories from "./pages/Admin/ManageCategories.jsx";
 import ImportOrders from "./pages/Admin/ImportOrders.jsx";
@@ -44,6 +44,7 @@ const App = () => {
         {/* client route */}
         <Route path="/" element={<ClientLayout />}>
           <Route index element={<HomePage />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="danh-muc-cun" element={<DogCategory />} />
           <Route path="dang-nhap" element={<Login />} />
           <Route path="dang-ky" element={<Registeration />} />

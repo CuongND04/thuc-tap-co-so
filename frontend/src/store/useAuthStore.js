@@ -13,6 +13,9 @@ export const useAuthStore = create((set) => ({
   isCheckingAuth: true, // mặc định là true, sau khi xác thực xong mới set trạng thái là false
 
   // đây là hàm để lấy ra thông tin user đã đăng nhập từ local storage
+  isCheckingAuth: true,
+  userName: "",
+
   checkAuth: async () => {
     try {
       const storedUser = localStorage.getItem("auth_user");
@@ -67,4 +70,5 @@ export const useAuthStore = create((set) => ({
 
   updateIsSigningUp: (isSigningUp) => set(() => ({ isSigningUp: isSigningUp })),
   updateIsLoggingIn: (isLoggingIn) => set(() => ({ isLoggingIn: isLoggingIn })),
+  updateUserName: (userName) => set(() => ({ userName: userName })),
 }));

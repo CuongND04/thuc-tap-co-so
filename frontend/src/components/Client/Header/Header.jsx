@@ -32,7 +32,7 @@ const Header = () => {
   }, []);
   return (
     <div>
-      <header>
+      <header className="item-center">
         <div className="container">
           <div className="logo">
             <a href="/">

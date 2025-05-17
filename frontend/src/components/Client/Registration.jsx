@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LabelComp from "./LabelComp";
-import axiosInstance from "../../lib/axios";
+import { axiosInstance } from "../../lib/axios";
 import { useAuthStore } from "../../store/useAuthStore";
 
 const Registeration = () => {
   const [loading, setLoading] = useState(false);
   const [errMsg, setErrMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
-  const isSigningUp = useAuthStore((state) => state.isSigningUp);
   const updateISU = useAuthStore((state) => state.updateIsSigningUp);
   const navigate = useNavigate();
-  // **TODO: chỗ này phải góp thông tin rồi gọi hàm login thôi, phần hiển thị lỗi thì dùng react-hot-toast,  và biến trạng thái --ing thì lưu và xử lí ở trong store
+
   const handleRegistration = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -34,9 +33,8 @@ const Registeration = () => {
       if (errMsg) setErrMsg("");
       setSuccessMsg(response.data.message);
       updateISU(true);
-      if (isSigningUp) {
-        navigate("/dang-nhap");
-      }
+
+      navigate("/dang-nhap");
     } catch (error) {
       if (successMsg) setSuccessMsg("");
       if (error.response.data.message) setErrMsg(error.response.data.message);

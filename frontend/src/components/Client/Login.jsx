@@ -6,10 +6,11 @@ import axiosInstance from "../../lib/axios";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
+
   const [errMsg, setErrMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
-  const isLoggingIn = useAuthStore((state) => state.isLoggingIn);
   const updateILI = useAuthStore((state) => state.updateIsLoggingIn);
+  const updateUserName = useAuthStore((state) => state.updateUserName);
   const navigate = useNavigate();
 
   // **TODO: chỗ này phải góp thông tin rồi gọi hàm login thôi, phần hiển thị lỗi thì dùng react-hot-toast,  và biến trạng thái --ing thì lưu và xử lí ở trong store
@@ -25,23 +26,38 @@ const Login = () => {
         matKhau: password,
       });
 
+      //     setLoading(false);
+      //     if (errMsg) setErrMsg("");
+      //     setSuccessMsg(response.data.message);
+      //     console.log(response.data.data.token);
+      //     updateILI(true);
+
+      //     if (isLoggingIn) {
+      //       navigate("/");
+      //     }
+      //   } catch (error) {
+      //     if (successMsg) setSuccessMsg("");
+      //     if (error.response.data.message) setErrMsg(error.response.data.message);
+      //   } finally {
+      //     setLoading(false);
+      //     updateILI(false);
+      //   }
+      // };
       setLoading(false);
       if (errMsg) setErrMsg("");
       setSuccessMsg(response.data.message);
-      console.log(response.data.data.token);
       updateILI(true);
+      updateUserName(response.data.data.hoTen);
 
-      if (isLoggingIn) {
-        navigate("/");
-      }
+      navigate("/");
     } catch (error) {
       if (successMsg) setSuccessMsg("");
       if (error.response.data.message) setErrMsg(error.response.data.message);
     } finally {
       setLoading(false);
-      updateILI(false);
     }
   };
+  b977d416f3af3f71f040;
 
   return (
     <div>

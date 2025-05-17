@@ -3,9 +3,11 @@ package com.pet.shop.services;
 import com.pet.shop.dto.AuthResponse;
 import com.pet.shop.dto.LoginRequest;
 import com.pet.shop.dto.RegisterRequest;
+import com.pet.shop.exceptions.AppException;
 import com.pet.shop.models.NguoiDung;
 import com.pet.shop.repositories.NguoiDungRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -84,5 +86,20 @@ public class AuthService {
                 .quyenTruyCap(nguoiDung.getQuyenTruyCap())
                 .build();
     }
+
+    public AuthResponse findByTenDangNhap(String tenDangNhap) {
+        // Tìm người dùng theo tên đăng nhập
+        NguoiDung nguoiDung = nguoiDungRepository.findByTenDangNhap(tenDangNhap)
+                .orElseThrow(() -> new AppException("Người dùng không tồn tại", HttpStatus.NOT_FOUND));
+
+        // Trả về thông tin AuthResponse (không cần token ở đây)
+        return AuthResponse.builder()
+                .tenDangNhap(nguoiDung.getTenDangNhap())
+                .hoTen(nguoiDung.getHoTen())
+                .quyenTruyCap(nguoiDung.getQuyenTruyCap())
+                .build();
+    }
+
+
 }
 
