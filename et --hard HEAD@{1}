@@ -1,0 +1,20 @@
+[33m63df84b[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{0}: pull origin main: Fast-forward
+[33m65b0a77[m HEAD@{1}: reset: moving to HEAD
+[33m65b0a77[m HEAD@{2}: pull origin main --rebase (finish): returning to refs/heads/main
+[33m65b0a77[m HEAD@{3}: pull origin main --rebase (pick): fix errorr
+[33m1952364[m HEAD@{4}: pull origin main --rebase (start): checkout 19523643c0c7354df10a076fcb3c4714755ab3f4
+[33me794870[m HEAD@{5}: commit: fix errorr
+[33m3db303e[m HEAD@{6}: commit: fix getSanPham
+[33m81b70c1[m HEAD@{7}: pull origin main: Fast-forward
+[33mdc03bf7[m HEAD@{8}: commit: thongke
+[33m924a381[m HEAD@{9}: commit: giohang thanhtoan yeuthich
+[33m55b7f43[m HEAD@{10}: commit: chi-tiet
+[33m43230e2[m HEAD@{11}: commit: search
+[33ma57833e[m HEAD@{12}: commit: Auth
+[33m8d29b00[m HEAD@{13}: pull origin main: Fast-forward
+[33mf073651[m HEAD@{14}: commit: login/register
+[33m05fac5a[m HEAD@{15}: checkout: moving from main to main
+[33m05fac5a[m HEAD@{16}: commit: fix data
+[33m70504a1[m HEAD@{17}: pull origin main: Fast-forward
+[33m93ead22[m HEAD@{18}: commit: r
+[33m8b95001[m HEAD@{19}: clone: from github.com:CuongND04/thuc-tap-co-so.git
