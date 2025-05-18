@@ -40,6 +40,8 @@ public class AuthController {
     public ResponseEntity<ResponseObject> login(@RequestBody LoginRequest request) {
         try {
             AuthResponse response = authService.login(request);
+
+            // tạo token cho phiên đăng nhập đó
             response.setToken(userAuthenticationProvider.createToken(response.getTenDangNhap()));
             return ResponseEntity.ok(new ResponseObject("success", "Đăng nhập thành công", response));
         } catch (Exception e) {
@@ -47,7 +49,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/changepassword")
+    @PostMapping("/change-password")
     public ResponseEntity<ResponseObject> changePassword(@RequestBody ChangePasswordRequest request) {
         try {
             authService.changePassword(request);
@@ -57,12 +59,11 @@ public class AuthController {
         }
     }
 
-    @PutMapping("/update-info/{tenDangNhap}")
+    @PutMapping("/update-info")
     public ResponseEntity<ResponseObject> updateUserInfo(
-            @PathVariable String tenDangNhap,
             @RequestBody UpdateUserRequest request) {
         try {
-            AuthResponse response = authService.updateUserInfo(tenDangNhap, request);
+            AuthResponse response = authService.updateUserInfo(request);
             return ResponseEntity.ok(new ResponseObject("success", "Cập nhật thông tin thành công", response));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new ResponseObject("error", e.getMessage(), null));

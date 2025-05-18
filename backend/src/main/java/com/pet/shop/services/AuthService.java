@@ -1,17 +1,18 @@
 package com.pet.shop.services;
 
-import com.pet.shop.dto.AuthResponse;
-import com.pet.shop.dto.LoginRequest;
-import com.pet.shop.dto.RegisterRequest;
+import com.pet.shop.dto.*;
 import com.pet.shop.exceptions.AppException;
 import com.pet.shop.models.NguoiDung;
 import com.pet.shop.repositories.NguoiDungRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import java.util.Optional;
 
 @Service
@@ -61,6 +62,14 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest request) {
+    //**TODO: đang có một vấn đề khi test postman, các ông bấm login rồi mà bấm login tiếp nó vẫn sẽ thành công
+        // và token cũ cũng sẽ vẫn dùng được
+        // nhưng cái việc đăng nhập liên tiếp nó chỉ xảy ra trên môi trường test api thôi
+        // nên tôi sẽ ưu tiên những việc khác trước
+
+
+
+
         // Validate input
         if (request.getTenDangNhap() == null || request.getMatKhau() == null) {
             throw new IllegalArgumentException("Tên đăng nhập và mật khẩu không được để trống");
@@ -86,6 +95,104 @@ public class AuthService {
                 .quyenTruyCap(nguoiDung.getQuyenTruyCap())
                 .build();
     }
+
+
+    public void changePassword(ChangePasswordRequest request) {
+
+        // chỗ này request người dùng chỉ cần gửi lên mật khẩu thôi, còn tên đăng nhập sẽ lấy sau khi giải mã token
+
+        System.out.println("Request change password: " + request);
+
+        // Lấy thông tin user hiện tại từ context (đã được xác thực)
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthResponse user = (AuthResponse) authentication.getPrincipal();
+        System.out.println("User hiện tại: " + user);
+
+        // Lấy tên đăng nhập từ token (AuthResponse)
+        String tenDangNhap = user.getTenDangNhap();
+
+        // Validate dữ liệu đầu vào (bỏ validate tên đăng nhập trong request vì không cần)
+        if (request.getMatKhauCu() == null || request.getMatKhauMoi() == null) {
+            throw new IllegalArgumentException("Mật khẩu không được để trống");
+        }
+        if (request.getMatKhauMoi().length() < 6) {
+            throw new IllegalArgumentException("Mật khẩu mới phải có ít nhất 6 ký tự");
+        }
+
+        // Kiểm tra user tồn tại dựa trên tên đăng nhập lấy từ token
+        NguoiDung nguoiDung = nguoiDungRepository.findByTenDangNhap(tenDangNhap)
+                .orElseThrow(() -> new UsernameNotFoundException("Tên đăng nhập không tồn tại"));
+
+        // Kiểm tra mật khẩu cũ đúng
+        if (!BCrypt.checkpw(request.getMatKhauCu(), nguoiDung.getMatKhau())) {
+            throw new IllegalArgumentException("Mật khẩu cũ không đúng");
+        }
+
+        // Mã hóa mật khẩu mới
+        String hashedPassword = BCrypt.hashpw(request.getMatKhauMoi(), BCrypt.gensalt());
+        nguoiDung.setMatKhau(hashedPassword);
+
+        // Lưu lại mật khẩu mới
+        nguoiDungRepository.save(nguoiDung);
+
+        System.out.println("Đổi mật khẩu thành công cho user: " + tenDangNhap);
+    }
+
+
+
+
+    @Transactional
+    public AuthResponse updateUserInfo(UpdateUserRequest request) {
+
+        // chỗ này request người dùng chỉ cần gửi lên mật khẩu thôi, còn tên đăng nhập sẽ lấy sau khi giải mã token
+
+        System.out.println("Request change password: " + request);
+
+        // Lấy thông tin user hiện tại từ context (đã được xác thực)
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthResponse user = (AuthResponse) authentication.getPrincipal();
+        System.out.println("User hiện tại: " + user);
+
+        // Lấy tên đăng nhập từ token (AuthResponse)
+        String tenDangNhap = user.getTenDangNhap();
+
+
+        // Find user
+        Optional<NguoiDung> nguoiDungOpt = nguoiDungRepository.findByTenDangNhap(tenDangNhap);
+        if (nguoiDungOpt.isEmpty()) {
+            throw new RuntimeException("Tên đăng nhập không tồn tại");
+        }
+
+        NguoiDung nguoiDung = nguoiDungOpt.get();
+
+        // Cập nhật thông tin nếu có
+        if (request.getHoTen() != null && !request.getHoTen().isBlank()) {
+            nguoiDung.setHoTen(request.getHoTen());
+        }
+        if (request.getSoDienThoai() != null && !request.getSoDienThoai().isBlank()) {
+            nguoiDung.setSoDienThoai(request.getSoDienThoai());
+        }
+        if (request.getEmail() != null && !request.getEmail().isBlank()) {
+            nguoiDung.setEmail(request.getEmail());
+        }
+        if (request.getDiaChi() != null && !request.getDiaChi().isBlank()) {
+            nguoiDung.setDiaChi(request.getDiaChi());
+        }
+
+        // Save updated user
+        NguoiDung updatedUser = nguoiDungRepository.save(nguoiDung);
+
+        // Return response
+        return AuthResponse.builder()
+                .tenDangNhap(updatedUser.getTenDangNhap())
+                .hoTen(updatedUser.getHoTen())
+                .quyenTruyCap(updatedUser.getQuyenTruyCap())
+                .build();
+    }
+
+
+
+
 
     public AuthResponse findByTenDangNhap(String tenDangNhap) {
         // Tìm người dùng theo tên đăng nhập

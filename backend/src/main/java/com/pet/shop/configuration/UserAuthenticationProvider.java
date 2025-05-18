@@ -70,6 +70,9 @@ public class UserAuthenticationProvider {
         // Lấy thông tin người dùng từ service dựa vào subject (tên đăng nhập)
         AuthResponse user = authService.findByTenDangNhap(decoded.getSubject());
 
+        // Gán token nếu cần, cái này chắc hơi thừa nhưng tôi cứ set để tránh thắc mắc tại sao null
+
+//        user.setToken(token);
         // Trả về Authentication object cho Spring Security sử dụng
         return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
     }
