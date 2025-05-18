@@ -4,3 +4,13 @@
 body {
   overflow-x: hidden;
 }
+
+@keyframes float {
+  from {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  to {
+    transform: translateY(-20px) rotate(5deg);
+  }
+}

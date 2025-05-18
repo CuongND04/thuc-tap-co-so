@@ -53,6 +53,7 @@ const items = [
 const AdminLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
+
   const navigate = useNavigate();
   const pathSnippets = location.pathname.split("/").filter((i) => i);
 
@@ -99,7 +100,6 @@ const AdminLayout = () => {
         />
       </Sider>
       <Layout>
-        {/* <Header style={{ padding: 0, background: colorBgContainer }} /> */}
         <Header collapsed={collapsed} setCollapsed={setCollapsed} />
         <Content style={{ margin: "0 16px" }}>
           <Breadcrumb style={{ margin: "16px 0" }}>

@@ -32,7 +32,7 @@ const Header = () => {
   }, []);
   return (
     <div>
-      <header>
+      <header className="item-center">
         <div className="container">
           <div className="logo">
             <a href="/">
@@ -48,7 +48,7 @@ const Header = () => {
               <div className="menu">
                 <ul className="function-menu">
                   <li style={{ backgroundColor: "#de8ebe" }}>
-                    <a href="#" style={{ color: "#fff" }}>
+                    <a href="/" style={{ color: "#fff" }}>
                       TRANG CHỦ
                     </a>
                   </li>
@@ -108,7 +108,7 @@ const Header = () => {
               <div className="function-login">
                 <div className="login">
                   <a href="/dang-nhap">Đăng Nhập</a>
-                  <a href="">Đăng Ký</a>
+                  <a href="/dang-ky">Đăng Ký</a>
                 </div>
                 <p>{/* Hiển thị tên user nếu có */}</p>
               </div>
