@@ -45,7 +45,10 @@ public class AuthService {
         nguoiDung.setEmail(request.getEmail());
         nguoiDung.setDiaChi(request.getDiaChi());
         nguoiDung.setQuyenTruyCap(request.getQuyenTruyCap());
-        
+        // Set avatar mặc định
+        nguoiDung.setAvatar("https://res.cloudinary.com/dc4bgvfbj/image/upload/v1739983784/qtgyxeho0clvujaxxg7h.jpg");
+
+
         // Hash password
         String hashedPassword = BCrypt.hashpw(request.getMatKhau(), BCrypt.gensalt());
         nguoiDung.setMatKhau(hashedPassword);
@@ -142,11 +145,11 @@ public class AuthService {
 
 
     @Transactional
-    public AuthResponse updateUserInfo(UpdateUserRequest request) {
+    public NguoiDung updateUserInfo(UpdateUserRequest request) {
 
         // chỗ này request người dùng chỉ cần gửi lên mật khẩu thôi, còn tên đăng nhập sẽ lấy sau khi giải mã token
 
-        System.out.println("Request change password: " + request);
+        System.out.println("UpdateUserRequest: " + request);
 
         // Lấy thông tin user hiện tại từ context (đã được xác thực)
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -178,21 +181,27 @@ public class AuthService {
         if (request.getDiaChi() != null && !request.getDiaChi().isBlank()) {
             nguoiDung.setDiaChi(request.getDiaChi());
         }
-
+        if (request.getAvatar() != null && !request.getAvatar().isBlank()) {
+            nguoiDung.setAvatar(request.getAvatar());
+        }
         // Save updated user
         NguoiDung updatedUser = nguoiDungRepository.save(nguoiDung);
 
         // Return response
-        return AuthResponse.builder()
-                .tenDangNhap(updatedUser.getTenDangNhap())
-                .hoTen(updatedUser.getHoTen())
-                .quyenTruyCap(updatedUser.getQuyenTruyCap())
-                .build();
+        return updatedUser;
     }
 
 
 
+    public NguoiDung getProfile() {
+        // Lấy thông tin user hiện tại từ SecurityContext
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthResponse currentUser = (AuthResponse) authentication.getPrincipal();
 
+        // Truy vấn user đầy đủ từ DB theo tên đăng nhập
+        return nguoiDungRepository.findByTenDangNhap(currentUser.getTenDangNhap())
+                .orElseThrow(() -> new AppException("Người dùng không tồn tại", HttpStatus.NOT_FOUND));
+    }
 
     public AuthResponse findByTenDangNhap(String tenDangNhap) {
         // Tìm người dùng theo tên đăng nhập

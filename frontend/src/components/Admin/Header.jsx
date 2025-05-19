@@ -13,7 +13,7 @@ export const Header = ({ collapsed, setCollapsed }) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef();
 
-  const { logout } = useAuthStore();
+  const { logout, userProfile } = useAuthStore();
 
   // Đóng dropdown khi click ra ngoài
   useEffect(() => {
@@ -56,7 +56,7 @@ export const Header = ({ collapsed, setCollapsed }) => {
               onClick={() => setOpen(!open)}
             >
               <img
-                src={"https://i.pravatar.cc/300"}
+                src={userProfile?.avatar}
                 alt="profile image"
                 className="size-full object-cover"
               />

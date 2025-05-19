@@ -1,16 +1,16 @@
 package com.pet.shop.controllers;
 
 import com.pet.shop.configuration.UserAuthenticationProvider;
-import com.pet.shop.dto.AuthResponse;
-import com.pet.shop.dto.LoginRequest;
-import com.pet.shop.dto.RegisterRequest;
-import com.pet.shop.dto.ChangePasswordRequest;
-import com.pet.shop.dto.UpdateUserRequest;
+import com.pet.shop.dto.*;
+import com.pet.shop.models.NguoiDung;
 import com.pet.shop.models.ResponseObject;
 import com.pet.shop.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -63,10 +63,21 @@ public class AuthController {
     public ResponseEntity<ResponseObject> updateUserInfo(
             @RequestBody UpdateUserRequest request) {
         try {
-            AuthResponse response = authService.updateUserInfo(request);
+            NguoiDung response = authService.updateUserInfo(request);
             return ResponseEntity.ok(new ResponseObject("success", "Cập nhật thông tin thành công", response));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new ResponseObject("error", e.getMessage(), null));
+        }
+    }
+    // lấy ra thông tin cá nhân của user đang đăng nhập
+    @GetMapping("/profile")
+    public ResponseEntity<ResponseObject> getUserProfile() {
+        try {
+            NguoiDung nguoiDung = authService.getProfile();
+            return ResponseEntity.ok(new ResponseObject("success", "Lấy thông tin người dùng thành công", nguoiDung));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ResponseObject("error", e.getMessage(), null));
         }
     }
 

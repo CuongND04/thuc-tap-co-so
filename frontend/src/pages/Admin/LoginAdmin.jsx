@@ -116,9 +116,9 @@ const LoginAdmin = () => {
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-500 hover:text-gray-700" />
-                  ) : (
                     <Eye className="h-5 w-5 text-gray-500 hover:text-gray-700" />
+                  ) : (
+                    <EyeOff className="h-5 w-5 text-gray-500 hover:text-gray-700" />
                   )}
                 </button>
               </div>

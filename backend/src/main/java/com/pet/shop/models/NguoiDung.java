@@ -1,5 +1,6 @@
 package com.pet.shop.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
@@ -29,11 +30,16 @@ public class NguoiDung {
     @Column(name = "quyen_truy_cap", length = 50)
     private String quyenTruyCap;
 
+
+    @JsonIgnore // ẩn mật khẩu mỗi lần trả về json
     @Column(name = "mat_khau", length = 100)
     private String matKhau;
 
     @Column(name = "ten_dang_nhap", unique = true, length = 100)
     private String tenDangNhap;
+
+    @Column(name = "avatar", length = 255)
+    private String avatar;
 
     @OneToMany(mappedBy = "nguoiDung", cascade = CascadeType.ALL)
     private List<GioHang> gioHangs;
@@ -48,7 +54,7 @@ public class NguoiDung {
     private List<DanhGia> danhGias;
     public NguoiDung(){}
 
-    public NguoiDung( String hoTen, String soDienThoai, String email, String diaChi, String quyenTruyCap, String matKhau, String tenDangNhap) {
+    public NguoiDung( String hoTen, String soDienThoai, String email, String diaChi, String quyenTruyCap, String matKhau, String tenDangNhap, String avatar) {
         this.hoTen = hoTen;
         this.soDienThoai = soDienThoai;
         this.email = email;
@@ -56,6 +62,7 @@ public class NguoiDung {
         this.quyenTruyCap = quyenTruyCap;
         this.matKhau = matKhau;
         this.tenDangNhap = tenDangNhap;
+        this.avatar = avatar;
     }
 
 
