@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Header from "./components/Client/Header/Header";
+import Header from "./components/Client/Header.jsx";
 import { Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/Client/HomePage/HomePage";
 import Footer from "./components/Client/Footer/Footer";
