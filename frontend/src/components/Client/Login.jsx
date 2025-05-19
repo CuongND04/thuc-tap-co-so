@@ -9,8 +9,7 @@ const Login = () => {
 
   const [errMsg, setErrMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
-  const updateILI = useAuthStore((state) => state.updateIsLoggingIn);
-  const updateUserName = useAuthStore((state) => state.updateUserName);
+  const login = useAuthStore((state) => state.login)
   const navigate = useNavigate();
 
   // **TODO: chỗ này phải góp thông tin rồi gọi hàm login thôi, phần hiển thị lỗi thì dùng react-hot-toast,  và biến trạng thái --ing thì lưu và xử lí ở trong store
@@ -20,11 +19,23 @@ const Login = () => {
     const formData = new FormData(e.target);
     const { username, password } = Object.fromEntries(formData);
 
-    try {
-      const response = await axiosInstance.post("/auth/login", {
+    login({
         tenDangNhap: username,
         matKhau: password,
       });
+
+    navigate("/");
+
+    // try {
+    //   login({
+    //     tenDangNhap: username,
+    //     matKhau: password,
+    //   });
+
+      // const response = await axiosInstance.post("/auth/login", {
+      //   tenDangNhap: username,
+      //   matKhau: password,
+      // });
 
       //     setLoading(false);
       //     if (errMsg) setErrMsg("");
@@ -43,21 +54,22 @@ const Login = () => {
       //     updateILI(false);
       //   }
       // };
-      setLoading(false);
-      if (errMsg) setErrMsg("");
-      setSuccessMsg(response.data.message);
-      updateILI(true);
-      updateUserName(response.data.data.hoTen);
 
-      navigate("/");
-    } catch (error) {
-      if (successMsg) setSuccessMsg("");
-      if (error.response.data.message) setErrMsg(error.response.data.message);
-    } finally {
-      setLoading(false);
-    }
+      // setLoading(false);
+      // if (errMsg) setErrMsg("");
+      // setSuccessMsg(response.data.message);
+      // updateILI(true);
+      // updateUserName(response.data.data.hoTen);
+
+  //     navigate("/");
+  //   } catch (error) {
+  //     if (successMsg) setSuccessMsg("");
+  //     if (error.response.data.message) setErrMsg(error.response.data.message);
+  //   } finally {
+  //     setLoading(false);
+  //   }
   };
-  b977d416f3af3f71f040;
+  // b977d416f3af3f71f040;
 
   return (
     <div>

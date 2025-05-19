@@ -40,9 +40,9 @@ const menu2 = ["Đấu giá thú cưng - Từ thiện"];
 
 const Header = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const isLoggingIn = useAuthStore((state) => state.isLoggingIn);
-  const updateILI = useAuthStore((state) => state.updateIsLoggingIn);
-  const userName = useAuthStore((state) => state.userName);
+  const checkAuth = useAuthStore((state) => state.checkAuth);
+  const authUser = useAuthStore((state) => state.authUser);
+  const logout = useAuthStore((state) => state.logout);
 
   const next = () => {
     setCurrentIndex((prev) => (prev + 1) % images.length);
@@ -52,14 +52,13 @@ const Header = () => {
     setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
   };
 
-  const loggingOut = () => {
-    if (isLoggingIn) {
-      updateILI(false);
-      useNavigate("/");
-    } else {
-      console.log("User is not logged in!");
-    }
-  };
+  // const loggingOut = () => {
+  //   if (checkAuth) {
+  //   logout;
+  //   } else {
+  //     console.log("User is not logged in!");
+  //   }
+  // };
 
   useEffect(() => {
     const interval = setInterval(next, 6000);
@@ -82,7 +81,7 @@ const Header = () => {
 
         {/* Navigation Bar */}
         <div className="w-300 grid grid-rows-2 -gap-y-100">
-          <nav className="mt-5 h-10 w-full flex justify-center">
+          <nav className="mt-5 -ml-30 h-10 w-full flex justify-center">
             <PopoverGroup className="hidden lg:flex lg:gap-x-12">
               <a
                 href="/"
@@ -179,16 +178,17 @@ const Header = () => {
                 Liên hệ
               </a>
               {/* Login components */}
-              {isLoggingIn && (
+              {checkAuth}
+              {authUser && (
                 <p className="text-lg font-semibold text-gray-900">
-                  Chào mừng, {userName}!{" "}
-                  <button onClick={loggingOut} className="hover:text-[#de83be]">
+                  Chào mừng, {authUser.hoTen}!{" "}
+                  <button onClick={logout} className="hover:text-[#de83be]">
                     Đăng xuất
                   </button>
                 </p>
               )}
 
-              {!isLoggingIn && (
+              {!authUser && (
                 <p className="text-lg font-semibold text-gray-900">
                   <a
                     href="/dang-nhap"

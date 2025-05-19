@@ -16,9 +16,6 @@ export const useAuthStore = create((set, get) => ({
   // đây là hàm để lấy ra thông tin user đã đăng nhập từ local storage
   isCheckingAuth: true,
 
-  // **TODO: username lấy từ authUser không lưu thuộc tính trùng lặp
-  userName: "",
-
   checkAuth: async () => {
     try {
       const storedUser = localStorage.getItem("auth_user");
@@ -125,6 +122,7 @@ export const useAuthStore = create((set, get) => ({
       set({ isUpdatingProfile: false });
     }
   },
+
   //**TODO: sau phải gọi api logout để xác thực chứ không được làm thô như này */
   logout: async () => {
     try {
@@ -137,8 +135,4 @@ export const useAuthStore = create((set, get) => ({
       toast.error(error?.response?.data?.message);
     }
   },
-  // ** TODO: các biến này khi gọi hàm cập nhật luôn cũng được, không cần viết hàm riêng
-  updateIsSigningUp: (isSigningUp) => set(() => ({ isSigningUp: isSigningUp })),
-  updateIsLoggingIn: (isLoggingIn) => set(() => ({ isLoggingIn: isLoggingIn })),
-  updateUserName: (userName) => set(() => ({ userName: userName })),
 }));
