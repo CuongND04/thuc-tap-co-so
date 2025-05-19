@@ -2,9 +2,21 @@ package com.pet.shop.repositories;
 
 import com.pet.shop.models.ThuCung;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface ThuCungRepository extends JpaRepository<ThuCung,Long> {
+public interface ThuCungRepository extends JpaRepository<ThuCung, Integer> {
+    Optional<ThuCung> findBySanPham_MaSanPham(Integer maSanPham);
+    List<ThuCung> findBySanPham_DanhMuc_MaDanhMuc(Integer maDanhMuc);
+    List<ThuCung> findByGiongContaining(String giong);
+    List<ThuCung> findByGioiTinh(String gioiTinh);
+    long countBySoLuongTonKho(Integer soLuongTonKho);
 
+    @Query("SELECT t FROM ThuCung t JOIN t.sanPham s WHERE " +
+            "LOWER(s.tenSanPham) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(t.giong) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    List<ThuCung> searchByKeyword(String keyword);
 }

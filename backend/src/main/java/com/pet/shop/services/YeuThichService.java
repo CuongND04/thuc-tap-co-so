@@ -34,7 +34,7 @@ public class YeuThichService {
 
     @Transactional
     public void themYeuThich(Long maKhachHang, Long maSanPham) {
-        NguoiDung nguoiDung = nguoiDungRepository.findById(maKhachHang)
+        NguoiDung nguoiDung = nguoiDungRepository.findById(Math.toIntExact(maKhachHang))
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy khách hàng"));
 
         SanPham sanPham = sanPhamRepository.findById(maSanPham)

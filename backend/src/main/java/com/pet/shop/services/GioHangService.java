@@ -36,7 +36,7 @@ public class GioHangService {
     public GioHangDTO getGioHang(Long maKhachHang) {
         GioHang gioHang = gioHangRepository.findByNguoiDungMaNguoiDung(maKhachHang)
                 .orElseGet(() -> {
-                    NguoiDung nguoiDung = nguoiDungRepository.findById(maKhachHang)
+                    NguoiDung nguoiDung = nguoiDungRepository.findById(Math.toIntExact(maKhachHang))
                             .orElseThrow(() -> new RuntimeException("Không tìm thấy khách hàng"));
                     return gioHangRepository.save(new GioHang(nguoiDung, null));
                 });
@@ -53,7 +53,7 @@ public class GioHangService {
 
         GioHang gioHang = gioHangRepository.findByNguoiDungMaNguoiDung(maKhachHang)
                 .orElseGet(() -> {
-                    NguoiDung nguoiDung = nguoiDungRepository.findById(maKhachHang)
+                    NguoiDung nguoiDung = nguoiDungRepository.findById(Math.toIntExact(maKhachHang))
                             .orElseThrow(() -> new RuntimeException("Không tìm thấy khách hàng"));
                     return gioHangRepository.save(new GioHang(nguoiDung, null));
                 });
