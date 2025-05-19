@@ -24,6 +24,7 @@ import { Loader } from "lucide-react";
 import { Toaster } from "react-hot-toast";
 import LoginAdmin from "./pages/Admin/LoginAdmin.jsx";
 import ProtectedRoute from "./components/Admin/ProtectedRoute.jsx";
+import ProductDetail from "./pages/Admin/ProductDetail.jsx";
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
   useEffect(() => {
@@ -68,6 +69,8 @@ const App = () => {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="pet" element={<ManagePet />} />
             <Route path="accessory" element={<ManageAccessory />} />
+            <Route path="pet/:id/detail" element={<ProductDetail />} />
+            <Route path="accessory/:id/detail" element={<ProductDetail />} />
             <Route path="categories" element={<ManageCategories />} />
             <Route path="import" element={<ImportOrders />} />
             <Route path="sales" element={<SalesOrders />} />
