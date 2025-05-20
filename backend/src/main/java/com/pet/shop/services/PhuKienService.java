@@ -76,7 +76,7 @@ public class PhuKienService {
         SanPhamDTO dto = new SanPhamDTO();
         SanPham sanPham = phuKien.getSanPham();
 
-        dto.setMaSanPham(Math.toIntExact(sanPham.getMaSanPham()));
+        dto.setMaSanPham((long) Math.toIntExact(sanPham.getMaSanPham()));
         dto.setTenSanPham(sanPham.getTenSanPham());
         dto.setMaDanhMuc(Math.toIntExact(sanPham.getDanhMuc().getMaDanhMuc()));
         dto.setTenDanhMuc(sanPham.getDanhMuc().getTenDanhMuc());

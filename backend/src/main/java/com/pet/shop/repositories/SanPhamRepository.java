@@ -14,7 +14,9 @@ public interface SanPhamRepository extends JpaRepository<SanPham, Long> {
     
     // Search by name (case-insensitive)
     List<SanPham> findByTenSanPhamContainingIgnoreCase(String tenSanPham);
-    
+
+    @Query("SELECT s FROM SanPham s WHERE LOWER(s.tenSanPham) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    List<SanPham> searchByKeyword(String keyword);
     // Search by price range
     List<SanPham> findByGiaBanBetween(BigDecimal minPrice, BigDecimal maxPrice);
     

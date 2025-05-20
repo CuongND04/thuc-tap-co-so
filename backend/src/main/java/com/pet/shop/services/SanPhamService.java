@@ -23,8 +23,8 @@ public class SanPhamService {
 
     public List<SanPhamListDTO> findAll() {
         return sanPhamRepository.findAll().stream()
-            .map(this::convertToSanPhamListDTO)
-            .collect(Collectors.toList());
+                .map(this::convertToSanPhamListDTO)
+                .collect(Collectors.toList());
     }
 
     public Optional<SanPham> findById(Long id) {
@@ -80,20 +80,20 @@ public class SanPhamService {
         return dto;
     }
 
-    private ChiTietSanPhamDTO convertToChiTietSanPhamDTO(SanPham sanPham) {
+    public ChiTietSanPhamDTO convertToChiTietSanPhamDTO(SanPham sanPham) {
         ChiTietSanPhamDTO dto = new ChiTietSanPhamDTO();
-        
+
         // Basic product information
         dto.setMaSanPham(sanPham.getMaSanPham());
         dto.setTenSanPham(sanPham.getTenSanPham());
         dto.setHinhAnh(sanPham.getHinhAnh());
         dto.setMoTa(sanPham.getMoTa());
         dto.setGiaBan(sanPham.getGiaBan());
-        
+
         // Category information
         dto.setMaDanhMuc(sanPham.getDanhMuc().getMaDanhMuc());
         dto.setTenDanhMuc(sanPham.getDanhMuc().getTenDanhMuc());
-        
+
         // Pet information (if exists)
         if (sanPham.getThuCung() != null) {
             dto.setGiong(sanPham.getThuCung().getGiong());
@@ -102,13 +102,13 @@ public class SanPhamService {
             dto.setTrangThaiTiem(sanPham.getThuCung().getTrangThaiTiem());
             dto.setSoLuongThuCung(sanPham.getThuCung().getSoLuongTonKho());
         }
-        
+
         // Accessory information (if exists)
         if (sanPham.getPhuKien() != null) {
             dto.setLoaiPhuKien(sanPham.getPhuKien().getLoaiPhuKien());
             dto.setSoLuongPhuKien(sanPham.getPhuKien().getSoLuongTonKho());
         }
-        
+
         // Reviews
         if (sanPham.getDanhGias() != null) {
             dto.setDanhGias(sanPham.getDanhGias().stream()
@@ -116,13 +116,13 @@ public class SanPhamService {
                         ChiTietSanPhamDTO.DanhGiaDTO danhGiaDTO = new ChiTietSanPhamDTO.DanhGiaDTO();
                         danhGiaDTO.setMaDanhGia(danhGia.getMaDanhGia());
                         danhGiaDTO.setNoiDung(danhGia.getNoiDung());
-                        danhGiaDTO.setSoSao(danhGia.getSoSao()); 
-                        danhGiaDTO.setTenNguoiDung(danhGia.getNguoiDung().getHoTen());  
+                        danhGiaDTO.setSoSao(danhGia.getSoSao());
+                        danhGiaDTO.setTenNguoiDung(danhGia.getNguoiDung().getHoTen());
                         danhGiaDTO.setNgayDanhGia(danhGia.getNgayDanhGia().toString());
                         return danhGiaDTO;
                     })
                     .collect(Collectors.toList()));
-            
+
             // Calculate average rating
             double diemTrungBinh = sanPham.getDanhGias().stream()
                     .mapToInt(danhGia -> danhGia.getSoSao())
@@ -130,7 +130,7 @@ public class SanPhamService {
                     .orElse(0.0);
             dto.setDiemTrungBinh(diemTrungBinh);
         }
-        
+
         return dto;
     }
 }

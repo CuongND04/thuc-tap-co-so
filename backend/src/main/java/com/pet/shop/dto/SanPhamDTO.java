@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SanPhamDTO {
-    private Integer maSanPham;
+    private Long maSanPham;
     private String tenSanPham;
     private Integer maDanhMuc;
     private String tenDanhMuc;

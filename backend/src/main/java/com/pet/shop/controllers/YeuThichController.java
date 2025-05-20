@@ -46,9 +46,9 @@ public class YeuThichController {
                 return ResponseEntity.badRequest()
                         .body(new ResponseObject("error", "Không tìm thấy sản phẩm với mã " + maSanPham, null));
             }
-            
+
             yeuThichService.themYeuThich(maKhachHang, maSanPham);
-            
+
             SanPhamYeuThichDTO dto = new SanPhamYeuThichDTO();
             dto.setMaSanPham(sanPham.get().getMaSanPham());
             dto.setTenSanPham(sanPham.get().getTenSanPham());
@@ -57,7 +57,7 @@ public class YeuThichController {
             dto.setGiaBan(sanPham.get().getGiaBan());
             dto.setTenDanhMuc(sanPham.get().getDanhMuc().getTenDanhMuc());
             dto.setThoiGianThem(LocalDateTime.now());
-            
+
             return ResponseEntity.ok(new ResponseObject("success", "Thêm vào danh sách yêu thích thành công", dto));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest()
