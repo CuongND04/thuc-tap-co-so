@@ -4,6 +4,7 @@ import com.pet.shop.dto.DanhMucDTO;
 import com.pet.shop.models.DanhMuc;
 import com.pet.shop.repositories.DanhMucRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,27 +37,67 @@ public class DanhMucService {
 
     @Transactional
     public DanhMucDTO createCategory(DanhMucDTO categoryDto) {
-        DanhMuc danhMuc = new DanhMuc();
-        danhMuc.setTenDanhMuc(categoryDto.getTenDanhMuc());
-        danhMuc.setMoTa(categoryDto.getMoTa());
-        danhMuc.setKieu(categoryDto.getKieu());
+        // Kiểm tra đầu vào
+        if (categoryDto.getTenDanhMuc() == null || categoryDto.getTenDanhMuc().trim().isEmpty()) {
+            throw new IllegalArgumentException("Tên danh mục không được để trống.");
+        }
+        if (categoryDto.getKieu() == null || categoryDto.getKieu().trim().isEmpty()) {
+            throw new IllegalArgumentException("Kiểu danh mục không được để trống.");
+        }
 
-        DanhMuc savedDanhMuc = danhMucRepository.save(danhMuc);
-        return convertToDto(savedDanhMuc);
+        String tenDanhMuc = categoryDto.getTenDanhMuc().trim();
+
+        // Kiểm tra trùng tên
+        if (danhMucRepository.existsByTenDanhMucIgnoreCase(tenDanhMuc)) {
+            throw new IllegalArgumentException("Tên danh mục đã tồn tại.");
+        }
+
+        try {
+            DanhMuc danhMuc = new DanhMuc();
+            danhMuc.setTenDanhMuc(tenDanhMuc);
+            danhMuc.setMoTa(categoryDto.getMoTa());
+            danhMuc.setKieu(categoryDto.getKieu().trim());
+
+            DanhMuc savedDanhMuc = danhMucRepository.save(danhMuc);
+            return convertToDto(savedDanhMuc);
+        } catch (Exception e) {
+            throw new RuntimeException("Đã xảy ra lỗi khi tạo danh mục.");
+        }
     }
 
+    // khi mà dùng tính năng này mình sẽ gửi tất cả thông tin của danh mục lên kể cả những thông tin không thay đổi
     @Transactional
     public DanhMucDTO updateCategory(Integer id, DanhMucDTO categoryDto) {
+        // Kiểm tra đầu vào
+        if (categoryDto.getTenDanhMuc() == null || categoryDto.getTenDanhMuc().trim().isEmpty()) {
+            throw new IllegalArgumentException("Tên danh mục không được để trống.");
+        }
+        if (categoryDto.getKieu() == null || categoryDto.getKieu().trim().isEmpty()) {
+            throw new IllegalArgumentException("Kiểu danh mục không được để trống.");
+        }
+
         DanhMuc danhMuc = danhMucRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy danh mục với ID: " + id));
 
-        danhMuc.setTenDanhMuc(categoryDto.getTenDanhMuc());
+        String newTenDanhMuc = categoryDto.getTenDanhMuc().trim();
+
+        // Kiểm tra nếu tên mới đã tồn tại và không phải là chính danh mục đang chỉnh sửa
+        boolean isDuplicate = danhMucRepository.existsByTenDanhMucIgnoreCase(newTenDanhMuc)
+                && !newTenDanhMuc.equalsIgnoreCase(danhMuc.getTenDanhMuc());
+
+        if (isDuplicate) {
+            throw new IllegalArgumentException("Tên danh mục đã tồn tại.");
+        }
+
+        danhMuc.setTenDanhMuc(newTenDanhMuc);
         danhMuc.setMoTa(categoryDto.getMoTa());
-        danhMuc.setKieu(categoryDto.getKieu());
+        danhMuc.setKieu(categoryDto.getKieu().trim());
 
         DanhMuc updatedDanhMuc = danhMucRepository.save(danhMuc);
         return convertToDto(updatedDanhMuc);
     }
+
+
 
     @Transactional
     public void deleteCategory(Integer id) {

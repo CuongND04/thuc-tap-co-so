@@ -77,8 +77,6 @@ export const useAuthStore = create((set, get) => ({
 
       return profileData;
     } catch (error) {
-      await get().logout();
-      toast.error("Không thể lấy thông tin người dùng");
       return null;
     } finally {
       set({ isFetchingProfile: false });

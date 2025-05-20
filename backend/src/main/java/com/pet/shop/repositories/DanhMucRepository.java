@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface DanhMucRepository extends JpaRepository<DanhMuc, Integer> {
     List<DanhMuc> findByKieu(String kieu);
+    boolean existsByTenDanhMucIgnoreCase(String tenDanhMuc);
 }

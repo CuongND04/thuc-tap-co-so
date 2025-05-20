@@ -2,11 +2,12 @@ package com.pet.shop.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
 import java.util.List;
 
 @Data
 @Entity
-@Table(name = "danh_muc")
+@Table(name = "danh_muc", uniqueConstraints = @UniqueConstraint(columnNames = "ten_danh_muc"))
 public class DanhMuc {
 
     @Id
@@ -26,12 +27,10 @@ public class DanhMuc {
     @OneToMany(mappedBy = "danhMuc", cascade = CascadeType.ALL)
     private List<SanPham> sanPhams;
 
-    // No-args constructor
     public DanhMuc() {
     }
 
-    // All-args constructor
-    public DanhMuc( String tenDanhMuc, String moTa, String kieu, List<SanPham> sanPhams) {
+    public DanhMuc(String tenDanhMuc, String moTa, String kieu, List<SanPham> sanPhams) {
         this.tenDanhMuc = tenDanhMuc;
         this.moTa = moTa;
         this.kieu = kieu;
