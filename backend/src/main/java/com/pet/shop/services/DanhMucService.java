@@ -3,6 +3,7 @@ package com.pet.shop.services;
 import com.pet.shop.dto.DanhMucDTO;
 import com.pet.shop.models.DanhMuc;
 import com.pet.shop.repositories.DanhMucRepository;
+import com.pet.shop.repositories.SanPhamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,8 @@ public class DanhMucService {
 
     @Autowired
     private DanhMucRepository danhMucRepository;
+    @Autowired
+    private SanPhamRepository sanPhamRepository;
 
     public List<DanhMucDTO> getAllCategories() {
         return danhMucRepository.findAll().stream()
@@ -104,8 +107,16 @@ public class DanhMucService {
         if (!danhMucRepository.existsById(id)) {
             throw new RuntimeException("Không tìm thấy danh mục với ID: " + id);
         }
+
+        // Kiểm tra xem có sản phẩm nào thuộc danh mục này không
+        long count = sanPhamRepository.countByDanhMuc_MaDanhMuc(id);
+        if (count > 0) {
+            throw new RuntimeException("Không thể xóa danh mục vì đang có " + count + " sản phẩm thuộc danh mục này.");
+        }
+
         danhMucRepository.deleteById(id);
     }
+
 
     private DanhMucDTO convertToDto(DanhMuc danhMuc) {
         DanhMucDTO dto = new DanhMucDTO();

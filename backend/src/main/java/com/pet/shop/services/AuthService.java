@@ -216,6 +216,13 @@ public class AuthService {
                 .build();
     }
 
-
+    public void logout() {
+        // Lấy thông tin user hiện tại từ SecurityContext
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            // Xóa thông tin xác thực hiện tại
+            SecurityContextHolder.clearContext();
+        }
+    }
 }
 
