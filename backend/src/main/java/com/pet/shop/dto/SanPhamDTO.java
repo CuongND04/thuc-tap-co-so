@@ -22,12 +22,10 @@ public class SanPhamDTO {
 
     // Fields for ThuCung
     private Integer maThuCung;
-    private String giong;
     private String gioiTinh;
     private String tuoi;
     private String trangThaiTiem;
 
     // Fields for PhuKien
     private Integer maPhuKien;
-    private String loaiPhuKien;
 }

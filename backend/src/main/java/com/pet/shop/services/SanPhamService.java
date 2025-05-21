@@ -96,7 +96,6 @@ public class SanPhamService {
 
         // Pet information (if exists)
         if (sanPham.getThuCung() != null) {
-            dto.setGiong(sanPham.getThuCung().getGiong());
             dto.setGioiTinh(sanPham.getThuCung().getGioiTinh());
             dto.setTuoi(sanPham.getThuCung().getTuoi());
             dto.setTrangThaiTiem(sanPham.getThuCung().getTrangThaiTiem());
@@ -105,7 +104,6 @@ public class SanPhamService {
 
         // Accessory information (if exists)
         if (sanPham.getPhuKien() != null) {
-            dto.setLoaiPhuKien(sanPham.getPhuKien().getLoaiPhuKien());
             dto.setSoLuongPhuKien(sanPham.getPhuKien().getSoLuongTonKho());
         }
 

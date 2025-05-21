@@ -53,15 +53,15 @@ public class ThuCungService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Lấy thú cưng theo giống
-     */
-    public List<SanPhamDTO> getPetsByBreed(String breed) {
-        List<ThuCung> thuCungList = thuCungRepository.findByGiongContaining(breed);
-        return thuCungList.stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
-    }
+//    /**
+//     * Lấy thú cưng theo giống
+//     */
+//    public List<SanPhamDTO> getPetsByBreed(String breed) {
+//        List<ThuCung> thuCungList = thuCungRepository.findByGiongContaining(breed);
+//        return thuCungList.stream()
+//                .map(this::convertToDto)
+//                .collect(Collectors.toList());
+//    }
 
     /**
      * Lấy thú cưng theo giới tính
@@ -97,11 +97,9 @@ public class ThuCungService {
         dto.setHinhAnh(sanPham.getHinhAnh());
         dto.setMoTa(sanPham.getMoTa());
         dto.setGiaBan(sanPham.getGiaBan());
-
         dto.setLoaiSanPham("ThuCung");
         dto.setMaThuCung(Math.toIntExact(thuCung.getMaThuCung()));
         dto.setSoLuongTonKho(thuCung.getSoLuongTonKho());
-        dto.setGiong(thuCung.getGiong());
         dto.setGioiTinh(thuCung.getGioiTinh());
         dto.setTuoi(thuCung.getTuoi());
         dto.setTrangThaiTiem(thuCung.getTrangThaiTiem());

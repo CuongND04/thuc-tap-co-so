@@ -33,4 +33,17 @@ export const useProductStore = create((set, get) => ({
       set({ isGettingDetailProduct: false });
     }
   },
+
+  updateProduct: async (id, data) => {
+    try {
+      const res = await axiosInstance.put(`/san-pham/update/${id}`, data);
+      const updatedProd = res.data.data;
+
+      return updatedProd;
+    } catch (error) {
+      console.error("Lỗi khi cập nhật sản phẩm:", error);
+      toast.error("Không thể cập nhật sản phẩm");
+      return null;
+    }
+  },
 }));

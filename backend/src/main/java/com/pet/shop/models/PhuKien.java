@@ -20,17 +20,14 @@ public class PhuKien {
     @Column(name = "so_luong_ton_kho")
     private Integer soLuongTonKho;
 
-    @Column(name = "loai_phu_kien", length = 100)
-    private String loaiPhuKien;
 
     // No-args constructor
     public PhuKien() {
     }
 
     // All-args constructor
-    public PhuKien(SanPham sanPham, Integer soLuongTonKho, String loaiPhuKien) {
+    public PhuKien(SanPham sanPham, Integer soLuongTonKho) {
         this.sanPham = sanPham;
         this.soLuongTonKho = soLuongTonKho;
-        this.loaiPhuKien = loaiPhuKien;
     }
 }
