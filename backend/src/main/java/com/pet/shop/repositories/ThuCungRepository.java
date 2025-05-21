@@ -11,12 +11,10 @@ import java.util.Optional;
 public interface ThuCungRepository extends JpaRepository<ThuCung, Integer> {
     Optional<ThuCung> findBySanPham_MaSanPham(Integer maSanPham);
     List<ThuCung> findBySanPham_DanhMuc_MaDanhMuc(Integer maDanhMuc);
-    List<ThuCung> findByGiongContaining(String giong);
     List<ThuCung> findByGioiTinh(String gioiTinh);
     long countBySoLuongTonKho(Integer soLuongTonKho);
 
     @Query("SELECT t FROM ThuCung t JOIN t.sanPham s WHERE " +
-            "LOWER(s.tenSanPham) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-            "LOWER(t.giong) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+            "LOWER(s.tenSanPham) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     List<ThuCung> searchByKeyword(String keyword);
 }

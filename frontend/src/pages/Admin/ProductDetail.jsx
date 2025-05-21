@@ -2,28 +2,52 @@ import { Loader } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useProductStore } from "../../store/useProductStore";
-import { Form, Input, InputNumber, Typography, Card, Button } from "antd";
+import {
+  Form,
+  Input,
+  InputNumber,
+  Typography,
+  Card,
+  Button,
+  Select,
+} from "antd";
 import { uploadImageToCloudinary } from "../../lib/uploadImage";
 import toast from "react-hot-toast";
+import { useCategoryStore } from "../../store/useCategoryStore";
 
 const { Title } = Typography;
 
 const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
-  const { getDetailProduct, isGettingDetailProduct } = useProductStore();
+  const { getDetailProduct, isGettingDetailProduct, updateProduct } =
+    useProductStore();
+  const { getAllCategories, isGettingAllCategories } = useCategoryStore();
   const [form] = Form.useForm();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [categories, setCategories] = useState([]);
   const [uploading, setUploading] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       const data = await getDetailProduct(id);
       if (data) {
         setProduct(data);
-        form.setFieldsValue(data); // set giá trị ban đầu cho form
+        form.setFieldsValue({
+          ...data,
+          // do backend tách riêng 2 phần ra mà lại chung api tạo nên cần phải xử lí
+          soLuongTonKho:
+            data.soLuongThuCung !== null
+              ? data.soLuongThuCung
+              : data.soLuongPhuKien,
+        });
       }
     };
     fetchData();
+    const fetchCategories = async () => {
+      const listCate = await getAllCategories();
+      setCategories(listCate);
+    };
+    fetchCategories();
   }, [id]);
 
   // xử lí khi up ảnh lên để hiển thị preview
@@ -47,30 +71,64 @@ const ProductDetail = () => {
     }
   };
 
-  if (isGettingDetailProduct) {
+  const handleUpdateCategory = async () => {
+    try {
+      setIsSubmitting(true);
+
+      const values = await form.validateFields();
+      console.log("values: ", values);
+      const updated = await updateProduct(id, values);
+
+      if (updated) {
+        toast.success("Cập nhật sản phẩm thành công");
+        setProduct(updated); // nếu muốn cập nhật lại state hiển thị
+      } else {
+        toast.error("Cập nhật sản phẩm thất bại");
+      }
+    } catch (error) {
+      console.error("Lỗi khi xử lý form:", error);
+      toast.error("Vui lòng kiểm tra lại thông tin nhập");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  console.log("product: ", product);
+  if (isGettingDetailProduct || isGettingAllCategories) {
     return (
       <div className="flex items-center justify-center h-screen">
         <Loader className="size-10 animate-spin" />
       </div>
     );
   }
-
+  console.log("categories:", categories);
   return (
     <div className="">
       <Card>
         <Title className="mb-2" level={2}>
           Chi tiết sản phẩm
         </Title>
-        <Form layout="vertical" form={form}>
-          <Form.Item name="tenSanPham" label="Tên sản phẩm">
+        <Form layout="vertical" form={form} onFinish={handleUpdateCategory}>
+          <Form.Item
+            name="tenSanPham"
+            label="Tên sản phẩm"
+            rules={[{ required: true, message: "Vui lòng nhập tên sản phẩm" }]}
+          >
             <Input />
           </Form.Item>
 
-          <Form.Item name="moTa" label="Mô tả">
+          <Form.Item
+            name="moTa"
+            label="Mô tả"
+            rules={[{ required: true, message: "Vui lòng nhập mô tả" }]}
+          >
             <Input.TextArea rows={3} />
           </Form.Item>
 
-          <Form.Item name="giaBan" label="Giá bán">
+          <Form.Item
+            name="giaBan"
+            label="Giá bán"
+            rules={[{ required: true, message: "Vui lòng nhập giá bán" }]}
+          >
             <InputNumber
               min={0}
               style={{ width: "100%" }}
@@ -81,9 +139,12 @@ const ProductDetail = () => {
             />
           </Form.Item>
 
-          <Form.Item label="Ảnh sản phẩm" className="col-span-2">
+          <Form.Item
+            label="Ảnh sản phẩm"
+            className="col-span-2"
+            rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
+          >
             <div className="flex items-center gap-4">
-              {/* Ảnh hiện tại hoặc preview ảnh mới */}
               {(form.getFieldValue("avatar") || product?.hinhAnh) && (
                 <img
                   src={form.getFieldValue("avatar") || product?.hinhAnh}
@@ -104,49 +165,82 @@ const ProductDetail = () => {
                 className="hidden"
                 onChange={handleFileChange}
               />
-              {uploading && <p>Uploading...</p>}
+              {uploading && <p>Đang tải ảnh...</p>}
             </div>
           </Form.Item>
 
-          {product?.giong && (
-            <Form.Item name="giong" label="Giống">
-              <Input />
-            </Form.Item>
-          )}
-
           {product?.gioiTinh && (
-            <Form.Item name="gioiTinh" label="Giới tính">
-              <Input />
+            <Form.Item
+              name="gioiTinh"
+              label="Giới tính"
+              rules={[{ required: true, message: "Vui lòng chọn giới tính" }]}
+            >
+              <Select placeholder="Chọn giới tính">
+                <Select.Option value="Đực">Đực</Select.Option>
+                <Select.Option value="Cái">Cái</Select.Option>
+              </Select>
             </Form.Item>
           )}
+          <Form.Item
+            name="maDanhMuc"
+            label="Danh mục"
+            rules={[{ required: true, message: "Vui lòng chọn danh mục" }]}
+            initialValue={product?.maDanhMuc} // mặc định là mã danh mục hiện tại
+          >
+            <Select placeholder="Chọn danh mục">
+              {categories.map((cat) => (
+                <Select.Option key={cat.maDanhMuc} value={cat.maDanhMuc}>
+                  {cat.tenDanhMuc}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
 
           {product?.tuoi && (
-            <Form.Item name="tuoi" label="Tuổi">
-              <Input />
+            <Form.Item
+              name="tuoi"
+              label="Tuổi"
+              rules={[{ required: true, message: "Vui lòng nhập tuổi" }]}
+            >
+              <InputNumber
+                min={0}
+                max={360}
+                placeholder="Ví dụ: 12"
+                formatter={(value) => `${value} tháng`}
+                parser={(value) => value.replace(/\D/g, "")}
+                style={{ width: "100%" }}
+              />
             </Form.Item>
           )}
 
           {product?.trangThaiTiem && (
-            <Form.Item name="trangThaiTiem" label="Trạng thái tiêm">
-              <Input />
-            </Form.Item>
-          )}
-
-          {product?.loaiPhuKien && (
-            <Form.Item name="loaiPhuKien" label="Loại phụ kiện">
+            <Form.Item
+              name="trangThaiTiem"
+              label="Trạng thái tiêm"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập trạng thái tiêm chủng",
+                },
+              ]}
+            >
               <Input />
             </Form.Item>
           )}
 
           <Form.Item
-            name={
-              product?.soLuongThuCung !== null
-                ? "soLuongThuCung"
-                : "soLuongPhuKien"
-            }
+            name="soLuongTonKho"
             label="Số lượng"
+            rules={[{ required: true, message: "Vui lòng nhập số lượng" }]}
           >
-            <InputNumber min={0} style={{ width: "100%" }} />
+            <InputNumber
+              min={0}
+              max={10000}
+              step={1}
+              style={{ width: "100%" }}
+              placeholder="Nhập số lượng"
+              controls={true}
+            />
           </Form.Item>
 
           <Form.Item>

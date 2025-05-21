@@ -49,16 +49,7 @@ public class PhuKienService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Lấy phụ kiện theo loại
-     */
-    public List<SanPhamDTO> getAccessoriesByType(String type) {
-        List<PhuKien> phuKienList = phuKienRepository.findByLoaiPhuKienContaining(type);
-        return phuKienList.stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
-    }
-
+  
     /**
      * Tìm kiếm phụ kiện theo từ khóa
      */
@@ -87,7 +78,6 @@ public class PhuKienService {
         dto.setLoaiSanPham("PhuKien");
         dto.setMaPhuKien(Math.toIntExact(phuKien.getMaPhuKien()));
         dto.setSoLuongTonKho(phuKien.getSoLuongTonKho());
-        dto.setLoaiPhuKien(phuKien.getLoaiPhuKien());
 
         return dto;
     }

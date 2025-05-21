@@ -125,7 +125,7 @@ public class SanPhamController {
                         new ResponseObject("failed", "Cannot find product detail with id = " + id, "")
                 ));
     }
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<ResponseObject> updateSanPham(
             @PathVariable Long id,
             @RequestBody SanPham updatedSanPham) {
@@ -151,7 +151,7 @@ public class SanPhamController {
         );
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<ResponseObject> deleteSanPham(@PathVariable Long id) {
         Optional<SanPham> product = sanPhamService.findById(id);
 
@@ -166,7 +166,7 @@ public class SanPhamController {
                 new ResponseObject("failed", "Không tìm thấy sản phẩm với id = " + id, "")
         );
     }
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<ResponseObject> createSanPham(@RequestBody SanPham newSanPham) {
         try {
             // Kiểm tra các trường bắt buộc

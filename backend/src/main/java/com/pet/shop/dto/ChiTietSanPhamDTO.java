@@ -17,14 +17,12 @@ public class ChiTietSanPhamDTO {
     private String tenDanhMuc;
     
     // Pet information (if applicable)
-    private String giong;
     private String gioiTinh;
     private String tuoi;
     private String trangThaiTiem;
     private Integer soLuongThuCung;
     
     // Accessory information (if applicable)
-    private String loaiPhuKien;
     private Integer soLuongPhuKien;
     
     // Reviews

@@ -17,8 +17,6 @@ public class ThuCung {
     @JoinColumn(name = "ma_san_pham", unique = true, nullable = false)
     private SanPham sanPham;
 
-    @Column(length = 50)
-    private String giong;
 
     @Column(name = "gioi_tinh", length = 50)
     private String gioiTinh;
@@ -37,11 +35,10 @@ public class ThuCung {
     }
 
     // All-args constructor
-    public ThuCung(SanPham sanPham, String giong, String gioiTinh, 
+    public ThuCung(SanPham sanPham,  String gioiTinh,
                   String tuoi, String trangThaiTiem, Integer soLuongTonKho) {
     
         this.sanPham = sanPham;
-        this.giong = giong;
         this.gioiTinh = gioiTinh;
         this.tuoi = tuoi;
         this.trangThaiTiem = trangThaiTiem;

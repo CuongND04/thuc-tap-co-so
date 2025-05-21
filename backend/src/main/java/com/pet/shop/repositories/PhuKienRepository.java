@@ -11,11 +11,9 @@ import java.util.Optional;
 public interface PhuKienRepository extends JpaRepository<PhuKien, Integer> {
     Optional<PhuKien> findBySanPham_MaSanPham(Integer maSanPham);
     List<PhuKien> findBySanPham_DanhMuc_MaDanhMuc(Integer maDanhMuc);
-    List<PhuKien> findByLoaiPhuKienContaining(String loaiPhuKien);
     long countBySoLuongTonKho(Integer soLuongTonKho);
 
     @Query("SELECT p FROM PhuKien p JOIN p.sanPham s WHERE " +
-            "LOWER(s.tenSanPham) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-            "LOWER(p.loaiPhuKien) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+            "LOWER(s.tenSanPham) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     List<PhuKien> searchByKeyword(String keyword);
 }

@@ -42,14 +42,6 @@ public class ThuCungController {
         return ResponseEntity.ok(pets);
     }
 
-    /**
-     * Lấy thú cưng theo giống
-     */
-    @GetMapping("/breed/{breed}")
-    public ResponseEntity<List<SanPhamDTO>> getPetsByBreed(@PathVariable String breed) {
-        List<SanPhamDTO> pets = thuCungService.getPetsByBreed(breed);
-        return ResponseEntity.ok(pets);
-    }
 
     /**
      * Lấy thú cưng theo giới tính
