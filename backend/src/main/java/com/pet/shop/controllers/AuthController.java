@@ -10,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -81,5 +79,13 @@ public class AuthController {
         }
     }
 
-    //** TODO: thêm giúp tôi cái api logout đi, vì để người dùng sử dụng tính năng logout thì phải yêu cầu xác thực
+    @PostMapping("/logout")
+    public ResponseEntity<ResponseObject> logout() {
+        try {
+            authService.logout();
+            return ResponseEntity.ok(new ResponseObject("success", "Đăng xuất thành công", null));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ResponseObject("error", e.getMessage(), null));
+        }
+    }
 }
