@@ -1,6 +1,18 @@
-import React from "react";
+import {React, useState, useEffect } from "react";
 import "./CategoryList.css";
+import { useCategoryStore } from "../../../store/useCategoryStore";
+
 const CategoryList = () => {
+  const { getAllCategories, isGettingAllCategories } = useCategoryStore();
+    const [categories, setCategories] = useState([]);
+    useEffect(() => {
+      const fetchCategory = async () => {
+        const category = await getAllCategories();
+        setCategories(category);
+      };
+      fetchCategory(); // Gọi hàm async bên trong useEffect
+    }, []);
+
   return (
     <main className="hehe-main">
       <section>
@@ -8,7 +20,20 @@ const CategoryList = () => {
           <div className="sidebar">
             <div className="sidebar-info">
               <h3>Danh Mục Sản Phẩm</h3>
+              
               <ul className="product">
+              {categories.map((category) => (
+                
+                <li className="product-pet-iteam">
+                  <a href="#">
+                    {category.tenDanhMuc}
+                  </a>
+                  {/* <span>()</span> */}
+                </li>
+              ))}
+              </ul>
+
+              {/* <ul className="product">
                 <li className="product-pet-iteam">
                   <a href="https://matpetfamily.com/danh-muc-san-pham/balo/">
                     Balo
@@ -115,8 +140,9 @@ const CategoryList = () => {
                   <a href="">Túi Vận Chuyển</a>
                   <span>(7)</span>
                 </li>
-              </ul>
+              </ul> */}
             </div>
+
             <div className="price">
               <h3>Giá</h3>
               <form

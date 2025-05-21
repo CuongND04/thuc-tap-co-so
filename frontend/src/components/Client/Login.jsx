@@ -10,6 +10,7 @@ const Login = () => {
   const [errMsg, setErrMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const login = useAuthStore((state) => state.login)
+  const authUser = useAuthStore((state) => state.authUser);
   const navigate = useNavigate();
 
   // **TODO: chỗ này phải góp thông tin rồi gọi hàm login thôi, phần hiển thị lỗi thì dùng react-hot-toast,  và biến trạng thái --ing thì lưu và xử lí ở trong store
@@ -70,6 +71,11 @@ const Login = () => {
   //   }
   };
   // b977d416f3af3f71f040;
+
+  if(authUser)
+  {
+    navigate("/");
+  }
 
   return (
     <div>

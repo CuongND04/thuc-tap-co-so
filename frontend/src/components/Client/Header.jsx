@@ -258,7 +258,7 @@ const Header = () => {
                     id="category"
                     name="category"
                     aria-label="Currency"
-                    className="col-start-1 row-start-1 appearance-none rounded-md py-1.5 pr-7 pl-3 text-base placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-[#de8ebe]"
+                    className="col-start-1 row-start-1 appearance-none rounded-md cursor-pointer py-1.5 pr-7 pl-3 text-base placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-[#de8ebe]"
                   >
                     <option>Tất cả danh mục</option>
                     <option>Chó</option>
@@ -272,7 +272,7 @@ const Header = () => {
                     className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
                   />
                 </div>
-                <button type="submit" className="bg-[#de8ebe]">
+                <button type="submit" className="bg-[#de8ebe] text-white shrink-0 w-20 h-10 cursor-pointer rounded-r-md tracking-wide">
                   Tìm kiếm
                 </button>
               </div>

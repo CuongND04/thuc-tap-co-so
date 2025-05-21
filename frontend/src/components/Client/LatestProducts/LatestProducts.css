@@ -204,7 +204,7 @@ article .article-iteam {
 
 .function-buy {
   position: absolute;
-  display: none;
+  display: hidden;
   bottom: 90px;
   left: 50%;
   transform: translateX(-50%);

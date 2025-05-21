@@ -10,6 +10,7 @@ const Registeration = () => {
   const [errMsg, setErrMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const updateISU = useAuthStore((state) => state.updateIsSigningUp);
+  const authUser = useAuthStore((state) => state.authUser);
   const navigate = useNavigate();
   // **TODO: chỗ này phải góp thông tin rồi gọi hàm login thôi, phần hiển thị lỗi thì dùng react-hot-toast,  và biến trạng thái --ing thì lưu và xử lí ở trong store
   const handleRegistration = async (e) => {
@@ -45,7 +46,12 @@ const Registeration = () => {
     }
   };
 
-  return (
+  if(authUser)
+  {
+    navigate("/");
+  }
+
+  return (   
     <div>
       <div>
         <form onSubmit={handleRegistration} className="max-w-3xl mx-auto">
