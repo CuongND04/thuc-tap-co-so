@@ -42,12 +42,25 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 } catch (RuntimeException e) {
                     // Nếu token không hợp lệ → xóa thông tin context để tránh lỗi xác thực giả
                     SecurityContextHolder.clearContext();
-                    throw e;
+
+                    // Ghi log hoặc debug nếu cần
+                    // logger.warn("Invalid or expired token", e);
+
+                    // Thêm: Trả lỗi 401 cho client với thông báo cụ thể
+                    httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
+                    httpServletResponse.setContentType("application/json");
+                    httpServletResponse.setCharacterEncoding("UTF-8");
+
+                    // Viết JSON response
+                    httpServletResponse.getWriter().write(
+                            String.format("{\"error\": \"%s\"}", e.getMessage())
+                    );
+                    return; // Dừng filter chain tại đây nếu lỗi xác thực
                 }
             }
         }
 
-        // Cho phép request tiếp tục đi qua filter chain
+        // Cho phép request tiếp tục đi qua filter chain nếu không có lỗi
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 }

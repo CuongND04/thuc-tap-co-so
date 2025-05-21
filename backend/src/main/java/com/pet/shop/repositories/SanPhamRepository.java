@@ -25,7 +25,10 @@ public interface SanPhamRepository extends JpaRepository<SanPham, Long> {
     
     // Search by name and category
     List<SanPham> findByTenSanPhamContainingIgnoreCaseAndDanhMucMaDanhMuc(String tenSanPham, Long maDanhMuc);
-    
+
+
+    // check blank category
+    long countByDanhMuc_MaDanhMuc(Integer maDanhMuc);
     // Search by name, category and price range
     @Query("SELECT s FROM SanPham s WHERE LOWER(s.tenSanPham) LIKE LOWER(CONCAT('%', :tenSanPham, '%')) " +
            "AND s.danhMuc.maDanhMuc = :maDanhMuc AND s.giaBan BETWEEN :minPrice AND :maxPrice")

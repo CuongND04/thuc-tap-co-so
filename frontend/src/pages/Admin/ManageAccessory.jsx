@@ -36,7 +36,7 @@ const ManageAccessory = () => {
   return (
     <div className="">
       <div className="bg-white p-4 rounded-xl mb-10">
-        <h1 className="text-3xl mb-2 font-medium p-3">Quản lý thú cưng</h1>
+        <h1 className="text-3xl mb-2 font-medium p-3">Quản lý phụ kiện</h1>
         <div>
           <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
             <div className="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between">
@@ -99,7 +99,7 @@ const ManageAccessory = () => {
                   {filteredProducts.map((product) => (
                     <TableRow key={product.maSanPham} className="">
                       <TableCell className="py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                        {product.maSanPham}
+                        #{product.maSanPham}
                       </TableCell>
 
                       <TableCell className="py-3">

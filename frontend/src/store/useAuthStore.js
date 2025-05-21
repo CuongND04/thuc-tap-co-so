@@ -56,8 +56,24 @@ export const useAuthStore = create((set, get) => ({
 
       return !!profile; // true nếu profile lấy được
     } catch (error) {
-      if (error?.response?.data?.message)
-        toast.error(error.response.data.message);
+      // chỗ này là phòng trường hợp mà jwt ở backend đã hết hạn rồi mà
+      localStorage.removeItem("auth_user"); // Xóa user trong localStorage
+      localStorage.removeItem("auth_token");
+      set({ authUser: null });
+      set({ userProfile: null });
+
+      const rawMsg =
+        error?.response?.data?.message ??
+        error?.response?.data?.error ??
+        "Đã xảy ra lỗi";
+
+      // Thân thiện hơn nếu là lỗi hết hạn token
+      const friendlyMsg = rawMsg.includes("Token has expired")
+        ? "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại."
+        : rawMsg;
+
+      toast.error(friendlyMsg);
+
       console.log("error: ", error);
 
       return false;
@@ -77,6 +93,8 @@ export const useAuthStore = create((set, get) => ({
 
       return profileData;
     } catch (error) {
+      // mục đích là để xóa trạng thái vẫn đăng nhập được nhưng không láy được profile
+      set({ authUser: null });
       return null;
     } finally {
       set({ isFetchingProfile: false });

@@ -99,7 +99,7 @@ const ManagePet = () => {
                   {filteredProducts.map((product) => (
                     <TableRow key={product.maSanPham} className="">
                       <TableCell className="py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                        {product.maSanPham}
+                        #{product.maSanPham}
                       </TableCell>
 
                       <TableCell className="py-3">

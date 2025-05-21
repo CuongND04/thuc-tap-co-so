@@ -25,6 +25,8 @@ import { Toaster } from "react-hot-toast";
 import LoginAdmin from "./pages/Admin/LoginAdmin.jsx";
 import ProtectedRoute from "./components/Admin/ProtectedRoute.jsx";
 import ProductDetail from "./pages/Admin/ProductDetail.jsx";
+import CategoryDetail from "./pages/Admin/CategoryDetail.jsx";
+import CreateCategory from "./pages/Admin/CreateCategory.jsx";
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
   useEffect(() => {
@@ -69,9 +71,13 @@ const App = () => {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="pet" element={<ManagePet />} />
             <Route path="accessory" element={<ManageAccessory />} />
+            <Route path="categories" element={<ManageCategories />} />
+
             <Route path="pet/:id/detail" element={<ProductDetail />} />
             <Route path="accessory/:id/detail" element={<ProductDetail />} />
-            <Route path="categories" element={<ManageCategories />} />
+            <Route path="categories/:id/detail" element={<CategoryDetail />} />
+            <Route path="categories/create" element={<CreateCategory />} />
+
             <Route path="import" element={<ImportOrders />} />
             <Route path="sales" element={<SalesOrders />} />
             <Route path="users" element={<ManageUsers />} />
