@@ -3,6 +3,7 @@ package com.pet.shop.services;
 import com.pet.shop.dto.ChiTietSanPhamDTO;
 import com.pet.shop.dto.SanPhamListDTO;
 import com.pet.shop.models.SanPham;
+import com.pet.shop.repositories.DanhMucRepository;
 import com.pet.shop.repositories.SanPhamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,10 +16,12 @@ import java.util.stream.Collectors;
 public class SanPhamService {
 
     private final SanPhamRepository sanPhamRepository;
+    private final DanhMucRepository danhMucRepository;
 
     @Autowired
-    public SanPhamService(SanPhamRepository sanPhamRepository) {
+    public SanPhamService(SanPhamRepository sanPhamRepository, DanhMucRepository danhMucRepository) {
         this.sanPhamRepository = sanPhamRepository;
+        this.danhMucRepository = danhMucRepository;
     }
 
     public List<SanPhamListDTO> findAll() {
@@ -29,6 +32,10 @@ public class SanPhamService {
 
     public Optional<SanPham> findById(Long id) {
         return sanPhamRepository.findById(id);
+    }
+
+    public Optional<com.pet.shop.models.DanhMuc> findDanhMucById(Integer id) {
+        return danhMucRepository.findById(id);
     }
 
     public SanPham save(SanPham sanPham) {

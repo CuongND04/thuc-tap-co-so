@@ -1,6 +1,5 @@
 package com.pet.shop.controllers;
 
-import com.pet.shop.dto.ChiTietSanPhamDTO;
 import com.pet.shop.models.ResponseObject;
 import com.pet.shop.models.SanPham;
 import com.pet.shop.dto.SanPhamListDTO;
@@ -13,6 +12,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.LinkedHashMap;
 
 @RestController
 @RequestMapping("/api/san-pham")
@@ -131,18 +132,62 @@ public class SanPhamController {
             @RequestBody SanPham updatedSanPham) {
 
         // Kiểm tra sản phẩm tồn tại
-        Optional<SanPham> existingProduct = sanPhamService.findById(id);
+        Optional<SanPham> existingProductOptional = sanPhamService.findById(id);
 
-        if (existingProduct.isPresent()) {
-            // Cập nhật thông tin
-            updatedSanPham.setMaSanPham(id); // Đảm bảo ID consistency
-            SanPham savedProduct = sanPhamService.save(updatedSanPham);
+        if (existingProductOptional.isPresent()) {
+            SanPham existingProduct = existingProductOptional.get();
 
-            // Convert sang DTO
-            ChiTietSanPhamDTO dto = sanPhamService.convertToChiTietSanPhamDTO(savedProduct);
+            // Cập nhật thông tin cơ bản
+            if (updatedSanPham.getTenSanPham() != null) {
+                existingProduct.setTenSanPham(updatedSanPham.getTenSanPham());
+            }
+            if (updatedSanPham.getHinhAnh() != null) {
+                existingProduct.setHinhAnh(updatedSanPham.getHinhAnh());
+            }
+            if (updatedSanPham.getMoTa() != null) {
+                existingProduct.setMoTa(updatedSanPham.getMoTa());
+            }
+            if (updatedSanPham.getGiaBan() != null) {
+                existingProduct.setGiaBan(updatedSanPham.getGiaBan());
+            }
+
+            // Cập nhật danh mục nếu được cung cấp trong request body
+            if (updatedSanPham.getDanhMuc() != null && updatedSanPham.getDanhMuc().getMaDanhMuc() != null) {
+                // Chuyển đổi Long sang Integer cho maDanhMuc
+                Integer maDanhMucInteger = updatedSanPham.getDanhMuc().getMaDanhMuc().intValue();
+                Optional<com.pet.shop.models.DanhMuc> danhMucOptional = sanPhamService.findDanhMucById(maDanhMucInteger);
+                if (danhMucOptional.isPresent()) {
+                    existingProduct.setDanhMuc(danhMucOptional.get());
+                } else {
+                    // Xử lý trường hợp maDanhMuc không tồn tại nếu cần, hiện tại bỏ qua
+                    // return ResponseEntity.badRequest().body(new ResponseObject("failed", "Mã danh mục không tồn tại", ""));
+                }
+            } else if (updatedSanPham.getDanhMuc() != null && updatedSanPham.getDanhMuc().getMaDanhMuc() == null) {
+                 // Nếu danhMuc được cung cấp nhưng maDanhMuc là null, set danh muc về null
+                 existingProduct.setDanhMuc(null);
+            }
+
+            // Lưu sản phẩm đã cập nhật
+            SanPham savedProduct = sanPhamService.save(existingProduct);
+
+            // Xây dựng response data theo định dạng yêu cầu (không có tenDanhMuc)
+            Map<String, Object> responseData = new LinkedHashMap<>(); // Sử dụng LinkedHashMap để giữ thứ tự các trường
+            responseData.put("ma_san_pham", savedProduct.getMaSanPham());
+            responseData.put("ten_san_pham", savedProduct.getTenSanPham());
+
+            // Thêm maDanhMuc nếu sản phẩm có danh mục
+            if (savedProduct.getDanhMuc() != null) {
+                responseData.put("ma_danh_muc", savedProduct.getDanhMuc().getMaDanhMuc());
+            } else {
+                responseData.put("ma_danh_muc", null); // Hoặc bỏ qua trường này nếu không muốn hiển thị null
+            }
+
+            responseData.put("hinh_anh", savedProduct.getHinhAnh());
+            responseData.put("mo_ta", savedProduct.getMoTa());
+            responseData.put("gia_ban", savedProduct.getGiaBan());
 
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("success", "Cập nhật sản phẩm thành công", dto)
+                    new ResponseObject("success", "Cập nhật sản phẩm thành công", responseData)
             );
         }
 
@@ -176,14 +221,48 @@ public class SanPhamController {
                 );
             }
 
-            // Lưu sản phẩm mới
-            SanPham savedProduct = sanPhamService.save(newSanPham);
+            // Tạo sản phẩm mới và gán các thuộc tính từ request body
+            SanPham sanPhamToCreate = new SanPham();
+            sanPhamToCreate.setTenSanPham(newSanPham.getTenSanPham());
+            sanPhamToCreate.setHinhAnh(newSanPham.getHinhAnh());
+            sanPhamToCreate.setMoTa(newSanPham.getMoTa());
+            sanPhamToCreate.setGiaBan(newSanPham.getGiaBan());
+            // Các thuộc tính khác nếu có...
 
-            // Convert sang DTO
-            ChiTietSanPhamDTO dto = sanPhamService.convertToChiTietSanPhamDTO(savedProduct);
+            // Gán danh mục nếu được cung cấp trong request body
+            if (newSanPham.getDanhMuc() != null && newSanPham.getDanhMuc().getMaDanhMuc() != null) {
+                // Chuyển đổi Long sang Integer cho maDanhMuc
+                Integer maDanhMucInteger = newSanPham.getDanhMuc().getMaDanhMuc().intValue();
+                Optional<com.pet.shop.models.DanhMuc> danhMucOptional = sanPhamService.findDanhMucById(maDanhMucInteger);
+                if (danhMucOptional.isPresent()) {
+                    sanPhamToCreate.setDanhMuc(danhMucOptional.get());
+                } else {
+                    // Xử lý trường hợp maDanhMuc không tồn tại nếu cần, hiện tại bỏ qua
+                    // return ResponseEntity.badRequest().body(new ResponseObject("failed", "Mã danh mục không tồn tại", null));
+                }
+            }
+
+            // Lưu sản phẩm mới
+            SanPham savedProduct = sanPhamService.save(sanPhamToCreate);
+
+            // Xây dựng response data theo định dạng yêu cầu (không có tenDanhMuc)
+            Map<String, Object> responseData = new LinkedHashMap<>(); // Sử dụng LinkedHashMap để giữ thứ tự các trường
+            responseData.put("ma_san_pham", savedProduct.getMaSanPham());
+            responseData.put("ten_san_pham", savedProduct.getTenSanPham());
+
+            // Thêm maDanhMuc nếu sản phẩm có danh mục
+            if (savedProduct.getDanhMuc() != null) {
+                responseData.put("ma_danh_muc", savedProduct.getDanhMuc().getMaDanhMuc());
+            } else {
+                responseData.put("ma_danh_muc", null); // Hoặc bỏ qua trường này nếu không muốn hiển thị null
+            }
+
+            responseData.put("hinh_anh", savedProduct.getHinhAnh());
+            responseData.put("mo_ta", savedProduct.getMoTa());
+            responseData.put("gia_ban", savedProduct.getGiaBan());
 
             return ResponseEntity.status(HttpStatus.CREATED).body(
-                    new ResponseObject("success", "Thêm sản phẩm thành công", dto)
+                    new ResponseObject("success", "Thêm sản phẩm thành công", responseData)
             );
 
         } catch (Exception e) {
