@@ -52,6 +52,7 @@ public class DonHangService {
             throw new IllegalArgumentException("Đơn hàng phải có ít nhất 1 sản phẩm");
         }
 
+
         // Tính tổng tiền
         BigDecimal tongTien = donHang.getChiTietDonHangs().stream()
                 .map(ct -> ct.getDonGia().multiply(BigDecimal.valueOf(ct.getSoLuong())))

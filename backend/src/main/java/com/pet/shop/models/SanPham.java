@@ -74,4 +74,11 @@ public class SanPham {
         this.yeuThichs = yeuThichs;
         this.danhGias = danhGias;
     }
+    public boolean isThuCung() {
+        return this.thuCung != null;
+    }
+
+    public boolean isPhuKien() {
+        return this.phuKien != null;
+    }
 }

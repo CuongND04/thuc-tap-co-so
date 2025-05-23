@@ -2,9 +2,14 @@ package com.pet.shop.services;
 
 import com.pet.shop.dto.ChiTietSanPhamDTO;
 import com.pet.shop.dto.SanPhamListDTO;
+import com.pet.shop.models.DanhMuc;
+import com.pet.shop.models.PhuKien;
 import com.pet.shop.models.SanPham;
+import com.pet.shop.models.ThuCung;
 import com.pet.shop.repositories.DanhMucRepository;
+import com.pet.shop.repositories.PhuKienRepository;
 import com.pet.shop.repositories.SanPhamRepository;
+import com.pet.shop.repositories.ThuCungRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
@@ -17,11 +22,20 @@ public class SanPhamService {
 
     private final SanPhamRepository sanPhamRepository;
     private final DanhMucRepository danhMucRepository;
+    private final ThuCungRepository thuCungRepository;
+    private final PhuKienRepository phuKienRepository;
 
     @Autowired
-    public SanPhamService(SanPhamRepository sanPhamRepository, DanhMucRepository danhMucRepository) {
+    public SanPhamService(
+            SanPhamRepository sanPhamRepository,
+            DanhMucRepository danhMucRepository,
+            ThuCungRepository thuCungRepository,
+            PhuKienRepository phuKienRepository
+    ) {
         this.sanPhamRepository = sanPhamRepository;
         this.danhMucRepository = danhMucRepository;
+        this.thuCungRepository = thuCungRepository;
+        this.phuKienRepository = phuKienRepository;
     }
 
     public List<SanPhamListDTO> findAll() {
@@ -39,13 +53,71 @@ public class SanPhamService {
     }
 
     public SanPham save(SanPham sanPham) {
+        // Kiểm tra danh mục
+        if (sanPham.getDanhMuc() == null || sanPham.getDanhMuc().getMaDanhMuc() == null) {
+            throw new IllegalArgumentException("Danh mục không được để trống");
+        }
+
+        // Tìm danh mục trong database
+        DanhMuc danhMuc = danhMucRepository.findById(Math.toIntExact(sanPham.getDanhMuc().getMaDanhMuc()))
+                .orElseThrow(() -> new IllegalArgumentException("Danh mục không tồn tại"));
+
+        // Gán danh mục hợp lệ vào sản phẩm
+        sanPham.setDanhMuc(danhMuc);
+        // Validate: Sản phẩm không thể vừa là thú cưng vừa là phụ kiện
+        if (sanPham.getThuCung() != null && sanPham.getPhuKien() != null) {
+            throw new IllegalArgumentException("Sản phẩm không thể đồng thời là thú cưng và phụ kiện");
+        }
+
+        // Xử lý thú cưng
+        if (sanPham.getThuCung() != null) {
+            // Liên kết ngược và lưu thú cưng
+            sanPham.getThuCung().setSanPham(sanPham);
+            ThuCung savedThuCung = thuCungRepository.save(sanPham.getThuCung());
+            sanPham.setThuCung(savedThuCung);
+        }
+
+        // Xử lý phụ kiện
+        if (sanPham.getPhuKien() != null) {
+            // Liên kết ngược và lưu phụ kiện
+            sanPham.getPhuKien().setSanPham(sanPham);
+            PhuKien savedPhuKien = phuKienRepository.save(sanPham.getPhuKien());
+            sanPham.setPhuKien(savedPhuKien);
+        }
+
+
         return sanPhamRepository.save(sanPham);
     }
 
     public void deleteById(Long id) {
+        SanPham sanPham = sanPhamRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm"));
+
+        // Xóa thú cưng liên quan
+        if (sanPham.getThuCung() != null) {
+            thuCungRepository.delete(sanPham.getThuCung());
+        }
+
+        // Xóa phụ kiện liên quan
+        if (sanPham.getPhuKien() != null) {
+            phuKienRepository.delete(sanPham.getPhuKien());
+        }
+
         sanPhamRepository.deleteById(id);
     }
 
+    // Phương thức kiểm tra loại sản phẩm
+    public boolean isThuCung(Long maSanPham) {
+        SanPham sanPham = sanPhamRepository.findById(maSanPham)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm"));
+        return sanPham.getThuCung() != null;
+    }
+
+    public boolean isPhuKien(Long maSanPham) {
+        SanPham sanPham = sanPhamRepository.findById(maSanPham)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm"));
+        return sanPham.getPhuKien() != null;
+    }
     public List<SanPham> findByDanhMuc(Long maDanhMuc) {
         return sanPhamRepository.findByDanhMucMaDanhMuc(maDanhMuc);
     }

@@ -24,7 +24,7 @@ public class DanhMuc {
     @Column(length = 50)
     private String kieu;
 
-    @OneToMany(mappedBy = "danhMuc", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "danhMuc", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private List<SanPham> sanPhams;
 
     public DanhMuc() {
