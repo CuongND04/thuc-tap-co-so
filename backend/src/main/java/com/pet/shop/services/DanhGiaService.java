@@ -10,6 +10,7 @@ import com.pet.shop.repositories.SanPhamRepository;
 import com.pet.shop.repositories.NguoiDungRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,6 +41,7 @@ public class DanhGiaService {
     }
 
     // Thêm đánh giá mới
+    @Transactional
     public DanhGia createReview(ReviewDTO reviewDTO) {
         // Find product and customer
         SanPham sanPham = sanPhamRepository.findById(reviewDTO.getMaSanPham())
@@ -60,6 +62,7 @@ public class DanhGiaService {
     }
 
     // Xóa đánh giá
+    @Transactional
     public void deleteReview(Long maDanhGia) {
         DanhGia danhGia = danhGiaRepository.findById(maDanhGia)
             .orElseThrow(() -> new RuntimeException("Không tìm thấy đánh giá"));
@@ -67,6 +70,7 @@ public class DanhGiaService {
     }
 
     // Cập nhật đánh giá
+    @Transactional
     public DanhGia updateReview(Long maDanhGia, ReviewDTO reviewDTO) {
         DanhGia danhGia = danhGiaRepository.findById(maDanhGia)
             .orElseThrow(() -> new RuntimeException("Không tìm thấy đánh giá"));
@@ -89,4 +93,4 @@ public class DanhGiaService {
         dto.setNoiDung(danhGia.getNoiDung());
         return dto;
     }
-} 
+}

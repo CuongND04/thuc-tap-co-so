@@ -16,11 +16,18 @@ public class ChiTietSanPhamDTO {
     private Long maDanhMuc;
     private String tenDanhMuc;
     
-    // Pet information (if applicable)
+    // New fields for product type and related entity ID
+    private String loaiSanPham; // "ThuCung" or "PhuKien"
+    private Long maLoaiSanPham; // ID of ThuCung or PhuKien
+    
+    // Unified inventory field
+    private Integer soLuongTonKho;
+    
+    // Keep pet-specific details if needed for product detail view, otherwise remove.
+    // Based on SanPhamService, these are currently being set, so keep them for now.
     private String gioiTinh;
     private String tuoi;
     private String trangThaiTiem;
-    private Integer soLuongThuCung;
     
     // Accessory information (if applicable)
     private Integer soLuongPhuKien;
