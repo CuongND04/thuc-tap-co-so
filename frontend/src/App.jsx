@@ -27,6 +27,8 @@ import ProtectedRoute from "./components/Admin/ProtectedRoute.jsx";
 import ProductDetail from "./pages/Admin/ProductDetail.jsx";
 import CategoryDetail from "./pages/Admin/CategoryDetail.jsx";
 import CreateCategory from "./pages/Admin/CreateCategory.jsx";
+import UserDetail from "./pages/Admin/UserDetail.jsx";
+import UserCreate from "./pages/Admin/UserCreate.jsx";
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
   useEffect(() => {
@@ -80,7 +82,11 @@ const App = () => {
 
             <Route path="import" element={<ImportOrders />} />
             <Route path="sales" element={<SalesOrders />} />
+
             <Route path="users" element={<ManageUsers />} />
+            <Route path="users/:id/detail" element={<UserDetail />} />
+            <Route path="users/create" element={<UserCreate />} />
+
             <Route path="suppliers" element={<ManageSuppliers />} />
             <Route path="reports" element={<RevenueReports />} />
             <Route path="profile" element={<UserProfile />} />

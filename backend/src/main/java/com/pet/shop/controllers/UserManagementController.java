@@ -5,6 +5,7 @@ import com.pet.shop.models.NguoiDung;
 import com.pet.shop.models.ResponseObject;
 import com.pet.shop.services.UserManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,23 @@ public class UserManagementController {
             return ResponseEntity.ok(new ResponseObject("success", "Lấy danh sách người dùng thành công", users));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new ResponseObject("error", e.getMessage(), null));
+        }
+    }
+
+    // Lấy chi tiết người dùng theo ID
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<ResponseObject> getUserById(@PathVariable Integer id) {
+        try {
+            UserDTO user = userManagementService.getUserById(id);
+            if (user != null) {
+                return ResponseEntity.ok(new ResponseObject("success", "Lấy chi tiết người dùng thành công", user));
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new ResponseObject("error", "Không tìm thấy người dùng với ID: " + id, null));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(new ResponseObject("error", "Lỗi khi lấy chi tiết người dùng: " + e.getMessage(), null));
         }
     }
 
