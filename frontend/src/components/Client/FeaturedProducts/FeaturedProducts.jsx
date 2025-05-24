@@ -36,7 +36,7 @@ const FeaturedProducts = () => {
             
             <article>
               <div className="grid grid-cols-4 gap-x-50 gap-y-10 auto-cols-max justify-center">
-              {products.map((prod) => (
+              {products && products.map((prod) => (
                 <CellComp key={prod.maSanPham} prodID={prod.maSanPham} imgSoure={prod.hinhAnh} prodName={prod.tenSanPham} price={prod.giaBan} />
               ))}
               </div>
