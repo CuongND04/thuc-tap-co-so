@@ -22,7 +22,7 @@ const CategoryList = () => {
               <h3>Danh Mục Sản Phẩm</h3>
               
               <ul className="product">
-              {categories.map((category) => (
+              {categories && categories.map((category) => (
                 
                 <li className="product-pet-iteam">
                   <a href="#">
