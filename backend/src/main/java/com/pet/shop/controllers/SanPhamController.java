@@ -145,7 +145,7 @@ public class SanPhamController {
                 new ResponseObject("failed", "Không tìm thấy sản phẩm với id = " + id, "")
         );
     }
-// tao san pham la thu cung va phu kien dung chung api nhe
+    // tao san pham la thu cung va phu kien dung chung api nhe
     @PostMapping("/create")
     public ResponseEntity<ResponseObject> createSanPham(@RequestBody SanPham newSanPham) {
         try {
@@ -272,6 +272,7 @@ public class SanPhamController {
             @RequestBody SanPham updatedSanPham) {
 
         try {
+            System.out.println(updatedSanPham);
             SanPham result = sanPhamService.updateSanPham(id, updatedSanPham);
 
             // Build response data (similar to create, or use a DTO if structure differs)

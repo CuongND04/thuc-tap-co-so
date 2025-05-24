@@ -29,6 +29,8 @@ import CategoryDetail from "./pages/Admin/CategoryDetail.jsx";
 import CreateCategory from "./pages/Admin/CreateCategory.jsx";
 import UserDetail from "./pages/Admin/UserDetail.jsx";
 import UserCreate from "./pages/Admin/UserCreate.jsx";
+import CreatePetProduct from "./pages/Admin/CreatePetProduct.jsx";
+import CreateAccessoryProduct from "./pages/Admin/CreateAccessoryProduct.jsx";
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
   useEffect(() => {
@@ -71,12 +73,18 @@ const App = () => {
         <Route path="/admin" element={<ProtectedRoute />}>
           <Route element={<AdminLayout />}>
             <Route path="dashboard" element={<Dashboard />} />
+
             <Route path="pet" element={<ManagePet />} />
             <Route path="accessory" element={<ManageAccessory />} />
-            <Route path="categories" element={<ManageCategories />} />
-
             <Route path="pet/:id/detail" element={<ProductDetail />} />
             <Route path="accessory/:id/detail" element={<ProductDetail />} />
+            <Route path="pet/create" element={<CreatePetProduct />} />
+            <Route
+              path="accessory/create"
+              element={<CreateAccessoryProduct />}
+            />
+
+            <Route path="categories" element={<ManageCategories />} />
             <Route path="categories/:id/detail" element={<CategoryDetail />} />
             <Route path="categories/create" element={<CreateCategory />} />
 

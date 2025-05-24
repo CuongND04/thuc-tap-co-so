@@ -68,7 +68,6 @@ BEGIN
         [ma_phu_kien] BIGINT IDENTITY(1,1) PRIMARY KEY,
         [ma_san_pham] BIGINT NOT NULL,
         [so_luong_ton_kho] INT NOT NULL,
-        [loai_phu_kien] NVARCHAR(100) NULL,
         CONSTRAINT [FK_phu_kien_san_pham] FOREIGN KEY ([ma_san_pham]) 
         REFERENCES [dbo].[san_pham] ([ma_san_pham]),
         CONSTRAINT [UQ_phu_kien_ma_san_pham] UNIQUE ([ma_san_pham])
@@ -338,15 +337,15 @@ VALUES
 
 
 
-INSERT INTO [dbo].[phu_kien] ([ma_san_pham], [so_luong_ton_kho], [loai_phu_kien])
+INSERT INTO [dbo].[phu_kien] ([ma_san_pham], [so_luong_ton_kho])
 VALUES
-(13, 50, N'Phụ kiện đi lại'),       -- Balo đựng thú cưng
-(14, 30, N'Phụ kiện thời trang'),    -- Vòng cổ đính đá
-(15, 40, N'Phụ kiện đi lại'),       -- Dây dắt chó mèo
-(16, 10, N'Chuồng - Nhà'),           -- Nhà gỗ cho chó mèo
-(17, 25, N'Vệ sinh'),                -- Cát vệ sinh cho mèo
-(18, 35, N'Chăm sóc sức khỏe'),     -- Bàn chải chải lông
-(19, 15, N'Phụ kiện thời trang');   -- Áo len cho chó mèo
+(13, 50),       -- Balo đựng thú cưng
+(14, 30),    -- Vòng cổ đính đá
+(15, 40),       -- Dây dắt chó mèo
+(16, 10),           -- Nhà gỗ cho chó mèo
+(17, 25),                -- Cát vệ sinh cho mèo
+(18, 35),     -- Bàn chải chải lông
+(19, 15);   -- Áo len cho chó mèo
 
 
 -- Insert data into gio_hang table

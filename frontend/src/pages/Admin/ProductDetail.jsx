@@ -14,6 +14,7 @@ import {
 import { uploadImageToCloudinary } from "../../lib/uploadImage";
 import toast from "react-hot-toast";
 import { useCategoryStore } from "../../store/useCategoryStore";
+import { formatValues } from "../../utils/formatValues";
 
 const { Title } = Typography;
 
@@ -32,14 +33,7 @@ const ProductDetail = () => {
       const data = await getDetailProduct(id);
       if (data) {
         setProduct(data);
-        form.setFieldsValue({
-          ...data,
-          // do backend tách riêng 2 phần ra mà lại chung api tạo nên cần phải xử lí
-          soLuongTonKho:
-            data.soLuongThuCung !== null
-              ? data.soLuongThuCung
-              : data.soLuongPhuKien,
-        });
+        form.setFieldsValue(data);
       }
     };
     fetchData();
@@ -48,7 +42,7 @@ const ProductDetail = () => {
       setCategories(listCate);
     };
     fetchCategories();
-  }, [id]);
+  }, [id, isSubmitting]);
 
   // xử lí khi up ảnh lên để hiển thị preview
   const handleFileChange = async (event) => {
@@ -60,7 +54,7 @@ const ProductDetail = () => {
         const response = await uploadImageToCloudinary(file);
         console.log("response:", response);
         // set giá trị cho trường avatar trong form nhặt thông tin
-        form.setFieldsValue({ avatar: response.secure_url });
+        form.setFieldsValue({ hinhAnh: response.secure_url });
 
         toast.success("Upload ảnh thành công!");
       } catch (error) {
@@ -77,7 +71,7 @@ const ProductDetail = () => {
 
       const values = await form.validateFields();
       console.log("values: ", values);
-      const updated = await updateProduct(id, values);
+      const updated = await updateProduct(id, values, product?.loaiSanPham);
 
       if (updated) {
         toast.success("Cập nhật sản phẩm thành công");
@@ -92,15 +86,15 @@ const ProductDetail = () => {
       setIsSubmitting(false);
     }
   };
-  console.log("product: ", product);
-  if (isGettingDetailProduct || isGettingAllCategories) {
+
+  // console.log("product: ", product);
+  if (isGettingDetailProduct || isGettingAllCategories || isSubmitting) {
     return (
       <div className="flex items-center justify-center h-screen">
         <Loader className="size-10 animate-spin" />
       </div>
     );
   }
-  console.log("categories:", categories);
   return (
     <div className="">
       <Card>
@@ -140,14 +134,15 @@ const ProductDetail = () => {
           </Form.Item>
 
           <Form.Item
+            name="hinhAnh"
             label="Ảnh sản phẩm"
             className="col-span-2"
             rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
           >
             <div className="flex items-center gap-4">
-              {(form.getFieldValue("avatar") || product?.hinhAnh) && (
+              {(form.getFieldValue("hinhAnh") || product?.hinhAnh) && (
                 <img
-                  src={form.getFieldValue("avatar") || product?.hinhAnh}
+                  src={form.getFieldValue("hinhAnh") || product?.hinhAnh}
                   alt={product?.tenSanPham}
                   className="w-40 h-40 object-cover rounded"
                 />

@@ -13,18 +13,23 @@ import {
   EyeOutlined,
   DeleteOutlined,
   ReloadOutlined,
+  PlusOutlined,
 } from "@ant-design/icons";
 import { useProductStore } from "../../store/useProductStore";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { CirclePlus, Loader } from "lucide-react";
 
 const { Option } = Select;
 const { Title } = Typography;
 
 const ManagePet = () => {
-  const { getAllProducts, isGettingAllProducts } = useProductStore();
+  const { getAllProducts, isGettingAllProducts, deleteProduct } =
+    useProductStore();
   const [products, setProducts] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [filterCategory, setFilterCategory] = useState("all");
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const navigate = useNavigate();
 
@@ -34,7 +39,7 @@ const ManagePet = () => {
       setProducts(data);
     };
     fetchData();
-  }, []);
+  }, [isDeleting]);
 
   // Lọc theo thú cưng (chó/mèo) + tên sản phẩm
   const filteredProducts = products.filter((product) => {
@@ -53,11 +58,23 @@ const ManagePet = () => {
     return nameMatch && isPet && categoryMatch;
   });
 
-  const handleDelete = (id) => {
-    // TODO: Gọi API xóa nếu có backend
-    setProducts((prev) => prev.filter((p) => p.maSanPham !== id));
-  };
+  const handleDelete = async (id) => {
+    try {
+      setIsDeleting(true);
 
+      const dele = await deleteProduct(id);
+
+      if (dele) {
+        toast.success("Xóa thú cưng thành công");
+      } else {
+        console.log("Xóa thú cưng thất bại");
+      }
+    } catch (error) {
+      toast.error("Có lỗi xảy ra.");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
   const handleReset = () => {
     setSearchText("");
     setFilterCategory("all");
@@ -140,6 +157,13 @@ const ManagePet = () => {
     },
   ];
 
+  if (isGettingAllProducts || isDeleting) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader className="size-10 animate-spin" />
+      </div>
+    );
+  }
   return (
     <div className="">
       <div className="bg-white p-4 rounded-xl mb-10">
@@ -174,6 +198,12 @@ const ManagePet = () => {
                 </Select>
                 <Button icon={<ReloadOutlined />} onClick={handleReset}>
                   Đặt lại
+                </Button>
+                <Button
+                  icon={<PlusOutlined />}
+                  onClick={() => navigate(`/admin/pet/create`)}
+                >
+                  Thêm
                 </Button>
               </Space>
             </div>

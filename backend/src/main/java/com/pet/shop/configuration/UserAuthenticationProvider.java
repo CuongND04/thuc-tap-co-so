@@ -41,7 +41,7 @@ public class UserAuthenticationProvider {
      */
     public String createToken(String login) {
         Date now = new Date(); // thời gian hiện tại
-        Date validity = new Date(now.getTime() + 3600000); // token hợp lệ trong 1 tiếng
+        Date validity = new Date(now.getTime() + 7L * 24 * 60 * 60 * 1000); // 7 ngày
 
         Algorithm algorithm = Algorithm.HMAC256(secretKey); // sử dụng thuật toán HMAC với secret key
 
