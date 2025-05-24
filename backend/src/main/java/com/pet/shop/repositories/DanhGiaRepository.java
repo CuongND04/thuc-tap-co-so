@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface DanhGiaRepository extends JpaRepository<DanhGia,Long> {
-    List<DanhGia> findBySanPhamMaSanPham(Long productId);
+public interface DanhGiaRepository extends JpaRepository<DanhGia, Long> {
+    List<DanhGia> findBySanPham_MaSanPham(Long maSanPham);
+    List<DanhGia> findByNguoiDung_MaNguoiDung(Long maNguoiDung);
 }
