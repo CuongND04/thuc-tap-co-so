@@ -17,7 +17,7 @@ public class NhaCungCap {
     @Column(nullable = false, length = 200)
     private String ten;
 
-    @Column(length = 200)
+    @Column(name = "dia_chi",length = 200)
     private String diaChi;
 
     @Column(name = "so_dien_thoai", length = 20)

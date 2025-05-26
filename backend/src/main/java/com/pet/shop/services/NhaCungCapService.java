@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import com.pet.shop.dto.NhaCungCapListDTO;
 
 @Service
 public class NhaCungCapService {
@@ -19,8 +21,10 @@ public class NhaCungCapService {
     }
 
     // Lấy tất cả nhà cung cấp
-    public List<NhaCungCap> findAll() {
-        return nhaCungCapRepository.findAll();
+    public List<NhaCungCapListDTO> findAll() {
+        return nhaCungCapRepository.findAll().stream()
+                .map(this::convertToNhaCungCapListDTO)
+                .collect(Collectors.toList());
     }
 
     // Tìm nhà cung cấp theo ID
@@ -46,5 +50,15 @@ public class NhaCungCapService {
     // Tìm kiếm theo số điện thoại (ví dụ mở rộng)
     public Optional<NhaCungCap> findBySoDienThoai(String soDienThoai) {
         return nhaCungCapRepository.findBySoDienThoai(soDienThoai);
+    }
+
+    private NhaCungCapListDTO convertToNhaCungCapListDTO(NhaCungCap nhaCungCap) {
+        NhaCungCapListDTO dto = new NhaCungCapListDTO();
+        dto.setMaNhaCungCap(nhaCungCap.getMaNhaCungCap());
+        dto.setTen(nhaCungCap.getTen());
+        dto.setDiaChi(nhaCungCap.getDiaChi());
+        dto.setSoDienThoai(nhaCungCap.getSoDienThoai());
+        dto.setEmail(nhaCungCap.getEmail());
+        return dto;
     }
 }

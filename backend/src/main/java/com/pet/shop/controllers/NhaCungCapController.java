@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
+import com.pet.shop.dto.NhaCungCapListDTO;
 
 @RestController
 @RequestMapping("/api/nha-cung-cap")
@@ -25,7 +26,7 @@ public class NhaCungCapController {
 
     @GetMapping
     public ResponseEntity<ResponseObject> getAllNhaCungCap() {
-        List<NhaCungCap> list = nhaCungCapService.findAll();
+        List<NhaCungCapListDTO> list = nhaCungCapService.findAll();
         return ResponseEntity.ok(
                 new ResponseObject("success", "Lấy danh sách nhà cung cấp thành công", list)
         );
@@ -34,12 +35,20 @@ public class NhaCungCapController {
     @GetMapping("/{id}")
     public ResponseEntity<ResponseObject> getById(@PathVariable Long id) {
         Optional<NhaCungCap> ncc = nhaCungCapService.findById(id);
-        return ncc.map(value -> ResponseEntity.ok(
-                        new ResponseObject("success", "Lấy thông tin nhà cung cấp thành công", value)
-                ))
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                        new ResponseObject("error", "Không tìm thấy nhà cung cấp với ID: " + id, null)
-                ));
+        return ncc.map(value -> {
+            NhaCungCapListDTO dto = new NhaCungCapListDTO();
+            dto.setMaNhaCungCap(value.getMaNhaCungCap());
+            dto.setTen(value.getTen());
+            dto.setDiaChi(value.getDiaChi());
+            dto.setSoDienThoai(value.getSoDienThoai());
+            dto.setEmail(value.getEmail());
+            return ResponseEntity.ok(
+                    new ResponseObject("success", "Lấy thông tin nhà cung cấp thành công", dto)
+            );
+        })
+        .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ResponseObject("error", "Không tìm thấy nhà cung cấp với ID: " + id, null)
+        ));
     }
 
     @PostMapping
@@ -84,26 +93,52 @@ public class NhaCungCapController {
             @RequestBody NhaCungCap updatedNCC) {
 
         try {
-            Optional<NhaCungCap> existing = nhaCungCapService.findById(id);
-            if (existing.isEmpty()) {
+            Optional<NhaCungCap> existingOptional = nhaCungCapService.findById(id);
+            if (existingOptional.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                         new ResponseObject("error", "Không tìm thấy nhà cung cấp với ID: " + id, null)
                 );
             }
 
-            // Validate các trường
-            if (updatedNCC.getTen() == null || updatedNCC.getTen().isBlank()) {
-                return ResponseEntity.badRequest().body(
-                        new ResponseObject("error", "Tên nhà cung cấp không được để trống", null)
-                );
+            NhaCungCap existingNCC = existingOptional.get();
+
+            // Apply updates only for fields present in the request body
+            if (updatedNCC.getTen() != null && !updatedNCC.getTen().isBlank()) {
+                existingNCC.setTen(updatedNCC.getTen());
+            }
+            if (updatedNCC.getDiaChi() != null) {
+                existingNCC.setDiaChi(updatedNCC.getDiaChi());
+            }
+            if (updatedNCC.getSoDienThoai() != null) {
+                 // Basic validation for phone number if provided
+                 if (!PHONE_PATTERN.matcher(updatedNCC.getSoDienThoai()).matches()) {
+                     return ResponseEntity.badRequest().body(
+                             new ResponseObject("error", "Số điện thoại không hợp lệ (phải có 10 chữ số)", null)
+                     );
+                 }
+                existingNCC.setSoDienThoai(updatedNCC.getSoDienThoai());
+            }
+            if (updatedNCC.getEmail() != null) {
+                // Basic validation for email if provided
+                 if (!EMAIL_PATTERN.matcher(updatedNCC.getEmail()).matches()) {
+                      return ResponseEntity.badRequest().body(
+                              new ResponseObject("error", "Email không hợp lệ", null)
+                      );
+                 }
+                existingNCC.setEmail(updatedNCC.getEmail());
             }
 
-            // Cập nhật thông tin
-            updatedNCC.setMaNhaCungCap(id);
-            NhaCungCap savedNCC = nhaCungCapService.save(updatedNCC);
+            NhaCungCap savedNCC = nhaCungCapService.save(existingNCC);
+
+            NhaCungCapListDTO dto = new NhaCungCapListDTO();
+            dto.setMaNhaCungCap(savedNCC.getMaNhaCungCap());
+            dto.setTen(savedNCC.getTen());
+            dto.setDiaChi(savedNCC.getDiaChi());
+            dto.setSoDienThoai(savedNCC.getSoDienThoai());
+            dto.setEmail(savedNCC.getEmail());
 
             return ResponseEntity.ok(
-                    new ResponseObject("success", "Cập nhật nhà cung cấp thành công", savedNCC)
+                    new ResponseObject("success", "Cập nhật nhà cung cấp thành công", dto)
             );
 
         } catch (Exception e) {
