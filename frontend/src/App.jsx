@@ -9,6 +9,7 @@ import Dashboard from "./pages/Admin/Dashboard.jsx";
 import AdminLayout from "./components/Admin/AdminLayout";
 import ClientLayout from "./components/Client/ClientLayout.jsx";
 import ManageProducts from "./pages/Admin/ManageAccessory.jsx";
+import ProductDetailClient from "./pages/Client/ProductDetail.jsx"
 import ManageCategories from "./pages/Admin/ManageCategories.jsx";
 import ImportOrders from "./pages/Admin/ImportOrders.jsx";
 import SalesOrders from "./pages/Admin/SalesOrders.jsx";
@@ -31,8 +32,6 @@ import UserDetail from "./pages/Admin/UserDetail.jsx";
 import UserCreate from "./pages/Admin/UserCreate.jsx";
 import CreatePetProduct from "./pages/Admin/CreatePetProduct.jsx";
 import CreateAccessoryProduct from "./pages/Admin/CreateAccessoryProduct.jsx";
-import DetailSuppliers from "./pages/Admin/DetailSuppliers.jsx";
-import CreateSuppliers from "./pages/Admin/CreateSuppliers.jsx";
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
   useEffect(() => {
@@ -46,7 +45,7 @@ const App = () => {
     );
   }
   // console.log("isCheckingAuth:", isCheckingAuth);
-  console.log("authUser:", authUser);
+  // console.log("authUser:", authUser);
   return (
     <div>
       <Routes>
@@ -57,6 +56,7 @@ const App = () => {
           <Route path="danh-muc-cun" element={<DogCategory />} />
           <Route path="dang-nhap" element={<Login />} />
           <Route path="dang-ky" element={<Registeration />} />
+          <Route path="/san-pham/:id" element={<ProductDetailClient />} />
         </Route>
 
         {/* Admin route */}
@@ -98,9 +98,6 @@ const App = () => {
             <Route path="users/create" element={<UserCreate />} />
 
             <Route path="suppliers" element={<ManageSuppliers />} />
-            <Route path="suppliers/:id/detail" element={<DetailSuppliers />} />
-            <Route path="suppliers/create" element={<CreateSuppliers />} />
-
             <Route path="reports" element={<RevenueReports />} />
             <Route path="profile" element={<UserProfile />} />
           </Route>
