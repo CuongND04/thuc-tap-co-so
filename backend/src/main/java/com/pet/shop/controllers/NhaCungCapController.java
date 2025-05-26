@@ -22,7 +22,7 @@ public class NhaCungCapController {
 
     // Regex kiểm tra email và số điện thoại
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
-    private static final Pattern PHONE_PATTERN = Pattern.compile("^\\d{10}$");
+    private static final Pattern PHONE_PATTERN = Pattern.compile("^\\d{10,11}$");
 
     @GetMapping
     public ResponseEntity<ResponseObject> getAllNhaCungCap() {
@@ -64,7 +64,7 @@ public class NhaCungCapController {
             // Validate số điện thoại
             if (newNCC.getSoDienThoai() != null && !PHONE_PATTERN.matcher(newNCC.getSoDienThoai()).matches()) {
                 return ResponseEntity.badRequest().body(
-                        new ResponseObject("error", "Số điện thoại không hợp lệ (phải có 10 chữ số)", null)
+                        new ResponseObject("error", "Số điện thoại không hợp lệ (phải có 10 hoặc 11 chữ số)", null)
                 );
             }
 

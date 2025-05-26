@@ -71,6 +71,28 @@ const AdminLayout = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+
+  const extractKeys = (menuItems) => {
+    const keys = [];
+
+    menuItems.forEach((item) => {
+      if (item.key?.startsWith("/")) {
+        keys.push(item.key);
+      }
+      if (item.children) {
+        keys.push(...extractKeys(item.children));
+      }
+    });
+
+    return keys;
+  };
+  const flatMenuKeys = extractKeys(items);
+
+  // Tìm route phù hợp nhất
+  const selectedKey = flatMenuKeys
+    .filter((key) => location.pathname.startsWith(key))
+    .sort((a, b) => b.length - a.length)[0]; // ưu tiên key dài hơn
+  console.log("selectedKey: ", selectedKey);
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider
@@ -93,7 +115,7 @@ const AdminLayout = () => {
         </div>
         <Menu
           theme="dark"
-          selectedKeys={[location.pathname]} // ✅ luôn chọn đúng item theo route
+          selectedKeys={selectedKey ? [selectedKey] : []}
           mode="inline"
           items={items}
           onClick={handleMenuClick}
