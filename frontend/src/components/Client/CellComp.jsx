@@ -7,7 +7,7 @@ const CellComp = ({prodID, imgSource, prodName, price, newStat}) => {
                   <div className="product-iteam">
                     <div className="product-thumb">
                       <div className="product-thumb-img">
-                        <a href="#">
+                        <a href={`/san-pham/${prodID}`}>
                           {newStat && <div className="badge">
                             <p>New</p>
                           </div>}
@@ -21,7 +21,7 @@ const CellComp = ({prodID, imgSource, prodName, price, newStat}) => {
                           </div>
                         </a>
                         <div className="function-icon">
-                          <a href="#">
+                          <a href="">
                             <i className="fa-regular fa-heart">
                               <div className="tooltip">Yêu Thích</div>
                             </i>
@@ -53,7 +53,7 @@ const CellComp = ({prodID, imgSource, prodName, price, newStat}) => {
                         </div>
                       </div>
                       <h3>
-                        <a href="">{prodName}</a>
+                        <a href={`/san-pham/${prodID}`}>{prodName}</a>
                       </h3>
                       <p>{price}₫</p>
                     </div>

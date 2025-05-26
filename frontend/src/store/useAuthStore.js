@@ -142,6 +142,7 @@ export const useAuthStore = create((set, get) => ({
   //**TODO: sau phải gọi api logout để xác thực chứ không được làm thô như này */
   logout: async () => {
     try {
+      const res = await axiosInstance.post("/auth/logout");
       localStorage.removeItem("auth_user"); // Xóa user trong localStorage
       localStorage.removeItem("auth_token");
       set({ authUser: null });

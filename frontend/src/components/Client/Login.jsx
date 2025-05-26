@@ -25,7 +25,7 @@ const Login = () => {
         matKhau: password,
       });
 
-    navigate("/");
+    if(authUser) navigate("/");
 
     // try {
     //   login({

@@ -35,9 +35,9 @@ const FeaturedProducts = () => {
             </div>
             
             <article>
-              <div className="grid grid-cols-4 gap-x-50 gap-y-10 auto-cols-max justify-center">
+              <div className="flex flex-wrap items-center justify-between">
               {products && products.map((prod) => (
-                <CellComp key={prod.maSanPham} prodID={prod.maSanPham} imgSoure={prod.hinhAnh} prodName={prod.tenSanPham} price={prod.giaBan} />
+                <CellComp key={prod.maSanPham} prodID={prod.maSanPham} imgSource={prod.hinhAnh} prodName={prod.tenSanPham} price={prod.giaBan} />
               ))}
               </div>
             {/* <CellComp prodID="SP00370" imgSource="/IMG/TrangChu/TrangChu17.jpg" prodName="PHỐC SÓC BÉ XÍU CƯNG XĨU" price="20.000.000" newStat={true} /> */}

@@ -1,0 +1,398 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  width: 100%;
+}
+
+header {
+  width: 100%;
+  border-bottom: 1px solid #cf72aa;
+}
+
+.container {
+  padding: 0 138px;
+  display: flex;
+}
+
+.logo {
+  margin-top: 11px;
+  width: 25%;
+  display: flex;
+  justify-content: center;
+}
+
+nav {
+  width: 75%;
+  margin-left: 14px;
+}
+
+.function {
+  display: flex;
+}
+
+.menu .function-menu {
+  margin-top: 11px;
+  display: inline-flex;
+}
+
+.menu .function-menu li {
+  position: relative;
+  display: inline-block;
+  border-radius: 6px;
+  height: 40px;
+}
+
+.function-menu li a {
+  display: block;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 15px;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 14px;
+  font-family: 'Dosis', sans-serif;
+}
+
+.dropdown::after {
+  content: "\f107";
+  font-family: 'FontAwesome';
+  margin-left: 5px;
+  display: inline-block;
+}
+
+.dropdown-menu {
+  position: absolute;
+  display: none;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  z-index: 3;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+}
+
+.dropdown-menu li {
+  width: 200px;
+}
+
+.dropdown-menu li a {
+  border-bottom: 1px solid silver;
+  padding: 0 10px;
+  display: block;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-family: 'Dosis', sans-serif;
+}
+
+.function-menu li:hover .dropdown-menu {
+  display: block;
+}
+
+.function-menu li a:hover {
+  color: #de8ebe;
+}
+
+.dropdown-menu li:hover {
+  background-color: #de8ebe;
+  border-radius: 0;
+}
+
+.dropdown-menu li a:hover {
+  color: white;
+}
+
+.menu_Cart {
+  margin: 6px 10px 0 10px;
+  border-radius: 50%;
+  min-width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #de8ebe;
+}
+
+.menu_Cart_Boder {
+  border: 1px dotted white;
+  border-radius: 50%;
+  background-color: #cf72aa;
+}
+
+.menu_Cart_Boder button {
+  background-color: transparent;
+  border: none;
+  width: 45px;
+  font-size: 30px;
+  height: 45px;
+}
+
+.menu_Cart_Boder button i {
+  color: #fff;
+}
+
+.function-login {
+  position: relative;
+  margin: 6px 0;
+  display: flex;
+  height: 52px;
+  justify-content: center;
+  align-items: center;
+}
+
+.login a,
+.login p {
+  line-height: 52px;
+  font-size: 14px;
+  font-family: Coiny, cursive;
+  font-weight: 500;
+}
+
+.function-login p {
+  display: none;
+  position: absolute;
+}
+
+.login a:nth-child(1):after {
+  content: '/';
+  margin: 10px;
+}
+
+.login a:hover {
+  color: #cf72aa;
+}
+
+.cart {
+  display:none;
+  position: fixed;
+  margin-top: 5px;
+  top: 0;
+  right: 0;
+  min-height: 100vh;
+  width: 380px;
+  border: 1px solid #cf72aa;
+  z-index: 4;
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+.cart h2 {
+  margin: 20px;
+  text-align: center;
+  color: #cf72aa;
+  font-weight: 500;
+  font-size: 30px;
+  text-shadow: 0 2px black;
+  font-family: 'Coiny', cursive;
+}
+
+.cart ul {
+  margin: 0 10px;
+}
+
+.cart ul li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.cart .remove-from-cart {
+  width: 35px;
+  height: 35px;
+  border: 1px solid #cf72aa;
+  background-color: #fff;
+  border-radius: 50%;
+}
+
+.cart #close {
+  margin-top: 5px;
+  border: none;
+  border-radius: 50%;
+}
+
+.cart #close i {
+  color: #fff;
+  font-size: 30px;
+  background-color: #de8ebe;
+  border-radius: 50%;
+}
+
+.cart #total {
+  width: 100%;
+  height: 36px;
+  background-color: #de8ebe;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+}
+
+.cart .info-cart {
+  color: #cf72aa;
+  font-size: 14px;
+  font-family: 'Coiny', cursive;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 300px;
+}
+
+.cart #ThanhToan {
+  width: 100%;
+  height: 36px;
+  font-family: Coiny, cursive;
+  font-weight: 500;
+  background-color: #ccc;
+  color: #fff;
+  font-size: 18px;
+  border: 1px solid #de8ebe;
+}
+
+.cart .function-close {
+  text-align: center;
+}
+
+.panel {
+  margin-top: 45px;
+  width: 100%;
+}
+
+.panel-item img {
+  width: 768px;
+  height: 267.15px;
+}
+
+.panel-button {
+  width: 768px;
+  position: absolute;
+  top: 32%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.panel-button button {
+  background-color: transparent;
+  border: 1px solid #fff;
+  color: white;
+  padding: 10px;
+  font-size: 30px;
+  cursor: pointer;
+  pointer-events: all;
+  transition: background-color 0.3s;
+}
+
+.panel-button .comeback {
+  margin-left: 10px;
+}
+
+.panel-button .next {
+  margin-right: 10px;
+}
+
+.function-search {
+  position: relative;
+  margin: 15px 0 25px;
+  display: flex;
+  justify-content: flex-end;
+  width: 768px;
+  height: 40px;
+}
+
+.select {
+  position: relative;
+  width: 170px;
+  height: 100%;
+  border: 1px solid #e5e5e5;
+  background-color: #fff;
+  z-index: 2;
+}
+
+.select span {
+  position: static;
+  display: inline-block;
+  padding: 10px 15px 11px;
+}
+
+.select span::after {
+  content: "\f107";
+  font-family: 'FontAwesome';
+  margin-left: 35px;
+}
+
+.select:hover .dropdown-combobox {
+  display: block;
+}
+
+.dropdown-combobox {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
+  z-index: 3;
+}
+
+.dropdown-combobox li {
+  background-color: #dfdddda5;
+  margin: 2px;
+}
+
+.dropdown-combobox li a {
+  text-decoration: none;
+  color: #000;
+  display: block;
+  padding: 10px;
+}
+
+.dropdown-combobox li:hover {
+  background-color: #cf72aa;
+}
+
+.dropdown-combobox li a:hover {
+  color: #fff;
+}
+
+.dropdown-combobox .active a {
+  background-color: #df412f;
+  color: #fff;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  z-index: 1;
+}
+
+.search input {
+  height: 100%;
+  width: 350px;
+  padding: 0 20px;
+  border: 1px solid #ccc;
+}
+
+.search input:focus {
+  outline: none;
+}
+
+.search button {
+  width: 60px;
+  height: 40px;
+  background-color: rgb(37, 37, 37);
+  cursor: pointer;
+  border-radius: 0 6px 6px 0;
+}
+
+.search button i {
+  color: #fff;
+}
+
+/* -------------------------------------------------- */

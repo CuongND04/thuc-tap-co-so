@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Loader } from "lucide-react";
 import {
   Popover,
   PopoverButton,
@@ -12,7 +13,10 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/solid";
 import { useAuthStore } from "../../store/useAuthStore";
+import { useCartStore } from "../../store/useCartStore.js";
 import { useNavigate } from "react-router-dom";
+import Cart from "./Cart.jsx";
+
 // **TODO: xóa bớt một cái header không dùng đi
 const images = [
   "https://github.com/DoanQuocHuy2308/MatPetFamiLy/blob/master/IMG/TrangChu/TrangChu09.jpg?raw=true",
@@ -40,9 +44,9 @@ const menu2 = ["Đấu giá thú cưng - Từ thiện"];
 
 const Header = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const checkAuth = useAuthStore((state) => state.checkAuth);
-  const authUser = useAuthStore((state) => state.authUser);
-  const logout = useAuthStore((state) => state.logout);
+  const [openCart, setOpenCart] = useState(false);
+  const {checkAuth, authUser, userProfile, logout, getProfile} = useAuthStore();
+  const {userCart, getCart, isGettingCart } = useCartStore();
 
   const next = () => {
     setCurrentIndex((prev) => (prev + 1) % images.length);
@@ -52,18 +56,29 @@ const Header = () => {
     setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
   };
 
-  // const loggingOut = () => {
-  //   if (checkAuth) {
-  //   logout;
-  //   } else {
-  //     console.log("User is not logged in!");
-  //   }
-  // };
+  const toggleCart = () => {
+    setOpenCart(!openCart);
+  }
+
+  const toggleCartOff = () => {
+    setOpenCart(false);
+  }
 
   useEffect(() => {
     const interval = setInterval(next, 6000);
     return () => clearInterval(interval);
   }, []);
+
+  // const test = getProfile();
+  console.log(userProfile);
+  
+  if (isGettingCart) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader className="size-10 animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -177,16 +192,43 @@ const Header = () => {
               >
                 Liên hệ
               </a>
+
               {/* Login components */}
               {checkAuth}
-              {authUser && (
+              {authUser && 
+              <>
+              <div className="inline-flex items-center">
+                <div className="mt-[6px] mb-[10px] ml-[10px] rounded-[50%] w-[50px] h-[50px] flex justify-center items-center bg-[#de8ebe]">
+                <div className="rounded-[50%] border-[1px] border-white border-dotted bg-[#cf72aa]">
+                  <button type="button" onClick={toggleCart} className="bg-transparent border-0 w-[45px] h-[45px] text-[30px] group/btn1">
+                    <i className="fa-solid fa-bag-shopping fa-fw text-white group-hover/btn1:text-[#de8ebe]"></i>
+                  </button>
+                </div>
+                </div>
                 <p className="text-lg font-semibold text-gray-900">
                   Chào mừng, {authUser.hoTen}!{" "}
                   <button onClick={logout} className="hover:text-[#de83be]">
                     Đăng xuất
                   </button>
                 </p>
-              )}
+              </div>
+
+              {openCart && 
+              (<div className="fixed mt-[5px] top-0 right-0 min-h-[100vh] w-[380px] border-[1px] border-solid border-[#cf72aa] z-150 bg-white rounded-[10px]">
+
+              <div className="text-center">
+                  <button onClick={toggleCartOff}>
+                    <i className="fa-regular fa-circle-xmark"></i>
+                  </button>
+              </div>
+              <h2 className="m-[20px] text-center text-[#cf72aa] font-[500] text-[30px] text-shadow text-shadow-black text-shadow-[2px] font-[Coiny]">Giỏ Hàng</h2>
+              <ul className="mr-[10px] ml-[10px]">{/* Danh sách sản phẩm trong giỏ hàng */}</ul>
+              <p className="w-[100%] h-[36px] bg-[#de8ebe] text-white flex justify-center items-center font-[18px]">Tổng tiền: 0₫</p>
+              <button className="w-[100%] h-[36px] font-[Coiny] font-medium bg-[#ccc] text-fff text-[18px] rounded-[1px] border-solid border-[#de8ebe]">Thanh Toán</button>
+              </div>)}
+
+              </>                
+              }
 
               {!authUser && (
                 <p className="text-lg font-semibold text-gray-900">
@@ -206,7 +248,11 @@ const Header = () => {
                 </p>
               )}
             </PopoverGroup>
+
+            
           </nav>
+
+          
 
           {/* Scrolling Frame */}
 
