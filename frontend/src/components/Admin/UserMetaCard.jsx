@@ -225,19 +225,18 @@ const UserMetaCard = ({ userProfile }) => {
 
                   <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
                     <Form.Item
-                      name="hoTen"
-                      label="Tên người dùng"
-                      className="col-span-2 lg:col-span-1"
-                    >
-                      <Input />
-                    </Form.Item>
-
-                    <Form.Item
                       name="tenDangNhap"
                       label="Tên đăng nhập"
                       className="col-span-2 lg:col-span-1"
                     >
                       <Input disabled />
+                    </Form.Item>
+                    <Form.Item
+                      name="hoTen"
+                      label="Tên người dùng"
+                      className="col-span-2 lg:col-span-1"
+                    >
+                      <Input />
                     </Form.Item>
 
                     <Form.Item
@@ -255,7 +254,13 @@ const UserMetaCard = ({ userProfile }) => {
                     >
                       <Input />
                     </Form.Item>
-
+                    <Form.Item
+                      name="diaChi"
+                      label="Địa chỉ"
+                      className="col-span-2 lg:col-span-1"
+                    >
+                      <Input />
+                    </Form.Item>
                     <Form.Item
                       name="avatar"
                       label="Ảnh đại diện"
@@ -298,7 +303,7 @@ const UserMetaCard = ({ userProfile }) => {
                   onClick={closeModal}
                   className="dark:text-white dark:border-gray-600"
                 >
-                  Close
+                  Đóng
                 </Button>
                 <Button
                   type="primary"
@@ -314,7 +319,7 @@ const UserMetaCard = ({ userProfile }) => {
                       });
                   }}
                 >
-                  Save Changes
+                  Lưu thay đổi
                 </Button>
               </div>
             </Form>

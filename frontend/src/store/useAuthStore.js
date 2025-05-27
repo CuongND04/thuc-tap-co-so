@@ -14,7 +14,6 @@ export const useAuthStore = create((set, get) => ({
   isCheckingAuth: true, // mặc định là true, sau khi xác thực xong mới set trạng thái là false
   isFetchingProfile: false,
   // đây là hàm để lấy ra thông tin user đã đăng nhập từ local storage
-  isCheckingAuth: true,
 
   checkAuth: async () => {
     try {

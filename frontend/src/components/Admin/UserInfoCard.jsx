@@ -49,10 +49,10 @@ const UserInfoCard = ({ userProfile }) => {
 
               <div>
                 <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                  Bio
+                  Địa chỉ
                 </p>
                 <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                  Quản trị viên cửa hàng thú cưng
+                  {userProfile?.diaChi}
                 </p>
               </div>
 

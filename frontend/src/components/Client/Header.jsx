@@ -37,15 +37,25 @@ const menu1 = [
   "Mèo Chân Ngắn",
   "Mèo Tai Cụp",
 ];
-
-const menu2 = ["Đấu giá thú cưng - Từ thiện"];
+const userMenu = [
+  { label: "Trang cá nhân", path: "/trang-ca-nhan" },
+  { label: "Đơn hàng của tôi", path: "/don-hang" },
+  { label: "Danh sách yêu thích", path: "/yeu-thich" },
+];
 
 const Header = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentUserProfile, setCurrentUserProfile] = useState([]);
+  const [currentUserProfile, setCurrentUserProfile] = useState(null);
   const [openCart, setOpenCart] = useState(false);
-  const {checkAuth, authUser, logout, getProfile} = useAuthStore();
-  const {userCart, getCart, isGettingCart } = useCartStore();
+  const {
+    checkAuth,
+    authUser,
+    logout,
+    getProfile,
+    isFetchingProfile,
+    userProfile,
+  } = useAuthStore();
+  const { userCart, getCart, isGettingCart } = useCartStore();
 
   const next = () => {
     setCurrentIndex((prev) => (prev + 1) % images.length);
@@ -57,11 +67,11 @@ const Header = () => {
 
   const toggleCart = () => {
     setOpenCart(!openCart);
-  }
+  };
 
   const toggleCartOff = () => {
     setOpenCart(false);
-  }
+  };
 
   useEffect(() => {
     const interval = setInterval(next, 6000);
@@ -69,34 +79,32 @@ const Header = () => {
   }, []);
 
   useEffect(() => {
-      const fetchCurrentProfile = async () => {
-        const res = await getProfile();
-        if(res) setCurrentUserProfile(res);
+    const fetchCurrentProfile = async () => {
+      const res = await getProfile();
+      if (res) setCurrentUserProfile(res);
+    };
+    if (authUser) fetchCurrentProfile(); // Gọi hàm async bên trong useEffect
+  }, [authUser]);
+  // console.log("userProfile: ", userProfile);
 
-      };
-      if(authUser) fetchCurrentProfile(); // Gọi hàm async bên trong useEffect
-    }, []);
-    // console.log("userProfile: ", userProfile);
+  useEffect(() => {
+    const fetchCart = async () => {
+      const res = await getCart(currentUserProfile.maNguoiDung);
+      console.log("userCart:", userCart);
+    };
+    if (currentUserProfile) fetchCart(); // Gọi hàm async bên trong useEffect
+  }, []);
 
-    useEffect(() => {
-      const fetchCart = async () => {
-        const res = await getCart(currentUserProfile.maNguoiDung);
-
-        console.log("userCart:", userCart);
-      };
-      if(currentUserProfile) fetchCart(); // Gọi hàm async bên trong useEffect
-    }, []);
-  
-  if (isGettingCart) {
+  if (isGettingCart || isFetchingProfile) {
     return (
       <div className="flex items-center justify-center h-screen">
         <Loader className="size-10 animate-spin" />
       </div>
     );
   }
-
+  console.log("currentUserProfile: ", currentUserProfile);
   return (
-    <div>
+    <div className="flex justify-center items-center">
       <header className="flex justify-center">
         {/* Logo Space */}
         <div>
@@ -110,8 +118,8 @@ const Header = () => {
         </div>
 
         {/* Navigation Bar */}
-        <div className="w-300 grid grid-rows-2 -gap-y-100">
-          <nav className="mt-5 -ml-30 h-10 w-full flex justify-center">
+        <div className="w-[900px] grid grid-rows-2 ">
+          <nav className="mt-5 h-10 w-full flex justify-center">
             <PopoverGroup className="hidden lg:flex lg:gap-x-12">
               <a
                 href="/"
@@ -161,40 +169,6 @@ const Header = () => {
                 Phụ kiện
               </a>
 
-              <Popover className="relative">
-                <PopoverButton className="flex items-center text-lg font-semibold text-gray-900 hover:text-[#de8ebe]/87 duration-200">
-                  Dịch vụ
-                  <ChevronDownIcon
-                    aria-hidden="true"
-                    className="size-5 flex-none text-gray-400"
-                  />
-                </PopoverButton>
-
-                <PopoverPanel
-                  transition
-                  className="absolute top-full -left-8 z-10 w-50 max-w-md overflow-hidden rounded-2xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
-                >
-                  <div className="p-4">
-                    {menu2.map((item) => (
-                      <div
-                        key={item}
-                        className="group relative flex items-center gap-x-6 rounded-lg p-1 text-sm/6 hover:bg-gray-50"
-                      >
-                        <div className="flex-auto">
-                          <a
-                            href={`/danh-muc-cun/${item}`}
-                            className="block font-semibold text-gray-900"
-                          >
-                            {item}
-                            <span className="absolute inset-0" />
-                          </a>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </PopoverPanel>
-              </Popover>
-
               <a
                 href="#"
                 className="text-lg font-semibold text-gray-900 hover:text-[#de83be]"
@@ -210,40 +184,93 @@ const Header = () => {
 
               {/* Login components */}
               {checkAuth}
-              {authUser && 
-              <>
-              <div className="inline-flex items-center">
-                <div className="mt-[6px] mb-[10px] ml-[10px] rounded-[50%] w-[50px] h-[50px] flex justify-center items-center bg-[#de8ebe]">
-                <div className="rounded-[50%] border-[1px] border-white border-dotted bg-[#cf72aa]">
-                  <button type="button" onClick={toggleCart} className="bg-transparent border-0 w-[45px] h-[45px] text-[30px] group/btn1">
-                    <i className="fa-solid fa-bag-shopping fa-fw text-white group-hover/btn1:text-[#de8ebe]"></i>
-                  </button>
-                </div>
-                </div>
-                <p className="text-lg font-semibold text-gray-900">
-                  Chào mừng, {authUser.hoTen}!{" "}
+              {authUser && (
+                <>
+                  <div className="inline-flex items-center">
+                    <div className="mt-[6px] mb-[10px] ml-[10px] rounded-[50%] w-[50px] h-[50px] flex justify-center items-center bg-[#de8ebe]">
+                      <div className="rounded-[50%] border-[1px] border-white border-dotted bg-[#cf72aa]">
+                        <button
+                          type="button"
+                          onClick={toggleCart}
+                          className="bg-transparent border-0 w-[45px] h-[45px] text-[30px] group/btn1"
+                        >
+                          <i className="fa-solid fa-bag-shopping fa-fw text-white group-hover/btn1:text-[#de8ebe]"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <p className="text-lg font-semibold text-gray-900 ml-5">
+                      {/* Chào mừng, {authUser.hoTen}!{" "}
                   <button onClick={logout} className="hover:text-[#de83be]">
                     Đăng xuất
-                  </button>
-                </p>
-              </div>
+                  </button> */}
+                      <Popover className="relative">
+                        <PopoverButton className="flex items-center text-lg font-semibold text-gray-900 hover:text-[#de8ebe]/87 duration-200">
+                          <img
+                            src={userProfile?.avatar}
+                            alt="profile image"
+                            className="object-cover size-12 overflow-hidden rounded-full"
+                          />
+                        </PopoverButton>
 
-              {openCart && 
-              (<div className="fixed mt-[5px] top-0 right-0 min-h-[100vh] w-[380px] border-[1px] border-solid border-[#cf72aa] z-150 bg-white rounded-[10px]">
+                        <PopoverPanel
+                          transition
+                          className="absolute top-full -left-8 z-10 w-60 max-w-md overflow-hidden rounded-2xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
+                        >
+                          <div className="p-4">
+                            {userMenu.map((item) => (
+                              <div
+                                key={item.path}
+                                className="group relative flex items-center gap-x-6 rounded-lg p-2 text-sm/6 hover:bg-gray-50"
+                              >
+                                <div className="flex-auto">
+                                  <a
+                                    href={item.path}
+                                    className="block font-semibold text-gray-900"
+                                  >
+                                    {item.label}
+                                    <span className="absolute inset-0" />
+                                  </a>
+                                </div>
+                              </div>
+                            ))}
+                            {/* Đăng xuất */}
+                            <div className="mt-2 border-t pt-2">
+                              <button
+                                onClick={logout}
+                                className="w-full text-left font-semibold text-gray-900 hover:text-[#de83be] px-2 py-1 text-sm/6"
+                              >
+                                Đăng xuất
+                              </button>
+                            </div>
+                          </div>
+                        </PopoverPanel>
+                      </Popover>
+                    </p>
+                  </div>
 
-              <div className="text-center">
-                  <button onClick={toggleCartOff}>
-                    <i className="fa-regular fa-circle-xmark"></i>
-                  </button>
-              </div>
-              <h2 className="m-[20px] text-center text-[#cf72aa] font-[500] text-[30px] text-shadow text-shadow-black text-shadow-[2px] font-[Coiny]">Giỏ Hàng</h2>
-              <ul className="mr-[10px] ml-[10px]">{/* Danh sách sản phẩm trong giỏ hàng */}</ul>
-              <h1 className="w-[100%] h-[36px] bg-[#de8ebe] text-white flex justify-center items-center font-[18px]">Tổng tiền: 0₫</h1>
-              <button className="w-[100%] h-[36px] font-[Coiny] font-medium bg-[#ccc] text-fff text-[18px] rounded-[1px] border-solid border-[#de8ebe]">Thanh Toán</button>
-              </div>)}
-
-              </>                
-              }
+                  {openCart && (
+                    <div className="fixed mt-[5px] top-0 right-0 min-h-[100vh] w-[380px] border-[1px] border-solid border-[#cf72aa] z-150 bg-white rounded-[10px]">
+                      <div className="text-center">
+                        <button onClick={toggleCartOff}>
+                          <i className="fa-regular fa-circle-xmark"></i>
+                        </button>
+                      </div>
+                      <h2 className="m-[20px] text-center text-[#cf72aa] font-[500] text-[30px] text-shadow text-shadow-black text-shadow-[2px] font-[Coiny]">
+                        Giỏ Hàng
+                      </h2>
+                      <ul className="mr-[10px] ml-[10px]">
+                        {/* Danh sách sản phẩm trong giỏ hàng */}
+                      </ul>
+                      <h1 className="w-[100%] h-[36px] bg-[#de8ebe] text-white flex justify-center items-center font-[18px]">
+                        Tổng tiền: 0₫
+                      </h1>
+                      <button className="w-[100%] h-[36px] font-[Coiny] font-medium bg-[#ccc] text-fff text-[18px] rounded-[1px] border-solid border-[#de8ebe]">
+                        Thanh Toán
+                      </button>
+                    </div>
+                  )}
+                </>
+              )}
 
               {!authUser && (
                 <p className="text-lg font-semibold text-gray-900">
@@ -263,15 +290,11 @@ const Header = () => {
                 </p>
               )}
             </PopoverGroup>
-
-            
           </nav>
-
-          
 
           {/* Scrolling Frame */}
 
-          <div className="-ml-70 flex h-auto justify-center">
+          <div className=" flex h-auto justify-center">
             <div className="-mt-23">
               <img
                 className="w-[768px] h-[267.15px] rounded-3xl"
@@ -333,7 +356,10 @@ const Header = () => {
                     className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
                   />
                 </div>
-                <button type="submit" className="bg-[#de8ebe] text-white shrink-0 w-20 h-10 cursor-pointer rounded-r-md tracking-wide">
+                <button
+                  type="submit"
+                  className="bg-[#de8ebe] text-white shrink-0 w-20 h-10 cursor-pointer rounded-r-md tracking-wide"
+                >
                   Tìm kiếm
                 </button>
               </div>

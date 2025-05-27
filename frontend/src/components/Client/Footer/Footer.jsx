@@ -1,10 +1,10 @@
 import React from "react";
-import "./Footer.css"
+import "./Footer.css";
 
 const Footer = () => {
   return (
     <>
-      <div className="footer-slide">
+      <div className="footer-slide mt-50">
         <div className="footer-slide-iteam">
           <div className="iteam">
             <div className="iteam-info">

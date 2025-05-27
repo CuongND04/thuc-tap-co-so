@@ -9,7 +9,7 @@ import Dashboard from "./pages/Admin/Dashboard.jsx";
 import AdminLayout from "./components/Admin/AdminLayout";
 import ClientLayout from "./components/Client/ClientLayout.jsx";
 import ManageProducts from "./pages/Admin/ManageAccessory.jsx";
-import ProductDetailClient from "./pages/Client/ProductDetail.jsx"
+import ProductDetailClient from "./pages/Client/ProductDetail.jsx";
 import ManageCategories from "./pages/Admin/ManageCategories.jsx";
 import ImportOrders from "./pages/Admin/ImportOrders.jsx";
 import SalesOrders from "./pages/Admin/SalesOrders.jsx";
@@ -32,6 +32,7 @@ import UserDetail from "./pages/Admin/UserDetail.jsx";
 import UserCreate from "./pages/Admin/UserCreate.jsx";
 import CreatePetProduct from "./pages/Admin/CreatePetProduct.jsx";
 import CreateAccessoryProduct from "./pages/Admin/CreateAccessoryProduct.jsx";
+import Profile from "./pages/Client/Profile.jsx";
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
   useEffect(() => {
@@ -53,17 +54,17 @@ const App = () => {
         <Route path="/" element={<ClientLayout />}>
           <Route index element={<HomePage />} />
           <Route path="/" element={<HomePage />} />
+          <Route path="/trang-ca-nhan" element={<Profile />} />
           <Route path="danh-muc-cun" element={<DogCategory />} />
           <Route path="dang-nhap" element={<Login />} />
           <Route path="dang-ky" element={<Registeration />} />
           <Route path="/san-pham/:id" element={<ProductDetailClient />} />
         </Route>
 
-        {/* Admin route */}
         <Route
           path="/admin/login"
           element={
-            authUser ? (
+            authUser && authUser.quyenTruyCap === "ADMIN" ? (
               <Navigate to="/admin/dashboard" replace />
             ) : (
               <LoginAdmin />
