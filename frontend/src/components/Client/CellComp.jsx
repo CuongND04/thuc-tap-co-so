@@ -26,7 +26,7 @@ const CellComp = ({prodID, imgSource, prodName, price, newStat}) => {
                               <div className="tooltip">Yêu Thích</div>
                             </i>
                           </a>
-                          <a href="">
+                          <a href={`/san-pham/${prodID}`}>
                             <i className="fa-solid fa-magnifying-glass">
                               <div className="tooltip">Xem Nhanh</div>
                             </i>
@@ -35,7 +35,7 @@ const CellComp = ({prodID, imgSource, prodName, price, newStat}) => {
                         <div className="function-buy">
                           <div className="function-buy-boder">
                             <button onclick="buy(this)" id="useFunctionBtn">
-                              <span>Mua Hàng</span>
+                              <span>Thêm vào giỏ</span>
                             </button>
                           </div>
                         </div>

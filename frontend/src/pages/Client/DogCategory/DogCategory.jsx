@@ -1,5 +1,5 @@
 import React from "react";
-import CategoryList from "../../../components/Client/CategoryList/CategoryList";
+import CategoryList from "../../../components/Client/CategoryList";
 
 const DogCategory = () => {
   return (

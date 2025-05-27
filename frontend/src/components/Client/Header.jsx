@@ -14,8 +14,6 @@ import {
 } from "@heroicons/react/24/solid";
 import { useAuthStore } from "../../store/useAuthStore";
 import { useCartStore } from "../../store/useCartStore.js";
-import { useNavigate } from "react-router-dom";
-import Cart from "./Cart.jsx";
 
 // **TODO: xóa bớt một cái header không dùng đi
 const images = [
@@ -44,8 +42,9 @@ const menu2 = ["Đấu giá thú cưng - Từ thiện"];
 
 const Header = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentUserProfile, setCurrentUserProfile] = useState([]);
   const [openCart, setOpenCart] = useState(false);
-  const {checkAuth, authUser, userProfile, logout, getProfile} = useAuthStore();
+  const {checkAuth, authUser, logout, getProfile} = useAuthStore();
   const {userCart, getCart, isGettingCart } = useCartStore();
 
   const next = () => {
@@ -69,8 +68,24 @@ const Header = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // const test = getProfile();
-  console.log(userProfile);
+  useEffect(() => {
+      const fetchCurrentProfile = async () => {
+        const res = await getProfile();
+        if(res) setCurrentUserProfile(res);
+
+      };
+      if(authUser) fetchCurrentProfile(); // Gọi hàm async bên trong useEffect
+    }, []);
+    // console.log("userProfile: ", userProfile);
+
+    useEffect(() => {
+      const fetchCart = async () => {
+        const res = await getCart(currentUserProfile.maNguoiDung);
+
+        console.log("userCart:", userCart);
+      };
+      if(currentUserProfile) fetchCart(); // Gọi hàm async bên trong useEffect
+    }, []);
   
   if (isGettingCart) {
     return (
@@ -223,7 +238,7 @@ const Header = () => {
               </div>
               <h2 className="m-[20px] text-center text-[#cf72aa] font-[500] text-[30px] text-shadow text-shadow-black text-shadow-[2px] font-[Coiny]">Giỏ Hàng</h2>
               <ul className="mr-[10px] ml-[10px]">{/* Danh sách sản phẩm trong giỏ hàng */}</ul>
-              <p className="w-[100%] h-[36px] bg-[#de8ebe] text-white flex justify-center items-center font-[18px]">Tổng tiền: 0₫</p>
+              <h1 className="w-[100%] h-[36px] bg-[#de8ebe] text-white flex justify-center items-center font-[18px]">Tổng tiền: 0₫</h1>
               <button className="w-[100%] h-[36px] font-[Coiny] font-medium bg-[#ccc] text-fff text-[18px] rounded-[1px] border-solid border-[#de8ebe]">Thanh Toán</button>
               </div>)}
 
