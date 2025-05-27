@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import com.pet.shop.dto.DonHangListResponseDTO;
+import com.pet.shop.dto.DonHangDetailResponseDTO;
 
 @RestController
 @RequestMapping("/api/don-hang")
@@ -21,22 +23,34 @@ public class DonHangController {
     // Lấy tất cả đơn hàng
     @GetMapping
     public ResponseEntity<ResponseObject> getAllDonHang() {
-        List<DonHang> list = donHangService.findAll();
-        return ResponseEntity.ok(
-                new ResponseObject("success", "Lấy danh sách đơn hàng thành công", list)
-        );
+        try {
+            List<DonHangListResponseDTO> donHangs = donHangService.findAll();
+            return ResponseEntity.ok(
+                    new ResponseObject("success", "Lấy danh sách đơn hàng thành công", donHangs)
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new ResponseObject("error", "Lỗi khi lấy danh sách đơn hàng: " + e.getMessage(), null)
+            );
+        }
     }
 
     // Lấy đơn hàng theo ID
     @GetMapping("/{id}")
     public ResponseEntity<ResponseObject> getById(@PathVariable Long id) {
-        Optional<DonHang> donHang = donHangService.findById(id);
-        return donHang.map(value -> ResponseEntity.ok(
-                        new ResponseObject("success", "Lấy thông tin đơn hàng thành công", value)
-                ))
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                        new ResponseObject("error", "Không tìm thấy đơn hàng", "")
-                ));
+        try {
+            Optional<DonHangDetailResponseDTO> donHangDetail = donHangService.findDonHangDetailById(id);
+            return donHangDetail.map(value -> ResponseEntity.ok(
+                            new ResponseObject("success", "Lấy thông tin chi tiết đơn hàng thành công", value)
+                    ))
+                    .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                            new ResponseObject("error", "Không tìm thấy đơn hàng với ID: " + id, null)
+                    ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new ResponseObject("error", "Lỗi khi lấy thông tin chi tiết đơn hàng: " + e.getMessage(), null)
+            );
+        }
     }
 
     // Tạo mới đơn hàng
