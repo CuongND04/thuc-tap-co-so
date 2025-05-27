@@ -145,6 +145,7 @@ export const useAuthStore = create((set, get) => ({
       const res = await axiosInstance.post("/auth/logout");
       localStorage.removeItem("auth_user"); // Xóa user trong localStorage
       localStorage.removeItem("auth_token");
+      localStorage.removeItem("currentUserCart");
       set({ authUser: null });
       set({ userProfile: null });
       toast.success("Đăng xuất thành công");

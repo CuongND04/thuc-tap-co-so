@@ -3,6 +3,7 @@ import { Loader } from "lucide-react";
 import {useParams} from "react-router-dom"
 import "./Detail.css"
 import { useProductStore } from '../../store/useProductStore';
+import CategoryList from "../../components/Client/CategoryList"
 
 function ProductDetail() {
 const {getDetailProduct, isGettingDetailProduct} = useProductStore();
@@ -31,68 +32,61 @@ const {id} = useParams();
   }
 
 return (
-    <div>
-    <section>
-            <article>
-                <div class="section-article">
-                    <div class="section-article-img">
-                        <div class="img">
-                            <img src="../IMG/ChiTiet/ChiTiet06.jpg" alt="product" id="panel"/>
+    <div className="mt-15">
+    <section className="">
+        <aside className=''> <CategoryList /> </aside>
+            <article class="ml-30 w-[75%]">
+                <div class="w-[100%] flex justify-start content-start mb-[50px]">
+
+                        <div class="flex justify-center aspect-square h-[400px]">
+                            <img src={product.hinhAnh} alt="product"/>
                         </div>
-                        <div class="icon-img">
-                            <button onclick="comeback_product()"></button>
-                            <img src="../IMG/ChiTiet/ChiTiet07.jpg" alt="img icon"/>
-                            <img src="../IMG/ChiTiet/ChiTiet08.jpg" alt="img icon"/>
-                            <img src="../IMG/ChiTiet/ChiTiet09.jpg" alt="img icon"/>
-                            <img src="../IMG/ChiTiet/ChiTiet10.jpg" alt="img icon"/>
-                            <button onclick="next_product()"></button>
-                        </div>
-                        <div class="icon-contact">
-                            <a href="" class="mail"><i class="fa-regular fa-envelope"></i> <span>0</span></a> 
-                            <a href="" class="face"><i class="fa-brands fa-facebook"></i><span>0</span></a>
-                            <a href="" class="twitter"><i class="fa-brands fa-twitter"></i><span>1</span></a>
-                            <a href="" class="pinterest"><i class="fa-brands fa-pinterest"></i><span>0</span></a>
-                        </div>
-                    </div>
-                    <div class="info">
-                        <h1 id="name">{product.tenSanPham}</h1>
-                        <p id="price">{product.giaBan}₫</p>
-                        <div class="form">
-                            <div class="function-number">
-                                <label for="number">Số Lượng: </label>
-                                <input type="number" name="number" id="number" placeholder="0" min="0"/>
-                                <div class="function-info">
-                                    <button type="button" onclick="buychitiet(this)">Thêm vào giỏ</button>
+
+
+                    <div class="info ml-[20px]">
+                        <h1 className="font-[Coiny] ml-[10px] mb-[20px] text-[24px] font-bold overflow-hidden text-ellipsis whitespace-nowrap">{product.tenSanPham}</h1>
+                        <h1 className=" mb-[13px] font-bold text-[18px] text-[#cf72aa]">{product.giaBan}₫</h1>
+
+                        <div class="form w-[100%]">
+                            <div class="function-number flex items-center">
+                                <label className="inline-block max-w-[100%] mb-[5px] font-bold" for="number">Số Lượng: </label>
+                                <input className="ml-[50px] rounded-[4px] h-[40px] w-[100px] pl-[10px] border-[1px] border-solid border-[#e5e5e5]" type="number" name="number" id="number" placeholder="0" min="0"/>
+
+                                <div class="function-info ml-[20px] flex justify-center items-center rounded-[10px] h-[40px] w-[120px] border-[1px] border-solid border-[#e5e5e5] bg-[#cf72aa]">
+                                    <button className="text-[#fff] rounded-[10px] h-[35px] w-[115px] border-[2px] border-dashed border-[#e5e5e5] bg-[#de8ebe] after:mt-[10px] after:mb-[5px] after:ml-[5px] after:content-['\203A']" type="button" onclick="buychitiet(this)">Thêm vào giỏ</button>
                                 </div>
                             </div>
-                            <div class="wishlist">
-                                <a href="TrangChu.html"><i class="fa-regular fa-heart"></i> Add to Wishlist</a>
+
+                            <div class="wishlist mt-[30px] mb-[30px] flex justify-center items-center border-[1px] border-solid border-[#ccc] w-[170px] h-[40px] rounded-[5px]">
+                                <a className="bg-transparent text-[#555] font-normal rounded-[4px] text-[14px] align-top leading-[38px]" href=""><i class="fa-regular fa-heart mr-[6px] text-[#cf72aa]"></i> Yêu thích</a>
                             </div>
+
                             <div class="product_meta">
-                                <div class="info-product">
-                                    <label>Mã san pham: </label>
-                                    <span>{product.maSanPham}</span>
+                                <div class="info-product flex">
+                                    <label className="min-w-[105px] font-normal text-[14px]">Mã sản phẩm: </label>
+                                    <span className="inline-block border-[1px] border-solid border-[#e5e5e5] pt-[4px] pb-[4px] pl-[10px] pr-[10px] rounded-[4px] mb-[5px] text-[12px]">{product.maSanPham}</span>
                                 </div>
-                                <div class="info-product">
-                                    <label>Tình trạng: </label>
-                                    <span>Còn hàng</span>
+                                <div class="info-product flex">
+                                    <label className="min-w-[105px] font-normal text-[14px]">Tình trạng: </label>
+                                    <span className="inline-block border-[1px] border-solid border-[#e5e5e5] pt-[4px] pb-[4px] pl-[10px] pr-[10px] rounded-[4px] mb-[5px] text-[12px]" >Còn hàng</span>
                                 </div>
-                                <div class="info-product">
-                                    <label>Danh mục: </label>
+                                <div class="info-product flex">
+                                    <label className="min-w-[105px] font-normal text-[14px]">Danh mục: </label>
                                     <div class="info-product-category">
-                                        <a href="http://127.0.0.1:3000/DuAn/MatPetFamily/HTML/ThuCung.html">Chó Phốc Sóc - Pomeranian</a>
-                                        <a href="http://127.0.0.1:3000/DuAn/MatPetFamily/HTML/ThuCung.html">Danh Mục Cún</a>
+                                        <a className="inline-block border-[1px] border-solid border-[#e5e5e5] pt-[4px] pb-[4px] pl-[10px] pr-[10px] rounded-[4px] mb-[5px] text-[12px]" href="http://127.0.0.1:3000/DuAn/MatPetFamily/HTML/ThuCung.html">Chó Phốc Sóc - Pomeranian</a>
+                                        <a className="inline-block border-[1px] border-solid border-[#e5e5e5] pt-[4px] pb-[4px] pl-[10px] pr-[10px] rounded-[4px] mb-[5px] text-[12px]" href="http://127.0.0.1:3000/DuAn/MatPetFamily/HTML/ThuCung.html">Danh Mục Cún</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="danhgia">
-                    <p>Đánh Giá (0)</p>
-                    <textarea cols="60" rows="7" placeholder="Đánh giá sản phẩm"></textarea>
-                </div>
+                </div>   
             </article>
+
+            <div className="danhgia w-[75%] border-solid border-[1px] border-[#ccc] border-l-[5px] border-l-[#cf72aa] flex gap-[10px] ml-30 mb-[30px]">
+                    <p className="w-[150px] m-[10px] text-[#cf72aa] font-bold text-[18px]">Đánh Giá (0)</p>
+                    <textarea className="text-[18px] border-none w-[100%] p-[10px] focus:outline-none placeholder:text-[18px]" cols="60" rows="7" placeholder="Đánh giá sản phẩm"></textarea>
+                </div>
         </section>
         </div>
  );

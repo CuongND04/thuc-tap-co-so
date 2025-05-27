@@ -4,7 +4,7 @@ import axiosInstance from "../lib/axios";
 import { formatValues } from "../utils/formatValues";
 
 export const useCartStore = create((set, get) => ({
-  userCart: null,
+  userCart: (localStorage.getItem("currentUserCart") || null),
   isGettingCart: false,
 
   getCart: async (id) => {
@@ -12,7 +12,8 @@ export const useCartStore = create((set, get) => ({
     try {
       const res = await axiosInstance.get(`/gio-hang/${id}`);
       set({ userCart: res.data.data });
-      console.log(res.data.data)
+    //   localStorage.setItem("currentUserCart", res.data.data);
+
     } catch (error) {
       toast.error("Tải giỏ hàng thất bại!");
       return null;
