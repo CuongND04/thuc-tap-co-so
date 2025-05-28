@@ -67,12 +67,14 @@ public class CungCapService {
         );
     }
 
-    public List<CungCapListDTO> getAllCungCap() {
+    public List<CungCapDetailDTO> getAllCungCapWithDetails() {
         return cungCapRepository.findAll().stream()
-                .map(cungCap -> new CungCapListDTO(
+                .map(cungCap -> new CungCapDetailDTO(
                         cungCap.getId().getMaNhaCungCap(),
                         cungCap.getId().getMaSanPham(),
-                        cungCap.getGiaCungCap()
+                        cungCap.getGiaCungCap(),
+                        cungCap.getNhaCungCap().getTen(),
+                        cungCap.getSanPham().getTenSanPham()
                 ))
                 .collect(Collectors.toList());
     }

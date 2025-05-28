@@ -1,9 +1,7 @@
 package com.pet.shop.controllers;
 
 import com.pet.shop.dto.CungCapRequestDTO;
-import com.pet.shop.dto.CungCapListDTO;
 import com.pet.shop.dto.CungCapDetailDTO;
-import com.pet.shop.models.CungCap;
 import com.pet.shop.models.ResponseObject;
 import com.pet.shop.services.CungCapService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +43,7 @@ public class CungCapController {
     @GetMapping
     public ResponseEntity<ResponseObject> getAllCungCap() {
         try {
-            List<CungCapListDTO> cungCaps = cungCapService.getAllCungCap();
+            List<CungCapDetailDTO> cungCaps = cungCapService.getAllCungCapWithDetails();
             return ResponseEntity.ok(
                     new ResponseObject("success", "Lấy danh sách liên kết Cung cấp thành công", cungCaps)
             );
@@ -55,7 +53,6 @@ public class CungCapController {
             );
         }
     }
-
     @GetMapping("/{maNhaCungCap}/{maSanPham}")
     public ResponseEntity<ResponseObject> getCungCapById(@PathVariable Long maNhaCungCap, @PathVariable Long maSanPham) {
         try {
