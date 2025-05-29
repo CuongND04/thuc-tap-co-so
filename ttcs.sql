@@ -109,6 +109,7 @@ BEGIN
     );
 END
 
+
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[cung_cap]') AND type in (N'U'))
 BEGIN
     CREATE TABLE [dbo].[cung_cap] (
@@ -116,6 +117,7 @@ BEGIN
         [ma_san_pham] BIGINT NOT NULL,
         [gia_cung_cap] DECIMAL(18,2) NOT NULL,
         [ngay_cung_cap] DATETIME2 NOT NULL,
+        [so_luong] INT NOT NULL,
         CONSTRAINT [PK_cung_cap] PRIMARY KEY ([ma_nha_cung_cap], [ma_san_pham]),
         CONSTRAINT [FK_cung_cap_nha_cung_cap] FOREIGN KEY ([ma_nha_cung_cap]) 
         REFERENCES [dbo].[nha_cung_cap] ([ma_nha_cung_cap]),
@@ -123,6 +125,15 @@ BEGIN
         REFERENCES [dbo].[san_pham] ([ma_san_pham])
     );
 END
+ELSE
+BEGIN
+    IF COL_LENGTH('dbo.cung_cap', 'so_luong') IS NULL
+    BEGIN
+        ALTER TABLE [dbo].[cung_cap]
+        ADD [so_luong] INT NOT NULL DEFAULT 0;
+    END
+END
+
 
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[yeu_thich]') AND type in (N'U'))
 BEGIN
@@ -255,108 +266,107 @@ VALUES
 
 INSERT INTO [dbo].[danh_muc] ([ten_danh_muc], [mo_ta], [kieu])
 VALUES 
-(N'Chó Alaska Malamute', N'Các giống chó Alaska Malamute', N'thu_cung'),
-(N'Chó Beagle', N'Các giống chó Beagle', N'thu_cung'),
-(N'Chó Corgi', N'Các giống chó Corgi', N'thu_cung'),
-(N'Chó Golden Retriever', N'Các giống chó Golden Retriever', N'thu_cung'),
-(N'Chó Husky Siberian', N'Các giống chó Husky Siberian', N'thu_cung'),
-(N'Chó Phốc Sóc – Pomeranian', N'Các giống chó Phốc Sóc – Pomeranian', N'thu_cung'),
-(N'Chó Poodle', N'Các giống chó Poodle', N'thu_cung'),
-(N'Chó Pug', N'Các giống chó Pug', N'thu_cung'),
-(N'Chó Samoyed', N'Các giống chó Samoyed', N'thu_cung'),
-(N'Mèo Anh (Dài + Ngắn)', N'Các giống mèo Anh (Dài + Ngắn)', N'thu_cung'),
-(N'Mèo Chân Ngắn', N'Các giống mèo Chân Ngắn', N'thu_cung'),
-(N'Mèo Tai Cụp', N'Các giống mèo Tai Cụp', N'thu_cung');
+(N'Chó Alaska', N'Giống chó Alaska Malamute khỏe mạnh, thân thiện và thích hợp với khí hậu lạnh.', N'thu_cung'),
+(N'Chó Corgi', N'Chó Corgi chân ngắn, tính cách vui vẻ và thân thiện với trẻ nhỏ.', N'thu_cung'),
+(N'Chó Bull Pháp', N'Chó Bull Pháp nhỏ gọn, đáng yêu, phù hợp nuôi trong căn hộ.', N'thu_cung'),			
+(N'Mèo Ba Tư', N'Mèo Ba Tư lông dài, mặt xệ, tính cách điềm đạm.', N'thu_cung'),
+(N'Mèo Anh Lông Dài', N'Mèo Anh lông dài, thân thiện và dễ chăm sóc.', N'thu_cung'),
+(N'Mèo Bengal', N'Mèo Bengal có bộ lông vằn độc đáo, năng động và thông minh.', N'thu_cung');
+
 
 INSERT INTO [dbo].[danh_muc] ([ten_danh_muc], [mo_ta], [kieu])
 VALUES
-(N'Balo đựng thú cưng', N'Các loại balo đựng thú cưng tiện lợi', N'phu_kien'),
-(N'Vòng cổ thú cưng', N'Vòng cổ thời trang và đa dạng cho thú cưng', N'phu_kien'),
-(N'Dây dắt chó mèo', N'Dây dắt chất lượng cao cho chó và mèo', N'phu_kien'),
-(N'Nhà và chuồng thú cưng', N'Chuồng và nhà cho thú cưng an toàn', N'phu_kien'),
-(N'Cát vệ sinh cho mèo', N'Cát vệ sinh khử mùi cho mèo', N'phu_kien'),
-(N'Bàn chải chải lông', N'Bàn chải giúp chải lông chó mèo sạch sẽ', N'phu_kien'),
-(N'Áo len cho chó mèo', N'Quần áo giữ ấm cho chó mèo', N'phu_kien');
+(N'Bát', N'Bát ăn và uống cho thú cưng với nhiều chất liệu và kích thước.', N'phu_kien'),
+(N'Vòng cổ thú cưng', N'Vòng cổ các loại: thời trang, định danh, chống ve rận...', N'phu_kien'),
+(N'Đồ y tế', N'Dụng cụ và sản phẩm chăm sóc sức khỏe thú cưng như thuốc, bông, kháng sinh...', N'phu_kien');
+
 
 INSERT INTO [dbo].[san_pham] ([ten_san_pham], [ma_danh_muc], [hinh_anh], [mo_ta], [gia_ban])
 VALUES 
-(N'Chó Alaska Malamute thuần chủng', 1, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1747619293/ThuCungTrang316_ebyo5q.jpg', N'Chó Alaska Malamute thuần chủng, màu xám trắng, 4 tháng tuổi', 20000000),
-(N'Chó Beagle thuần chủng', 2, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1747619292/ThuCungTrang310_mwfrnx.jpg', N'Chó Beagle thuần chủng, màu tam thể, 3 tháng tuổi', 15000000),
-(N'Chó Corgi thuần chủng', 3, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1747619292/ThuCungTrang315_k7t0cc.jpg', N'Chó Corgi thuần chủng, màu vàng đỏ, 5 tháng tuổi', 18000000),
-(N'Chó Golden Retriever thuần chủng', 4, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1747619293/ThuCungTrang314_rftmu4.jpg', N'Chó Golden Retriever thuần chủng, màu vàng kem, 4 tháng tuổi', 22000000),
-(N'Chó Husky Siberian thuần chủng', 5, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1747619292/ThuCungTrang313_hys1ij.jpg', N'Chó Husky Siberian thuần chủng, màu xám đen, 6 tháng tuổi', 23000000),
-(N'Chó Phốc Sóc – Pomeranian thuần chủng', 6, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1747619292/ThuCungTrang312_qn1onk.jpg', N'Chó Phốc Sóc – Pomeranian thuần chủng, màu vàng kem, 3 tháng tuổi', 17000000),
-(N'Chó Poodle thuần chủng', 7, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1747619292/ThuCungTrang311_apzjd7.jpg', N'Chó Poodle thuần chủng, màu trắng, 4 tháng tuổi', 16000000),
-(N'Chó Pug thuần chủng', 8, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1747619293/ThuCungTrang316_ebyo5q.jpg', N'Chó Pug thuần chủng, màu đen, 3 tháng tuổi', 15000000),
-(N'Chó Samoyed thuần chủng', 9, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1747619292/ThuCungTrang310_mwfrnx.jpg', N'Chó Samoyed thuần chủng, màu trắng, 5 tháng tuổi', 21000000),
-(N'Mèo Anh (Dài + Ngắn) thuần chủng', 10, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1747619292/ThuCungTrang315_k7t0cc.jpg', N'Mèo Anh lông dài và ngắn thuần chủng, màu xám xanh, 4 tháng tuổi', 18000000),
-(N'Mèo Chân Ngắn thuần chủng', 11, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1747619293/ThuCungTrang314_rftmu4.jpg', N'Mèo Chân Ngắn thuần chủng, màu vàng, 3 tháng tuổi', 16000000),
-(N'Mèo Tai Cụp thuần chủng', 12, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1747619292/ThuCungTrang313_hys1ij.jpg', N'Mèo Tai Cụp thuần chủng, màu trắng xám, 4 tháng tuổi', 17000000);
+(N'Alaska Đen Trắng', 1, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1748484759/z6015559978898_aaaa70a3bca6d9869da9a49f1deb9567-1536x1536_m0bh73.jpg', N'Alaska Malamute đen trắng, đực, 4 tháng tuổi, nặng 15kg.', 19000000),
+(N'Alaska Nâu Đỏ', 1, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1748484760/z5427990827838_b3ad8a626e7450997007f7ed0dbca9e2_guxqjp.jpg', N'Alaska Malamute nâu đỏ, cái, 4 tháng tuổi, thân thiện.', 19500000),
+(N'Alaska Standard Xám Trắng', 1, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1748484759/Alaska-Standard-Xam-Trang-C12215-1_grznhf.jpg', N'Alaska Malamute chuẩn, xám trắng, 3.5 tháng tuổi, giấy tờ đầy đủ.', 18500000),
+(N'Alaska Oversize Xám Trắng', 1, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1748484758/Alaska-Oversize-Xam-Trang-C12220-1_n2rp28.jpg', N'Alaska Oversize xám trắng, to khỏe, 4.5 tháng tuổi, nguồn gốc rõ ràng.', 22000000),
+
+(N'Corgi ú nu siêu xinh', 2, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1748485410/image-2024-08-22T093139.703-360x360_mbro2x.png', N'Corgi đực, màu trắng vàng, 3 tháng tuổi, lông dày, đáng yêu.', 12500000),
+(N'Corgi Tricolor', 2, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1748485410/corgi-tricolor-cai-2-1536x1536_bmdmk6.jpg', N'Corgi cái, màu tam thể, nhỏ nhắn, 3.5 tháng tuổi.', 13000000),
+(N'Corgi Trắng Vàng', 2, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1748485411/z5747532273899_a92a935e7b39ec3392a3212ba8cb10a4-1536x1536_uobv8n.jpg', N'Corgi đực, trắng vàng, đã tiêm ngừa, giấy tờ đầy đủ.', 13500000),
+
+(N'Bull Pháp Bò Sữa', 3, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1748485570/C2360-C12988-1_ro5w1w.jpg', N'Chó Bull Pháp bò sữa, thân hình chắc khỏe, hiền lành.', 14500000),
+
+(N'Ba Tư Tabby', 4, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1748485724/M12073-1_rcy7ro.jpg', N'Mèo Ba Tư Tabby, lông dài mềm mượt, 2.5 tháng tuổi.', 9500000),
+(N'Ba Tư Silver', 4, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1748485737/M12074-1_ncdtbp.jpg', N'Mèo Ba Tư Silver, màu lông ánh bạc, tính cách hiền lành.', 10000000),
+
+(N'Anh Lông Dài Tricolor', 5, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1748485951/anh-long-dai-tricolor-cai-3_p9kcrw.jpg', N'Mèo Anh lông dài tam thể, 3 tháng tuổi, sức khỏe tốt.', 9500000),
+(N'Anh Lông Dài Tabby', 5, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1748485950/anh-long-dai-tabby-cai-2-1-1536x1536_kmenzc.jpg', N'Mèo Anh lông dài Tabby, dễ nuôi, thân thiện với trẻ.', 9800000),
+
+(N'Bengal Brown', 6, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1748485949/Bengal-Brown-Silver-M12229-1_jyc56h.jpg', N'Mèo Bengal nâu vằn, 3 tháng tuổi, cực kỳ lanh lợi và hiếu động.', 12000000);
 
 
 INSERT INTO [dbo].[san_pham] ([ten_san_pham], [ma_danh_muc], [hinh_anh], [mo_ta], [gia_ban])
 VALUES
--- Balo đựng thú cưng (giả sử ma_danh_muc = 13)
-(N'Balo đựng thú cưng màu xanh', 13, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1747619484/phukien1_07_bq6jbi.jpg', N'Balo đựng thú cưng tiện lợi, chất liệu bền', 450000),
+(N'Bát nhựa đơn 3 ngăn hình mèo', 7, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1748486287/vn-11134207-7r98o-m08ptft1difj14_dk2dav.jpg', N'Bát nhựa có 3 ngăn hình mèo dễ thương, chất liệu bền, phù hợp cho chó mèo', 60000),
+(N'Bát nhựa đôi tròn', 7, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1748486383/4926d027579592c7d32a76ff0efb0251_yok8v1.jpg', N'Bát đôi nhựa tròn tiện dụng, thích hợp đựng thức ăn và nước cho thú cưng', 50000),
+(N'Bát ăn uống tự động 3500ml', 7, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1748486742/vn-11134207-7r98o-m042aaha578tc1_dagkqp.jpg', N'Bát ăn tự động dung tích 3500ml giúp cung cấp thức ăn đều đặn cho thú cưng', 120000),
 
--- Vòng cổ thú cưng (giả sử ma_danh_muc = 14)
-(N'Vòng cổ đính đá cho thú cưng', 14, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1747619484/phukien3_16_u8zhhu.jpg', N'Vòng cổ thời trang, sang trọng cho thú cưng', 320000),
+(N'Vòng cổ Younice & Kitten', 8, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1748486742/39b141b7-9e4c-4181-8e20-540b4e4ed637-jpeg_xj95gw.jpg', N'Vòng cổ thiết kế dễ thương dành cho chó mèo nhỏ, có chuông và khoá an toàn', 35000),
+(N'Vòng cổ đồng móc tròn', 8, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1748486740/download_xbzlom.jpg', N'Vòng cổ bằng đồng bền chắc với móc tròn tiện dụng cho chó trung bình và lớn', 50000),
+(N'Vòng cổ da đính đá 2 hàng', 8, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1748486831/da_v5wesj.jpg', N'Vòng cổ da cao cấp, đính đá 2 hàng sang trọng, thời trang cho thú cưng', 80000),
 
--- Dây dắt chó mèo (giả sử ma_danh_muc = 15)
-(N'Dây dắt chó cao cấp', 15, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1747619484/phukien3_07_ohangh.jpg', N'Dây dắt chó mèo chống giật, bền chắc', 250000),
-
--- Nhà và chuồng thú cưng (giả sử ma_danh_muc = 16)
-(N'Nhà gỗ cho chó mèo', 16, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1747619484/phukien1_07_bq6jbi.jpg', N'Nhà gỗ chắc chắn, phù hợp cho chó mèo', 1200000),
-
--- Cát vệ sinh cho mèo (giả sử ma_danh_muc = 17)
-(N'Cát vệ sinh khử mùi cho mèo', 17, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1747619484/phukien3_16_u8zhhu.jpg', N'Cát vệ sinh an toàn, khử mùi hiệu quả', 350000),
-
--- Bàn chải chải lông (giả sử ma_danh_muc = 18)
-(N'Bàn chải chải lông chó mèo', 18, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1747619484/phukien3_07_ohangh.jpg', N'Bàn chải giúp loại bỏ lông rụng, dễ sử dụng', 150000),
-
--- Áo len cho chó mèo (giả sử ma_danh_muc = 19)
-(N'Áo len giữ ấm cho chó mèo', 19, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1747619484/phukien1_07_bq6jbi.jpg', N'Áo len mềm mại, giữ ấm cho thú cưng', 220000);
+(N'Men tiêu hoá', 9, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1748486739/09122022032316_64037.png_thumb_600x600_dqc4qb.png', N'Men tiêu hóa hỗ trợ đường ruột, giúp thú cưng ăn ngon và hấp thu tốt', 90000),
+(N'Thuốc tẩy giun Sanpet', 9, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1748486889/sanpet_tv_kxgbaf.jpg', N'Thuốc tẩy giun Sanpet dùng cho chó mèo, hiệu quả và an toàn', 40000),
+(N'Dầu Tắm Trị Viêm', 9, N'https://res.cloudinary.com/dc4bgvfbj/image/upload/v1748486738/26eb6a96c3f0ce5ef602641c6400f9b3_lpt2lg.jpg', N'Dầu tắm trị viêm da, dị ứng, nấm cho chó mèo, chiết xuất thảo dược', 120000);
 
 
 
-
-INSERT INTO [dbo].[thu_cung] ([ma_san_pham],  [gioi_tinh], [tuoi], [trang_thai_tiem], [so_luong_ton_kho])
+INSERT INTO [dbo].[thu_cung] ([ma_san_pham], [gioi_tinh], [tuoi], [trang_thai_tiem], [so_luong_ton_kho])
 VALUES 
-(1, N'Đực', N'3 tháng', N'Đã tiêm đủ 2 mũi', 5),
-(2,  N'Cái', N'4 tháng', N'Đã tiêm đủ 2 mũi', 3),
-(3, N'Đực', N'2 tháng', N'Đã tiêm 1 mũi', 4),
-(4,  N'Cái', N'3 tháng', N'Đã tiêm đủ 2 mũi', 6),
-(5, N'Đực', N'4 tháng', N'Đã tiêm đủ 2 mũi', 2),
-(6,  N'Cái', N'3 tháng', N'Đã tiêm đủ 2 mũi', 3),
-(7,  N'Đực', N'5 tháng', N'Đã tiêm đủ 2 mũi', 4),
-(8, N'Cái', N'3 tháng', N'Đã tiêm 1 mũi', 5),
-(9,  N'Đực', N'6 tháng', N'Đã tiêm đủ 3 mũi', 2),
-(10, N'Cái', N'4 tháng', N'Đã tiêm đủ 2 mũi', 3),
-(11,  N'Đực', N'3 tháng', N'Đã tiêm đủ 2 mũi', 2),
-(12,  N'Cái', N'5 tháng', N'Đã tiêm đủ 3 mũi', 1);
+(1, N'Đực', N'4 tháng', N'Đã tiêm đủ 2 mũi', 3),
+(2, N'Cái', N'4 tháng', N'Đã tiêm đủ 2 mũi', 2),
+(3, N'Đực', N'3.5 tháng', N'Đã tiêm đủ 2 mũi', 2),
+(4, N'Đực', N'4.5 tháng', N'Đã tiêm đủ 2 mũi', 1),
+
+(5, N'Đực', N'3 tháng', N'Đã tiêm đủ 2 mũi', 3),
+(6, N'Cái', N'3.5 tháng', N'Đã tiêm đủ 2 mũi', 2),
+(7, N'Đực', N'3.5 tháng', N'Đã tiêm đủ 2 mũi', 2),
+
+(8, N'Đực', N'3 tháng', N'Đã tiêm đủ 2 mũi', 1),
+
+(9, N'Cái', N'2.5 tháng', N'Đã tiêm 1 mũi', 2),
+(10, N'Cái', N'3 tháng', N'Đã tiêm đủ 3 mũi', 1),
+
+(11, N'Cái', N'3 tháng', N'Đã tiêm đủ 3 mũi', 2),
+(12, N'Cái', N'3.5 tháng', N'Đã tiêm đủ 3 mũi', 2),
+
+(13, N'Đực', N'3 tháng', N'Đã tiêm đủ 3 mũi', 1);
 
 
 
 INSERT INTO [dbo].[phu_kien] ([ma_san_pham], [so_luong_ton_kho])
 VALUES
-(13, 50),       -- Balo đựng thú cưng
-(14, 30),    -- Vòng cổ đính đá
-(15, 40),       -- Dây dắt chó mèo
-(16, 10),           -- Nhà gỗ cho chó mèo
-(17, 25),                -- Cát vệ sinh cho mèo
-(18, 35),     -- Bàn chải chải lông
-(19, 15);   -- Áo len cho chó mèo
+(14, 10), -- Bát nhựa đơn 3 ngăn hình mèo
+(15, 12), -- Bát nhựa đôi tròn
+(16, 8),  -- Bát ăn uống tự động 3500ml
+
+(17, 15), -- Vòng cổ Younice & Kitten
+(18, 9),  -- Vòng cổ đồng móc tròn
+(19, 7),  -- Vòng cổ da đính đá 2 hàng
+
+(20, 20), -- Men tiêu hoá
+(21, 18), -- Thuốc tẩy giun Sanpet
+(22, 10); -- Dầu Tắm Trị Viêm
 
 
 -- Insert data into gio_hang table
 INSERT INTO [dbo].[gio_hang] ([ma_khach_hang])
 VALUES 
-(3), (4), (5), (6), (7), (8), (9), (10), (12);
+(1), (2), (3), (4), (5), (6), (7), (8), (9), (10), (11), (12);
 
 -- Insert data into chi_tiet_gio_hang table
 INSERT INTO [dbo].[chi_tiet_gio_hang] ([ma_gio_hang], [ma_san_pham], [so_luong])
 VALUES 
-(1, 1, 1), (1, 7, 2), (1, 11, 1),
+(1, 1, 1),
+(1, 2, 2),(1, 7, 2), (1, 11, 1),
 (2, 4, 1), (2, 8, 3),
 (3, 2, 1), (3, 9, 1),
 (4, 5, 1), (4, 15, 2),
@@ -381,109 +391,138 @@ VALUES
 (N'Xưởng may đồ thú cưng PetFashion', N'Số 67, phố Đội Cấn, Hà Nội', '02437654321', 'petfashion@gmail.com');
 
 
--- Insert data into cung_cap table
-INSERT INTO [dbo].[cung_cap] ([ma_nha_cung_cap], [ma_san_pham], [gia_cung_cap], [ngay_cung_cap])
+-- Insert data into cung_cap table with so_luong (March–May 2025)
+INSERT INTO [dbo].[cung_cap] 
+([ma_nha_cung_cap], [ma_san_pham], [gia_cung_cap], [ngay_cung_cap], [so_luong])
 VALUES 
-(2, 1, 12000000, '2023-01-15'),
-(2, 2, 16000000, '2023-02-20'),
-(2, 3, 10000000, '2023-03-10'),
-(1, 4, 15000000, '2023-01-25'),
-(1, 5, 20000000, '2023-02-15'),
-(1, 6, 18000000, '2023-03-05'),
-(5, 7, 280000, '2023-04-01'),
-(6, 8, 220000, '2023-04-05'),
-(10, 9, 350000, '2023-04-10'),
-(8, 10, 250000, '2023-04-15'),
-(8, 11, 200000, '2023-04-20'),
-(7, 12, 900000, '2023-05-01'),
-(9, 13, 280000, '2023-05-05'),
-(3, 14, 120000, '2023-05-10'),
-(10, 15, 180000, '2023-05-15');
+-- Chó Alaska (1–4)
+(1, 1, 15000000, '2025-03-10', 5),
+(1, 2, 15500000, '2025-03-12', 3),
+(1, 3, 14800000, '2025-03-14', 3),
+(1, 4, 17000000, '2025-03-16', 2),
+
+-- Chó Corgi (5–7)
+(2, 5, 10000000, '2025-03-18', 4),
+(2, 6, 10500000, '2025-03-20', 3),
+(2, 7, 11000000, '2025-03-22', 3),
+
+-- Chó Bull Pháp (8)
+(3, 8, 12000000, '2025-03-24', 2),
+
+-- Mèo Ba Tư (9–10)
+(4, 9, 7500000, '2025-03-26', 3),
+(4, 10, 8000000, '2025-03-28', 2),
+
+-- Mèo Anh lông dài (11–12)
+(5, 11, 7500000, '2025-04-01', 3),
+(5, 12, 7700000, '2025-04-03', 3),
+
+-- Mèo Bengal (13)
+(6, 13, 9500000, '2025-04-05', 2),
+
+-- Phụ kiện: Bát (14–16)
+(7, 14, 40000, '2025-04-10', 12),
+(7, 15, 35000, '2025-04-12', 14),
+(7, 16, 80000, '2025-04-14', 10),
+
+-- Phụ kiện: Vòng cổ (17–19)
+(8, 17, 20000, '2025-04-16', 18),
+(8, 18, 30000, '2025-04-18', 11),
+(8, 19, 60000, '2025-04-20', 9),
+
+-- Thuốc và chăm sóc (20–22)
+(9, 20, 60000, '2025-04-22', 25),
+(9, 21, 25000, '2025-04-24', 20),
+(9, 22, 85000, '2025-04-26', 12);
+
 
 -- Insert data into yeu_thich table
 INSERT INTO [dbo].[yeu_thich] ([ma_khach_hang], [ma_san_pham], [thoi_gian_them])
 VALUES 
-(3, 1, '2023-05-01 10:00:00'),
-(3, 4, '2023-05-02 11:00:00'),
-(4, 2, '2023-05-03 09:00:00'),
-(4, 5, '2023-05-04 14:00:00'),
-(5, 3, '2023-05-05 16:00:00'),
-(5, 6, '2023-05-06 10:00:00'),
-(6, 7, '2023-05-07 11:00:00'),
-(6, 8, '2023-05-08 15:00:00'),
-(7, 9, '2023-05-09 09:00:00'),
-(7, 10, '2023-05-10 13:00:00'),
-(8, 11, '2023-05-11 17:00:00'),
-(8, 12, '2023-05-12 10:00:00'),
-(9, 13, '2023-05-13 14:00:00'),
-(9, 14, '2023-05-14 16:00:00'),
-(10, 15, '2023-05-15 11:00:00');
+(3, 1, '2025-05-01 10:00:00'),
+(3, 4, '2025-05-02 11:00:00'),
+(4, 2, '2025-05-03 09:00:00'),
+(4, 5, '2025-05-04 14:00:00'),
+(5, 3, '2025-05-05 16:00:00'),
+(5, 6, '2025-05-05 10:00:00'),
+(6, 7, '2025-05-07 11:00:00'),
+(6, 8, '2025-05-08 15:00:00'),
+(7, 9, '2025-05-09 09:00:00'),
+(7, 10, '2025-05-10 13:00:00'),
+(8, 11, '2025-05-11 17:00:00'),
+(8, 12, '2025-05-12 10:00:00'),
+(9, 13, '2025-05-13 14:00:00'),
+(9, 14, '2025-05-14 16:00:00'),
+(10, 15, '2025-05-15 11:00:00');
 
 -- Insert data into don_hang table
 INSERT INTO [dbo].[don_hang] ([ma_khach_hang], [ngay_dat_hang], [tong_tien], [trang_thai_don_hang])
 VALUES 
-(3, '2023-06-01 10:00:00', 15700000, 'Đã giao'),
-(4, '2023-06-02 11:00:00', 18840000, 'Đã giao'),
-(5, '2023-06-03 09:00:00', 12450000, 'Đang giao'),
-(6, '2023-06-04 14:00:00', 25300000, 'Đã giao'),
-(7, '2023-06-05 16:00:00', 920000, 'Đang xử lý'),
-(8, '2023-06-06 10:00:00', 1450000, 'Đã giao'),
-(9, '2023-06-07 11:00:00', 850000, 'Đang giao'),
-(10, '2023-06-08 15:00:00', 540000, 'Đã giao'),
-(12, '2023-06-09 09:00:00', 700000, 'Đang xử lý');
+-- Khách hàng 1 (5 đơn hàng)
+(1, '2025-05-01 09:00:00', 15000000, N'Đã giao'),
+(1, '2025-05-02 10:00:00', 40000,     N'Đã giao'),
+(1, '2025-05-03 11:00:00', 7500000,   N'Đang giao'),
+(1, '2025-05-04 12:00:00', 9500000,   N'Đang xử lý'),
+(1, '2025-05-05 13:00:00', 125000,    N'Đã giao'),
+
+-- Khách hàng 3 (2 đơn hàng)
+(3, '2025-05-06 14:00:00', 10000000,  N'Đã giao'),
+(3, '2025-05-07 15:00:00', 60000,     N'Đang xử lý');
+
 
 -- Insert data into chi_tiet_don_hang table
 INSERT INTO [dbo].[chi_tiet_don_hang] ([ma_don_hang], [ma_san_pham], [so_luong], [don_gia])
 VALUES 
-(1, 1, 1, 15000000),
-(1, 7, 1, 350000),
-(1, 11, 1, 250000),
-(2, 4, 1, 18000000),
-(2, 8, 3, 280000),
-(3, 2, 1, 20000000),
-(3, 9, 1, 450000),
-(4, 5, 1, 25000000),
-(4, 15, 1, 220000),
-(4, 10, 1, 320000),
-(5, 7, 2, 350000),
-(5, 14, 1, 150000),
-(6, 12, 1, 1200000),
-(6, 13, 1, 350000),
-(7, 8, 2, 280000),
-(7, 14, 1, 150000),
-(8, 10, 1, 320000),
-(8, 11, 1, 250000),
-(9, 9, 1, 450000),
-(9, 15, 1, 220000);
+-- Đơn hàng khách 1
+(1, 1, 1, 15000000),     -- Chó Alaska
+(2, 14, 1, 40000),       -- Bát ăn
+(3, 9, 1, 7500000),      -- Mèo Ba Tư
+(4, 13, 1, 9500000),     -- Mèo Bengal
+(5, 18, 1, 125000),      -- Vòng cổ
+
+-- Đơn hàng khách 3
+(6, 5, 1, 10000000),     -- Chó Corgi
+(7, 20, 1, 60000);       -- Thuốc
 
 -- Insert data into thanh_toan table
-INSERT INTO [dbo].[thanh_toan] ([ma_don_hang], [phuong_thuc_thanh_toan], [so_tien], [thoi_gian_thanh_toan], [trang_thai_giao_dich])
+INSERT INTO [dbo].[thanh_toan] 
+([ma_don_hang], [phuong_thuc_thanh_toan], [so_tien], [thoi_gian_thanh_toan], [trang_thai_giao_dich])
 VALUES 
-(1, N'Chuyển khoản', 15700000, '2023-06-01 10:30:00', N'Thành công'),
-(2, N'Tiền mặt', 18840000, '2023-06-02 11:30:00', N'Thành công'),
-(3, N'Chuyển khoản', 12450000, '2023-06-03 09:30:00', N'Thành công'),
-(4, N'Thẻ tín dụng', 25300000, '2023-06-04 14:30:00', N'Thành công'),
-(5, N'Ví điện tử', 920000, '2023-06-05 16:30:00', N'Thành công'),
-(6, N'Tiền mặt', 1450000, '2023-06-06 10:30:00', N'Thành công'),
-(7, N'Chuyển khoản', 850000, '2023-06-07 11:30:00', N'Thành công'),
-(8, N'Thẻ tín dụng', 540000, '2023-06-08 15:30:00', N'Thành công'),
-(9, N'Ví điện tử', 700000, '2023-06-09 09:30:00', N'Thành công');
+-- Đơn hàng khách 1
+(1, N'Chuyển khoản', 15000000, '2025-05-01 09:30:00', N'Thành công'),
+(2, N'Tiền mặt',     40000,     '2025-05-02 10:30:00', N'Thành công'),
+(3, N'Chuyển khoản', 7500000,   '2025-05-03 11:30:00', N'Thành công'),
+(4, N'Thẻ tín dụng', 9500000,   '2025-05-04 12:30:00', N'Chờ xử lý'),
+(5, N'Ví điện tử',   125000,    '2025-05-05 13:30:00', N'Thành công'),
+
+-- Đơn hàng khách 3
+(6, N'Tiền mặt',     10000000,  '2025-05-06 14:30:00', N'Thành công'),
+(7, N'Ví điện tử',   60000,     '2025-05-07 15:30:00', N'Chờ xử lý');
 
 
--- Insert data into danh_gia table
+
+-- Insert data into danh_gia table (adjusted to match product types)
 INSERT INTO [dbo].[danh_gia] ([ma_san_pham], [ma_khach_hang], [ngay_danh_gia], [so_sao], [noi_dung])
 VALUES 
-(1, 3, '2023-06-03 10:00:00', 5, N'Chó rất đẹp và khỏe mạnh, shop tư vấn nhiệt tình'),
-(4, 4, '2023-06-04 11:00:00', 4, N'Mèo dễ thương nhưng hơi nhút nhát'),
-(7, 5, '2023-06-05 09:00:00', 5, N'Thức ăn chất lượng tốt, chó nhà mình rất thích'),
-(8, 6, '2023-06-06 14:00:00', 4, N'Thức ăn ngon nhưng giá hơi cao'),
-(9, 7, '2023-06-07 16:00:00', 3, N'Balo tốt nhưng hơi nhỏ so với kích thước quảng cáo'),
-(10, 8, '2023-06-08 10:00:00', 5, N'Vòng cổ rất đẹp, chất lượng tốt'),
-(11, 9, '2023-06-09 11:00:00', 4, N'Dây dắt chắc chắn, dễ sử dụng'),
-(12, 10, '2023-06-10 15:00:00', 5, N'Nhà gỗ đẹp, chó nhà mình rất thích'),
-(13, 12, '2023-06-11 09:00:00', 4, N'Cát khử mùi tốt, giá hợp lý'),
-(14, 3, '2023-06-12 10:00:00', 3, N'Bàn chải dùng tạm được'),
-(15, 4, '2023-06-13 11:00:00', 5, N'Áo len đẹp, vừa vặn với chó nhà mình'),
-(2, 5, '2023-06-14 09:00:00', 5, N'Chó Alaska rất khỏe mạnh và đẹp'),
-(3, 6, '2023-06-15 14:00:00', 4, N'Chó Phốc Sóc nhỏ nhắn dễ thương'),
-(5, 7, '2023-06-16 16:00:00', 5, N'Mèo Ba Tư đẹp như trong hình');
+-- Chó
+(1, 3, '2025-05-03 10:00:00', 5, N'Chó Alaska rất đẹp và khỏe mạnh, shop tư vấn nhiệt tình'),
+(2, 5, '2025-05-14 09:00:00', 5, N'Chó Pug khỏe mạnh và thân thiện'),
+(3, 6, '2025-05-15 14:00:00', 4, N'Chó Phốc Sóc nhỏ nhắn dễ thương'),
+(5, 7, '2025-05-16 16:00:00', 5, N'Chó Corgi thông minh, dễ huấn luyện'),
+
+-- Mèo
+(4, 4, '2025-05-04 11:00:00', 4, N'Mèo Anh lông ngắn dễ thương nhưng hơi nhút nhát'),
+(6, 6, '2025-05-17 10:00:00', 5, N'Mèo Munchkin đáng yêu, rất quấn người'),
+
+-- Thức ăn
+(7, 5, '2025-05-05 09:00:00', 5, N'Thức ăn cho chó chất lượng tốt, chó nhà mình rất thích'),
+(8, 6, '2025-05-05 14:00:00', 4, N'Thức ăn cho mèo ngon nhưng giá hơi cao'),
+
+-- Phụ kiện
+(9, 7, '2025-05-07 16:00:00', 3, N'Balo tốt nhưng hơi nhỏ so với kích thước quảng cáo'),
+(10, 8, '2025-05-08 10:00:00', 5, N'Vòng cổ rất đẹp, chất lượng tốt'),
+(11, 9, '2025-05-09 11:00:00', 4, N'Dây dắt chắc chắn, dễ sử dụng'),
+(12, 10, '2025-05-10 15:00:00', 5, N'Nhà gỗ đẹp, chó nhà mình rất thích'),
+(13, 12, '2025-05-11 09:00:00', 4, N'Cát vệ sinh khử mùi tốt, giá hợp lý'),
+(14, 3, '2025-05-12 10:00:00', 3, N'Bàn chải lông dùng tạm được, nên cải tiến phần tay cầm'),
+(15, 4, '2025-05-13 11:00:00', 5, N'Áo len đẹp, vừa vặn với chó nhà mình');

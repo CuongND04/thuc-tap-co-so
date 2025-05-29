@@ -28,14 +28,16 @@ public class CungCap {
 
     @Column(name = "ngay_cung_cap")
     private LocalDateTime ngayCungCap;
-
+    @Column(name = "so_luong", nullable = false)
+    private Integer soLuong;
     public CungCap() {
     }
 
-    public CungCap(NhaCungCap nhaCungCap, SanPham sanPham, BigDecimal giaCungCap, LocalDateTime ngayCungCap) {
+    public CungCap(NhaCungCap nhaCungCap, SanPham sanPham, BigDecimal giaCungCap, LocalDateTime ngayCungCap, Integer soLuong) {
         this.nhaCungCap = nhaCungCap;
         this.sanPham = sanPham;
         this.giaCungCap = giaCungCap;
         this.ngayCungCap = ngayCungCap;
+        this.soLuong = soLuong;
     }
 }
