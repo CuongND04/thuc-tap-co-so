@@ -16,8 +16,6 @@ const Section = ({text, maxProd, reverseSort, onlyOne, isNew}) => {
           if(reverseSort) setProducts(product.sort().reverse());
           else setProducts(product);
 
-          console.log(product);
-
           if(onlyOne=="pet") setProducts(product.filter((prod) => prod.maDanhMuc <= 12));
           else if(onlyOne=="accessory") setProducts(product.filter((prod) => prod.maDanhMuc > 12));
         };

@@ -4,9 +4,11 @@ import { useParams } from "react-router-dom";
 // import "./Detail.css";
 import { useProductStore } from "../../store/useProductStore";
 import CategoryList from "../../components/Client/CategoryList";
+import { useCartStore } from "../../store/useCartStore";
 
 function ProductDetail() {
   const { getDetailProduct, isGettingDetailProduct } = useProductStore();
+  const { userCart, addItem } = useCartStore();
   const [product, setProduct] = useState([]);
   const { id } = useParams();
 
@@ -28,24 +30,18 @@ function ProductDetail() {
     } else return false;
   };
 
-  const rating = (rate) => {
-    stars = [];
-    for (let i = 0; i < rate; i++) {
-      stars.push(
-        <div>
-          <i className="fa-regular fa-star bg-amber-300"></i>
-        </div>
-      );
-    }
+  const addToCart = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    var { amount } = Object.fromEntries(formData);
+    amount = amount || 1;
 
-    for (let i = rate; i < 5; i++) {
-      stars.push(
-        <div>
-          <i className="fa-regular fa-star"></i>
-        </div>
-      );
-    }
-    return stars;
+    addItem({
+      maGioHang: userCart.maGioHang,
+      maSanPham: product.maSanPham,
+      soLuong: amount
+    })
+
   };
 
   if (isGettingDetailProduct) {
@@ -78,8 +74,8 @@ function ProductDetail() {
                   {product.giaBan}₫
                 </h1>
 
-                <div class="form w-[100%]">
-                  <div class="function-number flex items-center">
+                <div className="w-[100%]">
+                  <form onSubmit={addToCart} class="flex items-center">
                     <label
                       className="inline-block max-w-[100%] mb-[5px] font-bold"
                       for="number"
@@ -89,22 +85,21 @@ function ProductDetail() {
                     <input
                       className="ml-[50px] rounded-[4px] h-[40px] w-[100px] pl-[10px] border-[1px] border-solid border-[#e5e5e5]"
                       type="number"
-                      name="number"
-                      id="number"
-                      placeholder="0"
-                      min="0"
+                      name="amount"
+                      id="amount"
+                      placeholder="1"
+                      min="1"
                     />
 
                     <div class="function-info ml-[20px] flex justify-center items-center rounded-[10px] h-[40px] w-[120px] border-[1px] border-solid border-[#e5e5e5] bg-[#cf72aa]">
                       <button
-                        className="text-[#fff] rounded-[10px] h-[35px] w-[115px] border-[2px] border-dashed border-[#e5e5e5] bg-[#de8ebe] after:mt-[10px] after:mb-[5px] after:ml-[5px] after:content-['\203A']"
-                        type="button"
-                        onclick="buychitiet(this)"
+                        className="text-[#fff] rounded-[10px] h-[35px] w-[115px] border-[2px] border-dashed border-[#e5e5e5] bg-[#de8ebe] after:mt-[10px] after:mb-[5px] after:ml-[5px] after:content-['\203A'] hover:bg-[#cf72aa] cursor-pointer"
+                        type="submit"
                       >
                         Thêm vào giỏ
                       </button>
                     </div>
-                  </div>
+                  </form>
 
                   <div class="wishlist mt-[30px] mb-[30px] flex justify-center items-center border-[1px] border-solid border-[#ccc] w-[170px] h-[40px] rounded-[5px]">
                     <a
