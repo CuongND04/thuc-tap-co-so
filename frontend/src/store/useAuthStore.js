@@ -89,6 +89,7 @@ export const useAuthStore = create((set, get) => ({
       const profileData = res.data.data;
 
       set({ userProfile: profileData });
+      localStorage.setItem("userProfile", profileData);
 
       return profileData;
     } catch (error) {
@@ -144,7 +145,8 @@ export const useAuthStore = create((set, get) => ({
       const res = await axiosInstance.post("/auth/logout");
       localStorage.removeItem("auth_user"); // Xóa user trong localStorage
       localStorage.removeItem("auth_token");
-      localStorage.removeItem("currentUserCart");
+      // localStorage.removeItem("currentUserCart");
+      localStorage.removeItem("userProfile");
       set({ authUser: null });
       set({ userProfile: null });
       toast.success("Đăng xuất thành công");

@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
-import Header from "./components/Client/Header.jsx";
 import { Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/Client/HomePage/HomePage";
-import Footer from "./components/Client/Footer/Footer";
 import DogCategory from "./pages/Client/DogCategory/DogCategory";
 import Login from "./pages/Client/Login.jsx";
 import Dashboard from "./pages/Admin/Dashboard.jsx";

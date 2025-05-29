@@ -7,6 +7,8 @@ import { useProductStore } from "../../../store/useProductStore";
 const FeaturedProducts = () => {
   const { getAllProducts, isGettingAllProducts } = useProductStore();
   const [products, setProducts] = useState([]);
+  const [selectedProducts, setSelectedProducts] = useState([]);
+  
   useEffect(() => {
     const fetchProduct = async () => {
       const product = await getAllProducts();

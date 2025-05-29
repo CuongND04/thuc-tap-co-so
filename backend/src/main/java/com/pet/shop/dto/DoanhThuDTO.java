@@ -7,21 +7,20 @@ import java.time.format.DateTimeFormatter;
 
 @Data
 public class DoanhThuDTO {
-    private LocalDateTime startDateTime;
-    private LocalDateTime endDateTime;
+    private String startDateTime;
+    private String endDateTime;
     private BigDecimal tongDoanhThu;
     private long tongDonHang;
 
-    // Thêm phương thức để lấy ngày dưới dạng chuỗi đẹp
-    public String getFormattedStartDate() {
-        return startDateTime != null
-                ? startDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE)
-                : "";
+    public void setStartDateTime(LocalDateTime dateTime) {
+        this.startDateTime = dateTime != null
+                ? dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+                : null;
     }
 
-    public String getFormattedEndDate() {
-        return endDateTime != null
-                ? endDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE)
-                : "";
+    public void setEndDateTime(LocalDateTime dateTime) {
+        this.endDateTime = dateTime != null
+                ? dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+                : null;
     }
 }
