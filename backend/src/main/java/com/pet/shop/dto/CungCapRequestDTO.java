@@ -15,4 +15,5 @@ public class CungCapRequestDTO {
     private Long maNhaCungCap;
     private Long maSanPham;
     private BigDecimal giaCungCap;
+    private Integer soLuong;
 } 

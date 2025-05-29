@@ -55,7 +55,7 @@ public class CungCapService {
         cungCap.setSanPham(sanPham);
         cungCap.setGiaCungCap(requestDTO.getGiaCungCap());
         cungCap.setNgayCungCap(LocalDateTime.now());
-
+        cungCap.setSoLuong(requestDTO.getSoLuong());
         CungCap savedCungCap = cungCapRepository.save(cungCap);
 
         return new CungCapDetailDTO(
@@ -63,7 +63,8 @@ public class CungCapService {
                 savedCungCap.getId().getMaSanPham(),
                 savedCungCap.getGiaCungCap(),
                 savedCungCap.getNhaCungCap().getTen(),
-                savedCungCap.getSanPham().getTenSanPham()
+                savedCungCap.getSanPham().getTenSanPham(),
+                savedCungCap.getSoLuong()
         );
     }
 
@@ -74,7 +75,8 @@ public class CungCapService {
                         cungCap.getId().getMaSanPham(),
                         cungCap.getGiaCungCap(),
                         cungCap.getNhaCungCap().getTen(),
-                        cungCap.getSanPham().getTenSanPham()
+                        cungCap.getSanPham().getTenSanPham(),
+                        cungCap.getSoLuong()
                 ))
                 .collect(Collectors.toList());
     }
@@ -87,7 +89,8 @@ public class CungCapService {
                         cungCap.getId().getMaSanPham(),
                         cungCap.getGiaCungCap(),
                         cungCap.getNhaCungCap().getTen(),
-                        cungCap.getSanPham().getTenSanPham()
+                        cungCap.getSanPham().getTenSanPham(),
+                        cungCap.getSoLuong()
                 ));
     }
 
@@ -112,7 +115,8 @@ public class CungCapService {
                 updatedCungCap.getId().getMaSanPham(),
                 updatedCungCap.getGiaCungCap(),
                 updatedCungCap.getNhaCungCap().getTen(),
-                updatedCungCap.getSanPham().getTenSanPham()
+                updatedCungCap.getSanPham().getTenSanPham(),
+                updatedCungCap.getSoLuong()
         );
     }
 

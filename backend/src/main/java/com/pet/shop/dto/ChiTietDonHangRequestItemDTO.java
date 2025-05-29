@@ -5,17 +5,11 @@ import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
-import java.math.BigDecimal;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CungCapDetailDTO {
-    private Long maNhaCungCap;
+public class ChiTietDonHangRequestItemDTO {
     private Long maSanPham;
-    private BigDecimal giaCungCap;
-    private String tenNhaCungCap;
-    private String tenSanPham;
     private Integer soLuong;
 } 

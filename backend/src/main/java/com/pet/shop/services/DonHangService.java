@@ -2,6 +2,7 @@ package com.pet.shop.services;
 
 import com.pet.shop.models.ChiTietDonHang;
 import com.pet.shop.models.DonHang;
+import com.pet.shop.models.SanPham;
 import com.pet.shop.repositories.ChiTietDonHangRepository;
 import com.pet.shop.repositories.DonHangRepository;
 import com.pet.shop.repositories.SanPhamRepository;
@@ -17,6 +18,17 @@ import java.util.stream.Collectors;
 import com.pet.shop.dto.DonHangListResponseDTO;
 import com.pet.shop.dto.DonHangDetailResponseDTO;
 import com.pet.shop.dto.ChiTietDonHangResponseDTO;
+import com.pet.shop.models.NguoiDung;
+import com.pet.shop.repositories.NguoiDungRepository;
+import com.pet.shop.models.NhaCungCap;
+import com.pet.shop.repositories.NhaCungCapRepository;
+import com.pet.shop.repositories.CungCapRepository;
+import com.pet.shop.models.CungCap;
+import com.pet.shop.models.CungCapId;
+import com.pet.shop.models.ChiTietDonHangId;
+import com.pet.shop.dto.TaoDonHangRequestDTO;
+import com.pet.shop.dto.ChiTietDonHangRequestItemDTO;
+import java.util.ArrayList;
 
 @Service
 public class DonHangService {
@@ -24,14 +36,20 @@ public class DonHangService {
     private final DonHangRepository donHangRepository;
     private final ChiTietDonHangRepository chiTietDonHangRepository;
     private final SanPhamRepository sanPhamRepository;
+    private final NguoiDungRepository nguoiDungRepository;
+    private final CungCapRepository cungCapRepository;
 
     @Autowired
     public DonHangService(DonHangRepository donHangRepository,
                           ChiTietDonHangRepository chiTietDonHangRepository,
-                          SanPhamRepository sanPhamRepository) {
+                          SanPhamRepository sanPhamRepository,
+                          NguoiDungRepository nguoiDungRepository,
+                          CungCapRepository cungCapRepository) {
         this.donHangRepository = donHangRepository;
         this.chiTietDonHangRepository = chiTietDonHangRepository;
         this.sanPhamRepository = sanPhamRepository;
+        this.nguoiDungRepository = nguoiDungRepository;
+        this.cungCapRepository = cungCapRepository;
     }
 
     // CRUD cơ bản
@@ -120,6 +138,58 @@ public class DonHangService {
     public Optional<DonHangDetailResponseDTO> findDonHangDetailById(Long id) {
         return donHangRepository.findById(id)
                 .map(this::convertToDonHangDetailResponseDTO);
+    }
+
+    @Transactional
+    public DonHangDetailResponseDTO taoDonHangTuNhaCungCap(TaoDonHangRequestDTO requestDTO) {
+        // Validate user exists
+        NguoiDung nguoiDung = nguoiDungRepository.findById(requestDTO.getMaNguoiDung().intValue())
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng với ID: " + requestDTO.getMaNguoiDung()));
+
+        // Validate supplier exists - Note: Supplier is now handled by checking CungCap linkage per product item
+        // No need to set NhaCungCap directly on DonHang in this version.
+
+        // Create new order
+        DonHang donHang = new DonHang();
+        donHang.setNguoiDung(nguoiDung);
+        donHang.setNgayDatHang(LocalDateTime.now());
+        donHang.setTrangThaiDonHang("CHO_XAC_NHAN"); // Use the correct setter
+
+        // Process order items
+        List<ChiTietDonHang> chiTietDonHangs = new ArrayList<>();
+        BigDecimal tongTien = BigDecimal.ZERO;
+
+        for (ChiTietDonHangRequestItemDTO item : requestDTO.getChiTietDonHangs()) {
+            // Validate product exists
+            SanPham sanPham = sanPhamRepository.findById(item.getMaSanPham())
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm với ID: " + item.getMaSanPham()));
+
+            // Get supplier price
+            CungCapId cungCapId = new CungCapId(requestDTO.getMaNhaCungCap(), item.getMaSanPham());
+            CungCap cungCap = cungCapRepository.findById(cungCapId)
+                    .orElseThrow(() -> new RuntimeException("Nhà cung cấp không cung cấp sản phẩm với ID: " + item.getMaSanPham()));
+
+            // Create order item
+            ChiTietDonHang chiTiet = new ChiTietDonHang();
+            // Note: maDonHang will be set by JPA when saving DonHang with cascade
+            chiTiet.setId(new ChiTietDonHangId(null, item.getMaSanPham())); // Initialize with maSanPham
+            chiTiet.setDonHang(donHang);
+            chiTiet.setSanPham(sanPham);
+            chiTiet.setSoLuong(item.getSoLuong());
+            chiTiet.setDonGia(cungCap.getGiaCungCap());
+
+            chiTietDonHangs.add(chiTiet);
+            tongTien = tongTien.add(chiTiet.getDonGia().multiply(BigDecimal.valueOf(chiTiet.getSoLuong())));
+        }
+
+        donHang.setChiTietDonHangs(chiTietDonHangs);
+        donHang.setTongTien(tongTien);
+
+        // Save order
+        DonHang savedDonHang = donHangRepository.save(donHang);
+
+        // Return detailed response
+        return convertToDonHangDetailResponseDTO(savedDonHang);
     }
 
     private DonHangListResponseDTO convertToDonHangListResponseDTO(DonHang donHang) {
