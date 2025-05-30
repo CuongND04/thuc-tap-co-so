@@ -16,8 +16,8 @@ const Section = ({text, maxProd, reverseSort, onlyOne, isNew}) => {
           if(reverseSort) setProducts(product.sort().reverse());
           else setProducts(product);
 
-          if(onlyOne=="pet") setProducts(product.filter((prod) => prod.maDanhMuc <= 12));
-          else if(onlyOne=="accessory") setProducts(product.filter((prod) => prod.maDanhMuc > 12));
+          if(onlyOne=="pet") setProducts(product.filter((prod) => prod.maDanhMuc <= 6));
+          else if(onlyOne=="accessory") setProducts(product.filter((prod) => prod.maDanhMuc > 6));
         };
 
         fetchProduct(); // Gọi hàm async bên trong useEffect

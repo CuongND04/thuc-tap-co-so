@@ -14,6 +14,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { useAuthStore } from "../../store/useAuthStore";
 import { useCartStore } from "../../store/useCartStore.js";
+import { useCategoryStore } from "../../store/useCategoryStore.js";
 
 // **TODO: xóa bớt một cái header không dùng đi
 const images = [
@@ -57,7 +58,11 @@ const Header = () => {
     isFetchingProfile,
     userProfile,
   } = useAuthStore();
+
+  const { getAllCategories } = useCategoryStore();
   const { getCart, isGettingCart, updateItem } = useCartStore();
+  const [categories, setCategories] = useState([]);
+      
 
   const next = () => {
     setCurrentIndex((prev) => (prev + 1) % images.length);
@@ -147,6 +152,14 @@ const Header = () => {
     }
   }, [currentCart]);
 
+  useEffect(() => {
+        const fetchCategory = async () => {
+          const category = await getAllCategories();
+          setCategories(category);
+        };
+        fetchCategory(); // Gọi hàm async bên trong useEffect
+      }, []);
+
 
   if (isGettingCart || isFetchingProfile) {
     return (
@@ -196,17 +209,17 @@ const Header = () => {
                   className="absolute top-full -left-8 z-10 w-50 max-w-md overflow-hidden rounded-2xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
                 >
                   <div className="p-4">
-                    {menu1.map((item) => (
+                    {categories && categories.map((cat) => (
                       <div
-                        key={item}
+                        key={cat.maDanhMuc}
                         className="group relative flex items-center gap-x-6 rounded-lg p-1 text-sm/6 hover:bg-gray-50"
                       >
                         <div className="flex-auto">
                           <a
-                            href={`/danh-muc-cun/${item}`}
+                            href={`/danh-muc-cun/${cat.tenDanhMuc}`}
                             className="block font-semibold text-gray-900"
                           >
-                            {item}
+                            {cat.tenDanhMuc}
                             <span className="absolute inset-0" />
                           </a>
                         </div>
@@ -440,11 +453,11 @@ const Header = () => {
                     className="col-start-1 row-start-1 appearance-none rounded-md cursor-pointer py-1.5 pr-7 pl-3 text-base placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-[#de8ebe]"
                   >
                     <option>Tất cả danh mục</option>
-                    <option>Chó</option>
-                    <option>Mèo</option>
-                    <option>Phụ kiện</option>
-                    <option>Thức ăn</option>
-                    <option>Dịch vụ</option>
+                    {categories && categories.map((cat) => (
+                      <option key={cat.maDanhMuc}>
+                        {cat.tenDanhMuc}
+                      </option>
+                    ))}
                   </select>
                   <ChevronDownIcon
                     aria-hidden="true"
