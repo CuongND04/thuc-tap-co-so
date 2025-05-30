@@ -36,11 +36,8 @@ function ProductDetail() {
     var { amount } = Object.fromEntries(formData);
     amount = amount || 1;
 
-    addItem({
-      maGioHang: userCart.maGioHang,
-      maSanPham: product.maSanPham,
-      soLuong: amount
-    })
+    console.log(userCart.maGioHang, product.maSanPham, amount);
+    addItem(userCart.maGioHang, product.maSanPham, amount)
 
   };
 

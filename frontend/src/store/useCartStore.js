@@ -25,10 +25,10 @@ export const useCartStore = create((set, get) => ({
     }
   },
 
-  addItem: async (data) => {
+  addItem: async (cartID, prodID, amount) => {
     set({ isAdding: true });
     try {
-      const res = await axiosInstance.post(`/gio-hang/them-vao-gio`, data);
+      const res = await axiosInstance.post(`/gio-hang/them-vao-gio?maGioHang=3&maSanPham=13&soLuong=1`);
       toast.success("Thêm vào giỏ hàng thành công!");
     } catch (error) {
       toast.error("Thêm vào giỏ hàng thất bại!");
