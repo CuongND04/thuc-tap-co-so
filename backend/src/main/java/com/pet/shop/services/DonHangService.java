@@ -123,7 +123,7 @@ public class DonHangService {
         DonHang donHang = new DonHang();
         donHang.setNguoiDung(nguoiDung);
         donHang.setNgayDatHang(LocalDateTime.now());
-        donHang.setTrangThaiDonHang("CHO_XAC_NHAN"); // Use the correct setter
+        donHang.setTrangThaiDonHang("Đang xử lý"); // Use the correct setter
 
         // Process order items
         List<ChiTietDonHang> chiTietDonHangs = new ArrayList<>();
@@ -172,7 +172,7 @@ public class DonHangService {
         DonHang donHang = new DonHang();
         donHang.setNguoiDung(nguoiDung);
         donHang.setNgayDatHang(LocalDateTime.now());
-        donHang.setTrangThaiDonHang("CHO_XAC_NHAN");
+        donHang.setTrangThaiDonHang("Đang xử lý");
 
         // Process order items
         List<ChiTietDonHang> chiTietDonHangs = new ArrayList<>();

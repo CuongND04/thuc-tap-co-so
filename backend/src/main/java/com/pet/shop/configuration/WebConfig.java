@@ -50,7 +50,8 @@ public class WebConfig {
                 HttpMethod.GET.name(),
                 HttpMethod.POST.name(),
                 HttpMethod.PUT.name(),
-                HttpMethod.DELETE.name()));
+                HttpMethod.DELETE.name(),
+                HttpMethod.PATCH.name()));
 
         // Cho phép trình duyệt cache preflight response trong 1 giờ
         config.setMaxAge(MAX_AGE);

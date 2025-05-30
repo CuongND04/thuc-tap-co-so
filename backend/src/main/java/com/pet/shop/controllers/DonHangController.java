@@ -91,6 +91,8 @@ public class DonHangController {
             @RequestParam String trangThai) {
 
         try {
+            System.out.println("trangThai " + trangThai);
+            System.out.println("id " + id);
             DonHangDetailResponseDTO updated = donHangService.capNhatTrangThai(id, trangThai);
             return ResponseEntity.ok(
                     new ResponseObject("success", "Cập nhật trạng thái thành công", updated)

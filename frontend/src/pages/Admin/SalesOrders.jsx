@@ -1,16 +1,16 @@
 ﻿import React, { useEffect, useRef, useState } from "react";
-import { Table, Input, Space, Button, Popconfirm } from "antd";
+import { Table, Input, Space, Button, Popconfirm, Badge } from "antd";
 import { DeleteOutlined, EyeOutlined, SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 import { CirclePlus, Link, Loader } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { useAccountStore } from "../../store/useAccountStore";
+import { useSaleOrdersStore } from "../../store/useSaleOrdersStore";
 
-const SaleOrders = () => {
-  const { getAllAccounts, isGettingAllAccounts, deleteAccount } =
-    useAccountStore();
-  const [accounts, setAccounts] = useState([]);
+const SalesOrders = () => {
+  const { getAllSaleOrders, isGettingAllSaleOrders, deleteSaleOrder } =
+    useSaleOrdersStore();
+  const [donHang, setDonHang] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
@@ -18,17 +18,17 @@ const SaleOrders = () => {
   const searchInput = useRef(null);
   const navigate = useNavigate();
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (maDonHang) => {
     try {
       setIsDeleting(true);
 
-      const dele = await deleteAccount(id);
+      const dele = await deleteSaleOrder(maDonHang);
 
-      if (dele) {
-        toast.success("Xóa tài khoản thành công");
-      } else {
-        console.log("Xóa tài khoản thất bại");
-      }
+      // if (dele) {
+      //   // toast.success("Xóa đơn bán hàng thành công");
+      // } else {
+      //   // console.log("Xóa đơn bán hàng thất bại");
+      // }
     } catch (error) {
       toast.error("Có lỗi xảy ra.");
     } finally {
@@ -45,6 +45,21 @@ const SaleOrders = () => {
   const handleReset = (clearFilters) => {
     clearFilters();
     setSearchText("");
+  };
+  const formatDateTime = (dateArray) => {
+    if (!Array.isArray(dateArray) || dateArray.length < 5)
+      return "Không xác định";
+    const [year, month, day, hour, minute, second = 0] = dateArray;
+    return (
+      `${String(day).padStart(2, "0")}/${String(month).padStart(
+        2,
+        "0"
+      )}/${year} ` +
+      `${String(hour).padStart(2, "0")}:${String(minute).padStart(
+        2,
+        "0"
+      )}:${String(second).padStart(2, "0")}`
+    );
   };
 
   const getColumnSearchProps = (dataIndex) => ({
@@ -123,85 +138,65 @@ const SaleOrders = () => {
       ),
   });
 
-  const getColumnSelectProps = (dataIndex, options) => ({
-    filters: options.map((opt) => ({ text: opt.label, value: opt.value })),
-    onFilter: (value, record) => record[dataIndex] === value,
-    render: (text) => {
-      const map = {
-        ADMIN: "Quản trị viên",
-        CUSTOMER: "Khách hàng",
-      };
-      return map[text] || text;
-    },
-  });
-
   useEffect(() => {
     const fetchData = async () => {
-      const listAcc = await getAllAccounts();
-      setAccounts(listAcc);
+      const listOrders = await getAllSaleOrders();
+      setDonHang(listOrders);
     };
     fetchData();
   }, [isDeleting]);
 
   const columns = [
     {
-      title: "Mã số",
-      dataIndex: "maNguoiDung",
-      key: "maNguoiDung",
-      width: "10%",
-      sorter: (a, b) => a.maNguoiDung - b.maNguoiDung,
-      sortDirections: ["ascend", "descend"],
-      ...getColumnSearchProps("maNguoiDung"),
+      title: "Mã đơn hàng",
+      dataIndex: "maDonHang",
+      key: "maDonHang",
+      sorter: (a, b) => a.maDonHang - b.maDonHang,
+      ...getColumnSearchProps("maDonHang"),
+    },
+    // {
+    //   title: "Mã khách hàng",
+    //   dataIndex: "maKhachHang",
+    //   key: "maKhachHang",
+    //   sorter: (a, b) => a.maKhachHang - b.maKhachHang,
+    //   ...getColumnSearchProps("maKhachHang"),
+    // },
+    {
+      title: "Ngày đặt hàng",
+      dataIndex: "ngayDatHang",
+      key: "ngayDatHang",
+      sorter: (a, b) => new Date(...a.ngayDatHang) - new Date(...b.ngayDatHang),
+      render: formatDateTime,
     },
     {
-      title: "Ảnh đại diện",
-      key: "avatar",
-
-      render: (_, record) => (
-        <Space>
-          <img
-            src={record.avatar}
-            alt={record.tenDangNhap}
-            style={{
-              width: 50,
-              height: 50,
-              borderRadius: 8,
-              objectFit: "cover",
-            }}
-          />
-        </Space>
-      ),
+      title: "Tổng tiền",
+      dataIndex: "tongTien",
+      key: "tongTien",
+      sorter: (a, b) => a.tongTien - b.tongTien,
+      render: (value) => value.toLocaleString("vi-VN") + " đ",
     },
     {
-      title: "Họ tên",
-      dataIndex: "hoTen",
-      key: "hoTen",
-      width: "20%",
-      sorter: (a, b) => a.hoTen.localeCompare(b.hoTen),
-      sortDirections: ["ascend", "descend"],
-      ...getColumnSearchProps("hoTen"),
-    },
-    {
-      title: "Tên đăng nhập",
-      dataIndex: "tenDangNhap",
-      key: "tenDangNhap",
-      width: "20%",
-      sorter: (a, b) => a.tenDangNhap.localeCompare(b.tenDangNhap),
-      sortDirections: ["ascend", "descend"],
-      ...getColumnSearchProps("tenDangNhap"),
-    },
-
-    {
-      title: "Quyền truy cập",
-      dataIndex: "quyenTruyCap",
-      key: "quyenTruyCap",
-      width: "20%",
-      sorter: (a, b) => a.quyenTruyCap.localeCompare(b.quyenTruyCap),
-      sortDirections: ["ascend", "descend"],
-      ...getColumnSelectProps("quyenTruyCap", [
-        { label: "Quản trị viên", value: "ADMIN" },
-        { label: "Khách hàng", value: "CUSTOMER" },
-      ]),
+      title: "Trạng thái",
+      dataIndex: "trangThaiDonHang",
+      key: "trangThaiDonHang",
+      ...getColumnSearchProps("trangThaiDonHang"),
+      render: (status) => {
+        let color;
+        switch (status) {
+          case "Đã giao":
+            color = "green";
+            break;
+          case "Đang giao":
+            color = "blue";
+            break;
+          case "Đang xử lý":
+            color = "orange";
+            break;
+          default:
+            color = "default";
+        }
+        return <Badge color={color} text={status} />;
+      },
     },
     {
       title: "Hành động",
@@ -211,15 +206,13 @@ const SaleOrders = () => {
           <Button
             icon={<EyeOutlined />}
             size="small"
-            onClick={() =>
-              navigate(`/admin/users/${record.maNguoiDung}/detail`)
-            }
+            onClick={() => navigate(`/admin/sale/detail/${record.maDonHang}`)}
           >
             Xem
           </Button>
           <Popconfirm
-            title="Bạn có chắc muốn xóa tài khoản này không?"
-            onConfirm={() => handleDelete(record.maNguoiDung)}
+            title="Bạn có chắc muốn xóa đơn hàng này?"
+            onConfirm={() => handleDelete(record.maDonHang)}
             okText="Xóa"
             cancelText="Hủy"
           >
@@ -229,11 +222,10 @@ const SaleOrders = () => {
           </Popconfirm>
         </Space>
       ),
-      width: 180,
     },
   ];
 
-  if (isGettingAllAccounts || isDeleting) {
+  if (isGettingAllSaleOrders || isDeleting) {
     return (
       <div className="flex items-center justify-center h-screen">
         <Loader className="size-10 animate-spin" />
@@ -244,7 +236,7 @@ const SaleOrders = () => {
   return (
     <div className="">
       <div className="bg-white p-4 rounded-xl mb-10">
-        <h1 className="text-3xl mb-2 font-medium p-3 ">Quản lý tài khoản</h1>
+        <h1 className="text-3xl mb-2 font-medium p-3 ">Quản lý bán hàng</h1>
         <div>
           <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
             <div className="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between">
@@ -257,7 +249,7 @@ const SaleOrders = () => {
               <div className="flex items-center gap-3">
                 <button
                   className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
-                  onClick={() => navigate(`/admin/users/create`)}
+                  onClick={() => navigate(`/admin/sale/create`)}
                 >
                   <CirclePlus />
                   Thêm
@@ -266,7 +258,7 @@ const SaleOrders = () => {
             </div>
             <Table
               columns={columns}
-              dataSource={accounts}
+              dataSource={donHang}
               pagination={{ pageSize: 8 }}
               rowKey={(record) => record.id || record._id || record.key}
             />
@@ -277,4 +269,4 @@ const SaleOrders = () => {
   );
 };
 
-export default SaleOrders;
+export default SalesOrders;

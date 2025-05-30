@@ -33,6 +33,8 @@ import CreateAccessoryProduct from "./pages/Admin/CreateAccessoryProduct.jsx";
 import Profile from "./pages/Client/Profile.jsx";
 import ImportDetail from "./pages/Admin/ImportDetail.jsx";
 import ImportCreate from "./pages/Admin/ImportCreate.jsx";
+import SaleDetail from "./pages/Admin/SaleDetail.jsx";
+import SaleCreate from "./pages/Admin/SaleCreate.jsx";
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
   useEffect(() => {
@@ -99,6 +101,8 @@ const App = () => {
             <Route path="import/create" element={<ImportCreate />} />
 
             <Route path="sales" element={<SalesOrders />} />
+            <Route path="sale/detail/:maDonHang" element={<SaleDetail />} />
+            <Route path="sale/create" element={<SaleCreate />} />
 
             <Route path="users" element={<ManageUsers />} />
             <Route path="users/:id/detail" element={<UserDetail />} />
