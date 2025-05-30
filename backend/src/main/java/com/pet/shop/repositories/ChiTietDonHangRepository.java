@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface ChiTietDonHangRepository extends JpaRepository<ChiTietDonHang, ChiTietDonHangId> {
-    List<ChiTietDonHang> findByDonHang_MaDonHang(Integer maDonHang);
+    List<ChiTietDonHang> findByDonHang_MaDonHang(Long maDonHang);
 }
 

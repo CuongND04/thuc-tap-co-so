@@ -20,8 +20,7 @@ import com.pet.shop.dto.DonHangDetailResponseDTO;
 import com.pet.shop.dto.ChiTietDonHangResponseDTO;
 import com.pet.shop.models.NguoiDung;
 import com.pet.shop.repositories.NguoiDungRepository;
-import com.pet.shop.models.NhaCungCap;
-import com.pet.shop.repositories.NhaCungCapRepository;
+
 import com.pet.shop.repositories.CungCapRepository;
 import com.pet.shop.models.CungCap;
 import com.pet.shop.models.CungCapId;
@@ -29,6 +28,8 @@ import com.pet.shop.models.ChiTietDonHangId;
 import com.pet.shop.dto.TaoDonHangRequestDTO;
 import com.pet.shop.dto.ChiTietDonHangRequestItemDTO;
 import java.util.ArrayList;
+import com.pet.shop.dto.ManualTaoDonHangRequestDTO;
+import com.pet.shop.dto.ManualChiTietDonHangItemDTO;
 
 @Service
 public class DonHangService {
@@ -71,59 +72,25 @@ public class DonHangService {
         donHangRepository.deleteById(id);
     }
 
-    // Tạo đơn hàng mới
-    @Transactional
-    public DonHang taoDonHang(DonHang donHang) {
-        // Validate chi tiết đơn hàng
-        if (donHang.getChiTietDonHangs() == null || donHang.getChiTietDonHangs().isEmpty()) {
-            throw new IllegalArgumentException("Đơn hàng phải có ít nhất 1 sản phẩm");
-        }
 
-
-        // Tính tổng tiền
-        BigDecimal tongTien = donHang.getChiTietDonHangs().stream()
-                .map(ct -> ct.getDonGia().multiply(BigDecimal.valueOf(ct.getSoLuong())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        // Set thông tin hệ thống
-        donHang.setTongTien(tongTien);
-        donHang.setNgayDatHang(LocalDateTime.now());
-        donHang.setTrangThaiDonHang("CHO_XAC_NHAN");
-
-        // Lưu đơn hàng và chi tiết
-        DonHang savedDonHang = donHangRepository.save(donHang);
-        chiTietDonHangRepository.saveAll(donHang.getChiTietDonHangs());
-
-        return savedDonHang;
-    }
 
     // Cập nhật trạng thái đơn hàng
     @Transactional
-    public DonHang capNhatTrangThai(Long id, String trangThaiMoi) {
+    public DonHangDetailResponseDTO capNhatTrangThai(Long id, String trangThaiMoi) {
         DonHang donHang = donHangRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy đơn hàng với ID: " + id));
-
-        // Validate trạng thái
-        if ("DA_HUY".equals(donHang.getTrangThaiDonHang()) && !"HUY".equals(trangThaiMoi)) {
-            throw new IllegalStateException("Đơn hàng đã hủy không thể cập nhật trạng thái");
-        }
-
         donHang.setTrangThaiDonHang(trangThaiMoi);
-        return donHangRepository.save(donHang);
+        DonHang updatedDonHang = donHangRepository.save(donHang);
+        return convertToDonHangDetailResponseDTO(updatedDonHang);
     }
 
     // Hủy đơn hàng
     @Transactional
     public void huyDonHang(Long id) {
-        DonHang donHang = donHangRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy đơn hàng với ID: " + id));
-
-        if (!"DA_HUY".equals(donHang.getTrangThaiDonHang())) {
-            donHang.setTrangThaiDonHang("DA_HUY");
-            donHangRepository.save(donHang);
-
-            // Hoàn trả số lượng tồn kho (thêm logic nếu cần)
+        if (!donHangRepository.existsById(id)) {
+            throw new RuntimeException("Không tìm thấy đơn hàng với ID: " + id);
         }
+        donHangRepository.deleteById(id);
     }
 
     // Các phương thức truy vấn
@@ -191,6 +158,50 @@ public class DonHangService {
         // Return detailed response
         return convertToDonHangDetailResponseDTO(savedDonHang);
     }
+
+    @Transactional
+    public DonHangDetailResponseDTO taoDonHangManual(ManualTaoDonHangRequestDTO requestDTO) {
+        // Validate user exists
+        NguoiDung nguoiDung = nguoiDungRepository.findById(requestDTO.getMaNguoiDung().intValue())
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng với ID: " + requestDTO.getMaNguoiDung()));
+
+        // Create new order
+        DonHang donHang = new DonHang();
+        donHang.setNguoiDung(nguoiDung);
+        donHang.setNgayDatHang(LocalDateTime.now());
+        donHang.setTrangThaiDonHang("CHO_XAC_NHAN");
+
+        // Process order items
+        List<ChiTietDonHang> chiTietDonHangs = new ArrayList<>();
+        BigDecimal tongTien = BigDecimal.ZERO;
+
+        for (ManualChiTietDonHangItemDTO item : requestDTO.getChiTietDonHangs()) {
+            // Validate product exists
+            SanPham sanPham = sanPhamRepository.findById(item.getMaSanPham())
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm với ID: " + item.getMaSanPham()));
+
+            // Create order item with manual price
+            ChiTietDonHang chiTiet = new ChiTietDonHang();
+            chiTiet.setId(new ChiTietDonHangId(null, item.getMaSanPham()));
+            chiTiet.setDonHang(donHang);
+            chiTiet.setSanPham(sanPham);
+            chiTiet.setSoLuong(item.getSoLuong());
+            chiTiet.setDonGia(item.getDonGia());
+
+            chiTietDonHangs.add(chiTiet);
+            tongTien = tongTien.add(chiTiet.getDonGia().multiply(BigDecimal.valueOf(chiTiet.getSoLuong())));
+        }
+
+        donHang.setChiTietDonHangs(chiTietDonHangs);
+        donHang.setTongTien(tongTien);
+
+        // Save order
+        DonHang savedDonHang = donHangRepository.save(donHang);
+
+        // Return detailed response
+        return convertToDonHangDetailResponseDTO(savedDonHang);
+    }
+
 
     private DonHangListResponseDTO convertToDonHangListResponseDTO(DonHang donHang) {
         DonHangListResponseDTO dto = new DonHangListResponseDTO();

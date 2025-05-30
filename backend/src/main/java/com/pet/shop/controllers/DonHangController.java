@@ -1,7 +1,6 @@
 package com.pet.shop.controllers;
 
 import com.pet.shop.models.ResponseObject;
-import com.pet.shop.models.DonHang;
 import com.pet.shop.services.DonHangService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import com.pet.shop.dto.DonHangListResponseDTO;
 import com.pet.shop.dto.DonHangDetailResponseDTO;
+import com.pet.shop.dto.ManualTaoDonHangRequestDTO;
 
 @RestController
 @RequestMapping("/api/don-hang")
@@ -53,27 +53,6 @@ public class DonHangController {
         }
     }
 
-    // Tạo mới đơn hàng
-    @PostMapping
-    public ResponseEntity<ResponseObject> createDonHang(@RequestBody DonHang newDonHang) {
-        try {
-            // Validate
-            if(newDonHang.getChiTietDonHangs().isEmpty()) {
-                return ResponseEntity.badRequest().body(
-                        new ResponseObject("error", "Đơn hàng phải có ít nhất 1 sản phẩm", "")
-                );
-            }
-
-            DonHang savedDonHang = donHangService.taoDonHang(newDonHang);
-            return ResponseEntity.status(HttpStatus.CREATED).body(
-                    new ResponseObject("success", "Tạo đơn hàng thành công", savedDonHang)
-            );
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(
-                    new ResponseObject("error", "Lỗi khi tạo đơn hàng: " + e.getMessage(), "")
-            );
-        }
-    }
 
     // Cập nhật trạng thái đơn hàng
     @PatchMapping("/{id}/trang-thai")
@@ -81,31 +60,31 @@ public class DonHangController {
             @PathVariable Long id,
             @RequestParam String trangThai) {
 
-        Optional<DonHang> existing = donHangService.findById(id);
-        if(existing.isPresent()) {
-            DonHang updated = donHangService.capNhatTrangThai(id, trangThai);
+        try {
+            DonHangDetailResponseDTO updated = donHangService.capNhatTrangThai(id, trangThai);
             return ResponseEntity.ok(
                     new ResponseObject("success", "Cập nhật trạng thái thành công", updated)
             );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new ResponseObject("error", "Lỗi khi cập nhật trạng thái đơn hàng: " + e.getMessage(), null)
+            );
         }
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                new ResponseObject("error", "Không tìm thấy đơn hàng", "")
-        );
     }
 
     // Hủy đơn hàng
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseObject> huyDonHang(@PathVariable Long id) {
-        Optional<DonHang> existing = donHangService.findById(id);
-        if(existing.isPresent()) {
+        try {
             donHangService.huyDonHang(id);
             return ResponseEntity.ok(
-                    new ResponseObject("success", "Hủy đơn hàng thành công", "")
+                    new ResponseObject("success", "Hủy đơn hàng thành công", null)
             );
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                new ResponseObject("error", "Không tìm thấy đơn hàng", "")
-        );
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new ResponseObject("error", "Lỗi khi hủy đơn hàng: " + e.getMessage(), null)
+            );
+        }
     }
 }
