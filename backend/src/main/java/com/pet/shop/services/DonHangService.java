@@ -31,6 +31,8 @@ import com.pet.shop.dto.ChiTietDonHangRequestItemDTO;
 import java.util.ArrayList;
 import com.pet.shop.dto.ManualTaoDonHangRequestDTO;
 import com.pet.shop.dto.ManualChiTietDonHangItemDTO;
+import com.pet.shop.models.PhuKien;
+import com.pet.shop.models.ThuCung;
 
 @Service
 public class DonHangService {
@@ -176,8 +178,27 @@ public class DonHangService {
         List<ChiTietDonHang> chiTietDonHangs = new ArrayList<>();
         BigDecimal tongTien = BigDecimal.ZERO;
 
+        // First pass: validate all products and quantities
         for (ManualChiTietDonHangItemDTO item : requestDTO.getChiTietDonHangs()) {
-            // Validate product exists
+            SanPham sanPham = sanPhamRepository.findById(item.getMaSanPham())
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm với ID: " + item.getMaSanPham()));
+
+            // Check if product is a pet or accessory
+            if (!sanPham.isThuCung() && !sanPham.isPhuKien()) {
+                throw new RuntimeException("Sản phẩm với ID " + item.getMaSanPham() + " không phải là thú cưng hoặc phụ kiện");
+            }
+
+            // Check inventory for accessories
+            if (sanPham.isPhuKien()) {
+                PhuKien phuKien = sanPham.getPhuKien();
+                if (phuKien.getSoLuongTonKho() < item.getSoLuong()) {
+                    throw new RuntimeException("Sản phẩm " + sanPham.getTenSanPham() + " chỉ còn " + phuKien.getSoLuongTonKho() + " sản phẩm trong kho");
+                }
+            }
+        }
+
+        // Second pass: create order items and update inventory
+        for (ManualChiTietDonHangItemDTO item : requestDTO.getChiTietDonHangs()) {
             SanPham sanPham = sanPhamRepository.findById(item.getMaSanPham())
                     .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm với ID: " + item.getMaSanPham()));
 
@@ -187,10 +208,19 @@ public class DonHangService {
             chiTiet.setDonHang(donHang);
             chiTiet.setSanPham(sanPham);
             chiTiet.setSoLuong(item.getSoLuong());
-            chiTiet.setDonGia(item.getDonGia());
+            chiTiet.setDonGia(sanPham.getGiaBan());
 
             chiTietDonHangs.add(chiTiet);
             tongTien = tongTien.add(chiTiet.getDonGia().multiply(BigDecimal.valueOf(chiTiet.getSoLuong())));
+
+            // Update inventory for both pets and accessories
+            if (sanPham.isPhuKien()) {
+                PhuKien phuKien = sanPham.getPhuKien();
+                phuKien.setSoLuongTonKho(phuKien.getSoLuongTonKho() - item.getSoLuong());
+            } else if (sanPham.isThuCung()) {
+                ThuCung thuCung = sanPham.getThuCung();
+                thuCung.setSoLuongTonKho(thuCung.getSoLuongTonKho() - item.getSoLuong());
+            }
         }
 
         donHang.setChiTietDonHangs(chiTietDonHangs);
