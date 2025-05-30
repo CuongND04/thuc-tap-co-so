@@ -63,10 +63,11 @@ public class GioHangController {
             @RequestParam Long maSanPham,
             @RequestParam Integer soLuong) {
         try {
-            GioHangDTO gioHangDTO = gioHangService.themSanPhamVaoGio(maGioHang, maSanPham, soLuong);
-            return ResponseEntity.ok(new ResponseObject("success", "Thêm sản phẩm vào giỏ hàng chỉ định thành công", gioHangDTO));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new ResponseObject("error", e.getMessage(), null));
+            GioHangDTO gioHang = gioHangService.themSanPhamVaoGioHang(maGioHang, maSanPham, soLuong);
+            return ResponseEntity.ok(new ResponseObject("success", "Thêm sản phẩm vào giỏ hàng thành công", gioHang));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest()
+                    .body(new ResponseObject("error", e.getMessage(), null));
         }
     }
 }

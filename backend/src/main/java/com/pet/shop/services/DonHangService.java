@@ -20,14 +20,8 @@ import com.pet.shop.dto.DonHangDetailResponseDTO;
 import com.pet.shop.dto.ChiTietDonHangResponseDTO;
 import com.pet.shop.models.NguoiDung;
 import com.pet.shop.repositories.NguoiDungRepository;
-import com.pet.shop.models.NhaCungCap;
-import com.pet.shop.repositories.NhaCungCapRepository;
 import com.pet.shop.repositories.CungCapRepository;
-import com.pet.shop.models.CungCap;
-import com.pet.shop.models.CungCapId;
 import com.pet.shop.models.ChiTietDonHangId;
-import com.pet.shop.dto.TaoDonHangRequestDTO;
-import com.pet.shop.dto.ChiTietDonHangRequestItemDTO;
 import java.util.ArrayList;
 import com.pet.shop.dto.ManualTaoDonHangRequestDTO;
 import com.pet.shop.dto.ManualChiTietDonHangItemDTO;
@@ -110,57 +104,7 @@ public class DonHangService {
                 .map(this::convertToDonHangDetailResponseDTO);
     }
 
-    @Transactional
-    public DonHangDetailResponseDTO taoDonHangTuNhaCungCap(TaoDonHangRequestDTO requestDTO) {
-        // Validate user exists
-        NguoiDung nguoiDung = nguoiDungRepository.findById(requestDTO.getMaNguoiDung().intValue())
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng với ID: " + requestDTO.getMaNguoiDung()));
-
-        // Validate supplier exists - Note: Supplier is now handled by checking CungCap linkage per product item
-        // No need to set NhaCungCap directly on DonHang in this version.
-
-        // Create new order
-        DonHang donHang = new DonHang();
-        donHang.setNguoiDung(nguoiDung);
-        donHang.setNgayDatHang(LocalDateTime.now());
-        donHang.setTrangThaiDonHang("Đang xử lý"); // Use the correct setter
-
-        // Process order items
-        List<ChiTietDonHang> chiTietDonHangs = new ArrayList<>();
-        BigDecimal tongTien = BigDecimal.ZERO;
-
-        for (ChiTietDonHangRequestItemDTO item : requestDTO.getChiTietDonHangs()) {
-            // Validate product exists
-            SanPham sanPham = sanPhamRepository.findById(item.getMaSanPham())
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm với ID: " + item.getMaSanPham()));
-
-            // Get supplier price
-            CungCapId cungCapId = new CungCapId(requestDTO.getMaNhaCungCap(), item.getMaSanPham());
-            CungCap cungCap = cungCapRepository.findById(cungCapId)
-                    .orElseThrow(() -> new RuntimeException("Nhà cung cấp không cung cấp sản phẩm với ID: " + item.getMaSanPham()));
-
-            // Create order item
-            ChiTietDonHang chiTiet = new ChiTietDonHang();
-            // Note: maDonHang will be set by JPA when saving DonHang with cascade
-            chiTiet.setId(new ChiTietDonHangId(null, item.getMaSanPham())); // Initialize with maSanPham
-            chiTiet.setDonHang(donHang);
-            chiTiet.setSanPham(sanPham);
-            chiTiet.setSoLuong(item.getSoLuong());
-            chiTiet.setDonGia(cungCap.getGiaCungCap());
-
-            chiTietDonHangs.add(chiTiet);
-            tongTien = tongTien.add(chiTiet.getDonGia().multiply(BigDecimal.valueOf(chiTiet.getSoLuong())));
-        }
-
-        donHang.setChiTietDonHangs(chiTietDonHangs);
-        donHang.setTongTien(tongTien);
-
-        // Save order
-        DonHang savedDonHang = donHangRepository.save(donHang);
-
-        // Return detailed response
-        return convertToDonHangDetailResponseDTO(savedDonHang);
-    }
+    
 
     @Transactional
     public DonHangDetailResponseDTO taoDonHangManual(ManualTaoDonHangRequestDTO requestDTO) {
@@ -216,10 +160,18 @@ public class DonHangService {
             // Update inventory for both pets and accessories
             if (sanPham.isPhuKien()) {
                 PhuKien phuKien = sanPham.getPhuKien();
-                phuKien.setSoLuongTonKho(phuKien.getSoLuongTonKho() - item.getSoLuong());
+                int newQuantity = phuKien.getSoLuongTonKho() - item.getSoLuong();
+                if (newQuantity < 0) {
+                    throw new RuntimeException("Số lượng tồn kho không thể âm");
+                }
+                phuKien.setSoLuongTonKho(newQuantity);
             } else if (sanPham.isThuCung()) {
                 ThuCung thuCung = sanPham.getThuCung();
-                thuCung.setSoLuongTonKho(thuCung.getSoLuongTonKho() - item.getSoLuong());
+                int newQuantity = thuCung.getSoLuongTonKho() - item.getSoLuong();
+                if (newQuantity < 0) {
+                    throw new RuntimeException("Số lượng tồn kho không thể âm");
+                }
+                thuCung.setSoLuongTonKho(newQuantity);
             }
         }
 
