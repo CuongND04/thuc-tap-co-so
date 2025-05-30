@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -16,4 +17,5 @@ public class CungCapRequestDTO {
     private Long maSanPham;
     private BigDecimal giaCungCap;
     private Integer soLuong;
+    private LocalDateTime ngayCungCap;
 } 

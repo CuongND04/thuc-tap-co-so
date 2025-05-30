@@ -31,6 +31,8 @@ import UserCreate from "./pages/Admin/UserCreate.jsx";
 import CreatePetProduct from "./pages/Admin/CreatePetProduct.jsx";
 import CreateAccessoryProduct from "./pages/Admin/CreateAccessoryProduct.jsx";
 import Profile from "./pages/Client/Profile.jsx";
+import ImportDetail from "./pages/Admin/ImportDetail.jsx";
+import ImportCreate from "./pages/Admin/ImportCreate.jsx";
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
   useEffect(() => {
@@ -90,6 +92,12 @@ const App = () => {
             <Route path="categories/create" element={<CreateCategory />} />
 
             <Route path="import" element={<ImportOrders />} />
+            <Route
+              path="import/detail/:maNhaCungCap/:maSanPham"
+              element={<ImportDetail />}
+            />
+            <Route path="import/create" element={<ImportCreate />} />
+
             <Route path="sales" element={<SalesOrders />} />
 
             <Route path="users" element={<ManageUsers />} />

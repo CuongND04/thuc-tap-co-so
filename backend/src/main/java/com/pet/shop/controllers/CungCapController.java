@@ -73,6 +73,8 @@ public class CungCapController {
     @PutMapping("/{maNhaCungCap}/{maSanPham}")
     public ResponseEntity<ResponseObject> updateCungCap(@PathVariable Long maNhaCungCap, @PathVariable Long maSanPham, @RequestBody CungCapRequestDTO requestDTO) {
         try {
+            System.out.print("maNhaCungCap: " + maNhaCungCap);
+            System.out.print("maSanPham: " + maSanPham);
             CungCapDetailDTO updatedCungCap = cungCapService.updateCungCap(maNhaCungCap, maSanPham, requestDTO);
             return ResponseEntity.ok(
                     new ResponseObject("success", "Cập nhật liên kết Cung cấp thành công", updatedCungCap)
