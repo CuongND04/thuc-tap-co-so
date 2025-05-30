@@ -20,7 +20,8 @@ import com.pet.shop.dto.DonHangDetailResponseDTO;
 import com.pet.shop.dto.ChiTietDonHangResponseDTO;
 import com.pet.shop.models.NguoiDung;
 import com.pet.shop.repositories.NguoiDungRepository;
-
+import com.pet.shop.models.NhaCungCap;
+import com.pet.shop.repositories.NhaCungCapRepository;
 import com.pet.shop.repositories.CungCapRepository;
 import com.pet.shop.models.CungCap;
 import com.pet.shop.models.CungCapId;
@@ -180,7 +181,7 @@ public class DonHangService {
             SanPham sanPham = sanPhamRepository.findById(item.getMaSanPham())
                     .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm với ID: " + item.getMaSanPham()));
 
-            // Create order item with manual price
+            // Create order item
             ChiTietDonHang chiTiet = new ChiTietDonHang();
             chiTiet.setId(new ChiTietDonHangId(null, item.getMaSanPham()));
             chiTiet.setDonHang(donHang);
@@ -201,7 +202,6 @@ public class DonHangService {
         // Return detailed response
         return convertToDonHangDetailResponseDTO(savedDonHang);
     }
-
 
     private DonHangListResponseDTO convertToDonHangListResponseDTO(DonHang donHang) {
         DonHangListResponseDTO dto = new DonHangListResponseDTO();

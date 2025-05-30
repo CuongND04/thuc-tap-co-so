@@ -1,6 +1,7 @@
 package com.pet.shop.controllers;
 
 import com.pet.shop.models.ResponseObject;
+import com.pet.shop.models.DonHang;
 import com.pet.shop.services.DonHangService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -53,6 +54,35 @@ public class DonHangController {
         }
     }
 
+    // Tạo mới đơn hàng (sử dụng DTO với chi tiết được cung cấp thủ công)
+    @PostMapping
+    public ResponseEntity<ResponseObject> createDonHang(@RequestBody ManualTaoDonHangRequestDTO requestDTO) {
+        try {
+            // Validate order items are not empty
+            if(requestDTO.getChiTietDonHangs() == null || requestDTO.getChiTietDonHangs().isEmpty()) {
+                return ResponseEntity.badRequest().body(
+                        new ResponseObject("error", "Đơn hàng phải có ít nhất 1 sản phẩm", null)
+                );
+            }
+
+            DonHangDetailResponseDTO savedDonHang = donHangService.taoDonHangManual(requestDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(
+                    new ResponseObject("success", "Tạo đơn hàng thành công", savedDonHang)
+            );
+        } catch (IllegalArgumentException e) {
+             return ResponseEntity.badRequest().body(
+                    new ResponseObject("error", e.getMessage(), null)
+            );
+        } catch (RuntimeException e) {
+             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ResponseObject("error", e.getMessage(), null)
+            );
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(
+                    new ResponseObject("error", "Lỗi khi tạo đơn hàng: " + e.getMessage(), null)
+            );
+        }
+    }
 
     // Cập nhật trạng thái đơn hàng
     @PatchMapping("/{id}/trang-thai")
