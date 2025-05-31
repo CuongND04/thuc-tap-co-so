@@ -7,7 +7,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -30,7 +29,7 @@ public interface DonHangRepository extends JpaRepository<DonHang, Long> {
     List<DonHang> findByTrangThaiDonHangAndNguoiDung_MaNguoiDung(String trangThaiDonHang, Long maNguoiDung);
 
     @Query("SELECT SUM(d.tongTien) FROM DonHang d " +
-            "WHERE d.trangThaiDonHang = 'DA_HOAN_THANH' " +
+            "WHERE d.trangThaiDonHang = 'Đã giao' " + // Sửa điều kiện trạng thái
             "AND (:startDate IS NULL OR d.ngayDatHang >= :startDate) " +
             "AND (:endDate IS NULL OR d.ngayDatHang <= :endDate)")
     BigDecimal calculateTotalRevenue(
@@ -39,7 +38,7 @@ public interface DonHangRepository extends JpaRepository<DonHang, Long> {
     );
 
     @Query("SELECT COUNT(d) FROM DonHang d " +
-            "WHERE d.trangThaiDonHang = 'DA_HOAN_THANH' " +
+            "WHERE d.trangThaiDonHang = 'Đã giao' " + // Sửa điều kiện trạng thái
             "AND (:startDate IS NULL OR d.ngayDatHang >= :startDate) " +
             "AND (:endDate IS NULL OR d.ngayDatHang <= :endDate)")
     Long countCompletedOrders(
