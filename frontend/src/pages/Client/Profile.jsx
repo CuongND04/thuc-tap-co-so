@@ -24,12 +24,8 @@ const Profile = () => {
   }
   return (
     <div>
-      <div className="wrap-bread-crumb">
-        <div className="container">
-          <div className="bread-crumb">
-            <a href="">Trang chủ</a>
-            <span className="">Trang cá nhân</span>
-          </div>
+      <div className="wrap-bread-crumb flex justify-center items-center">
+        <div className="w-[1200px]">
           <div className="bg-white p-4 rounded-xl mb-10 space-y-6 mt-5">
             <UserMetaCard userProfile={userProfile} />
             <UserInfoCard userProfile={userProfile} />

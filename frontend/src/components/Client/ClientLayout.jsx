@@ -1,15 +1,18 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-// import Footer from "./Footer/Footer";
 import Header from "./Header.jsx";
+import Footer from "./Footer/Footer.jsx";
+import Breadcrumb from "./Breadcrumb.jsx"; // mới thêm
+
 const ClientLayout = () => {
   return (
     <>
       <Header />
-      <main>
-        <Outlet /> {/* Đây là nơi các component con sẽ được render */}
+      <Breadcrumb />
+      <main className="min-h-screen px-4 py-6">
+        <Outlet />
       </main>
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 };
