@@ -7,14 +7,16 @@ import axiosInstance from "../lib/axios";
 export const useAuthStore = create((set, get) => ({
   authUser: JSON.parse(localStorage.getItem("auth_user") || "null"),
   userProfile: null,
+  favors: [], // danh sách sản phẩm yêu thích
 
+  isAdding: false,
   isSigningUp: false,
   isLoggingIn: false,
   isUpdatingProfile: false,
   isCheckingAuth: true, // mặc định là true, sau khi xác thực xong mới set trạng thái là false
   isFetchingProfile: false,
   // đây là hàm để lấy ra thông tin user đã đăng nhập từ local storage
-
+  isFetchingFavors: false,
   checkAuth: async () => {
     try {
       const storedUser = localStorage.getItem("auth_user");
@@ -22,57 +24,66 @@ export const useAuthStore = create((set, get) => ({
 
       if (storedUser && storedToken) {
         set({ authUser: JSON.parse(storedUser) });
-      } else {
-        set({ authUser: null });
-      }
 
-      // Gọi lấy thông tin người dùng chi tiết
-      const profile = await get().getProfile();
+        // Gọi lấy thông tin người dùng chi tiết
+        const profile = await get().getProfile();
+        set({ userProfile: profile });
+
+        // Lấy danh sách yêu thích theo mã người dùng từ userProfile
+        const favors = await get().getFavourites(profile?.maNguoiDung);
+        set({ favors });
+      } else {
+        set({ authUser: null, userProfile: null });
+      }
     } catch (error) {
       console.log("Error in checkAuth: ", error);
-      set({ authUser: null });
+      set({ authUser: null, userProfile: null });
     } finally {
       set({ isCheckingAuth: false });
     }
   },
-  // useAuthStore.js
   login: async (data) => {
     set({ isLoggingIn: true });
     try {
-      console.log("data: ", data);
       const res = await axiosInstance.post("/auth/login", data);
-      console.log("res: ", res);
 
-      // lưu vào auth user vào local storage
+      // Lưu token và user sơ bộ vào localStorage
       localStorage.setItem("auth_user", JSON.stringify(res.data.data));
-      // lưu token vào local storage
       setAuthToken(res.data.data.token);
-
       set({ authUser: res.data.data });
+
       toast.success("Đăng nhập thành công");
+
       // Gọi lấy thông tin người dùng chi tiết
       const profile = await get().getProfile();
+      set({ userProfile: profile });
 
-      return !!profile; // true nếu profile lấy được
+      // Lấy danh sách yêu thích từ profile.maNguoiDung
+      const favors = await get().getFavourites(profile.maNguoiDung);
+      set({ favors });
+
+      return true;
     } catch (error) {
-      // chỗ này là phòng trường hợp mà jwt ở backend đã hết hạn rồi mà
-      localStorage.removeItem("auth_user"); // Xóa user trong localStorage
+      // Xử lý lỗi và reset state nếu login fail
+      localStorage.removeItem("auth_user");
       localStorage.removeItem("auth_token");
-      set({ authUser: null });
-      set({ userProfile: null });
+
+      set({
+        authUser: null,
+        userProfile: null,
+        favors: [],
+      });
 
       const rawMsg =
         error?.response?.data?.message ??
         error?.response?.data?.error ??
         "Đã xảy ra lỗi";
 
-      // Thân thiện hơn nếu là lỗi hết hạn token
       const friendlyMsg = rawMsg.includes("Token has expired")
         ? "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại."
         : rawMsg;
 
       toast.error(friendlyMsg);
-
       console.log("error: ", error);
 
       return false;
@@ -90,6 +101,7 @@ export const useAuthStore = create((set, get) => ({
 
       set({ userProfile: profileData });
       localStorage.setItem("userProfile", profileData);
+      // console.log("res getProfile: ", res);
 
       return profileData;
     } catch (error) {
@@ -108,11 +120,11 @@ export const useAuthStore = create((set, get) => ({
       const updatedProfile = res.data.data;
 
       set({ userProfile: updatedProfile });
-      toast.success("Cập nhật thông tin người dùng thành công");
+      toast.success("Cập nhật thông tin  thành công");
 
       return updatedProfile;
     } catch (error) {
-      toast.error("Cập nhật thông tin người dùng thất bại");
+      toast.error("Cập nhật thông tin  thất bại");
       console.error(error);
       return null;
     } finally {
@@ -149,9 +161,68 @@ export const useAuthStore = create((set, get) => ({
       localStorage.removeItem("userProfile");
       set({ authUser: null });
       set({ userProfile: null });
+      set({ favors: [] });
       toast.success("Đăng xuất thành công");
     } catch (error) {
       toast.error(error?.response?.data?.message);
+    }
+  },
+
+  // lấy danh sách sản phẩm yêu thích của người dùng đang đăng nhập
+  // Get Profile
+  getFavourites: async (maNguoiDung) => {
+    set({ isFetchingFavors: true });
+
+    try {
+      const res = await axiosInstance.get(`/yeu-thich/${maNguoiDung}`);
+      const favors = res.data.data;
+      console.log("res favors: ", res);
+      set({ favors: favors });
+
+      return favors;
+    } catch (error) {
+      // mục đích là để xóa trạng thái vẫn đăng nhập được nhưng không láy được profile
+      set({ favors: null });
+      return null;
+    } finally {
+      set({ isFetchingFavors: false });
+    }
+  },
+
+  // thêm sản phẩm vào ds yêu thíhc
+  addToFavorites: async (customerID, productID) => {
+    set({ isAdding: true });
+    try {
+      const res = await axiosInstance.post(
+        `/yeu-thich/${customerID}/them/${productID}`
+      );
+      console.log("res: ", res);
+      const updatedFavors = await get().getFavourites(customerID);
+      set({ favors: updatedFavors }); // ✅ Cập nhật lại Zustand
+      toast.success("Đã thêm vào danh sách yêu thích!");
+    } catch (error) {
+      toast.error("Thêm vào yêu thích thất bại!");
+      return null;
+    } finally {
+      set({ isAdding: false });
+    }
+  },
+  // xóa sản phẩm khỏi danh sách yêu thích
+  removeFromFavorites: async (customerID, productID) => {
+    set({ isAdding: true });
+    try {
+      const res = await axiosInstance.delete(
+        `/yeu-thich/${customerID}/xoa/${productID}`
+      );
+      console.log("res: ", res);
+      const updatedFavors = await get().getFavourites(customerID);
+      set({ favors: updatedFavors }); // ✅ Cập nhật lại Zustand
+      toast.success("Đã xóa khỏi danh sách yêu thích!");
+    } catch (error) {
+      toast.error("Xóa khỏi yêu thích thất bại!");
+      return null;
+    } finally {
+      set({ isAdding: false });
     }
   },
 }));

@@ -1,8 +1,32 @@
 import React from "react";
+import { useAuthStore } from "../../store/useAuthStore";
 
 const CellComp = ({ prodID, imgSource, prodName, price, rating, newStat }) => {
   newStat = newStat || false;
   const addToCart = () => {};
+  const {
+    userProfile,
+    isCheckingAuth,
+    favors,
+    addToFavorites,
+    isAdding,
+    removeFromFavorites,
+  } = useAuthStore();
+  const isFavorite = favors.some((sp) => sp.maSanPham === prodID);
+  const handleToggleFavorite = async (e) => {
+    e.preventDefault(); // Ngăn load lại trang khi click <a>
+    if (!userProfile) {
+      toast.error("Bạn cần đăng nhập để thao tác");
+      return;
+    }
+    if (isFavorite) {
+      // Đã yêu thích => xóa yêu thích
+      await removeFromFavorites(userProfile.maNguoiDung, prodID);
+    } else {
+      // Chưa yêu thích => thêm yêu thích
+      await addToFavorites(userProfile.maNguoiDung, prodID);
+    }
+  };
   return (
     <div className="flex w-[25%] justify-center items-center mt-[10px] mb-[10px] ml-0 mr-0">
       <div className="group/a1">
@@ -21,28 +45,32 @@ const CellComp = ({ prodID, imgSource, prodName, price, rating, newStat }) => {
               </div>
             </a>
             <div className="absolute hidden top-[35%] left-[27%] group-hover:block">
-              <a href="">
-                <div className="mt-0 mb-0 mr-[10px] ml-[10px] bg-[#de8ebe] w-[40px] h-[40px] text-white text-[18px] inline-flex justify-center items-center rounded-[100px]  hover:bg-white group/b1">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="bg-transparent w-[70%] h-[70%] text-white text-[18px] inline-flex justify-center items-center hover:text-[#de8ebe] group-hover/b1:text-[#de8ebe]"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-                    />
-                  </svg>
+              <div
+                onClick={handleToggleFavorite}
+                className="mt-0 mb-0 mr-[10px] ml-[10px] bg-[#de8ebe] w-[40px] h-[40px] text-white text-[18px] inline-flex justify-center items-center rounded-full hover:bg-white group/b1 cursor-pointer relative transition-all duration-300"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill={isFavorite ? "#ff4d4f" : "none"}
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke={isFavorite ? "#de8ebe" : "currentColor"}
+                  className={`bg-transparent w-[70%] h-[70%] text-white inline-flex justify-center items-center group-hover/b1:text-[#de8ebe] transition-all duration-300 ${
+                    isFavorite ? "scale-110 drop-shadow-md" : ""
+                  }`}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+                  />
+                </svg>
 
-                  <div className="absolute bottom-[50px] left-[50%] bg-[#de8ebe] text-white text-[12px] font-[Arial] font-[200] whitespace-nowrap pt-[5px] pb-[5px] pr-[10px] pl-[10px] rounded-[5px] transform hidden -translate-x-1/2 z-100 group-hover/b1:block">
-                    Yêu thích
-                  </div>
+                <div className="absolute bottom-[50px] left-[50%] bg-[#de8ebe] text-white text-[12px] font-[Arial] font-[200] whitespace-nowrap pt-[5px] pb-[5px] pr-[10px] pl-[10px] rounded-[5px] transform hidden -translate-x-1/2 z-100 group-hover/b1:block">
+                  {isFavorite ? "Bỏ yêu thích" : "Yêu thích"}
                 </div>
-              </a>
+              </div>
+
               <a href={`/san-pham/${prodID}`}>
                 <div className="mt-0 mb-0 mr-[10px] ml-[10px] bg-[#de8ebe] w-[40px] h-[40px] text-white text-[18px] inline-flex justify-center items-center rounded-[100px]  hover:bg-white group/b1">
                   <svg
@@ -117,7 +145,11 @@ const CellComp = ({ prodID, imgSource, prodName, price, rating, newStat }) => {
             <a href={`/san-pham/${prodID}`}>{prodName}</a>
           </h3>
           <p className="font-[Arial] text-[18px] pt-0 pb-0 pr-[2px] pl-[2px] mt-[20px] mb-[20px] mr-0 ml-0 font-extrabold text-[#cf72aa]">
-            {price}₫
+            {price.toLocaleString("vi-VN", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+            ₫
           </p>
         </div>
       </div>
