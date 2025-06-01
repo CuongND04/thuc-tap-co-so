@@ -4,14 +4,14 @@ import CategoryList from "../../../components/Client/CategoryList";
 const DogCategory = () => {
   return (
     <div>
-      <div className="wrap-bread-crumb">
+      {/* <div className="wrap-bread-crumb">
         <div className="container">
           <div className="bread-crumb">
             <a href="">Trang chủ</a>
             <span>Danh mục cún</span>
           </div>
         </div>
-      </div>
+      </div> */}
       <CategoryList />
     </div>
   );
