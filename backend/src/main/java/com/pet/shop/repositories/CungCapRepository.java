@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface CungCapRepository extends JpaRepository<CungCap, CungCapId> {
 
     Optional<CungCap> findByNhaCungCap_MaNhaCungCapAndSanPham_MaSanPham(Long maNhaCungCap, Long maSanPham);
-    @Query("SELECT SUM(cc.giaCungCap) FROM CungCap cc " + // Sửa vì không có trường soLuong
+    @Query("SELECT SUM(cc.giaCungCap * cc.soLuong) FROM CungCap cc " + // Sửa vì không có trường soLuong
             "WHERE (:startDate IS NULL OR cc.ngayCungCap >= :startDate) " +
             "AND (:endDate IS NULL OR cc.ngayCungCap <= :endDate)")
     BigDecimal calculateTotalImportCost(

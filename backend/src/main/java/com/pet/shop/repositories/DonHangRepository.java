@@ -28,19 +28,22 @@ public interface DonHangRepository extends JpaRepository<DonHang, Long> {
     // Tìm đơn hàng kết hợp trạng thái và người dùng
     List<DonHang> findByTrangThaiDonHangAndNguoiDung_MaNguoiDung(String trangThaiDonHang, Long maNguoiDung);
 
-    @Query("SELECT SUM(d.tongTien) FROM DonHang d " +
-            "WHERE d.trangThaiDonHang = 'Đã giao' " + // Sửa điều kiện trạng thái
-            "AND (:startDate IS NULL OR d.ngayDatHang >= :startDate) " +
-            "AND (:endDate IS NULL OR d.ngayDatHang <= :endDate)")
+    // Sửa lại các phương thức tính toán dùng native query với tên bảng/cột chính xác
+    @Query(value = "SELECT COALESCE(SUM(d.tong_tien), 0) FROM don_hang d " +
+            "WHERE d.trang_thai_don_hang = N'Đã giao' " +
+            "AND (:startDate IS NULL OR d.ngay_dat_hang >= :startDate) " +
+            "AND (:endDate IS NULL OR d.ngay_dat_hang <= :endDate)",
+            nativeQuery = true)
     BigDecimal calculateTotalRevenue(
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate
     );
 
-    @Query("SELECT COUNT(d) FROM DonHang d " +
-            "WHERE d.trangThaiDonHang = 'Đã giao' " + // Sửa điều kiện trạng thái
-            "AND (:startDate IS NULL OR d.ngayDatHang >= :startDate) " +
-            "AND (:endDate IS NULL OR d.ngayDatHang <= :endDate)")
+    @Query(value = "SELECT COUNT(*) FROM don_hang d " +
+            "WHERE d.trang_thai_don_hang = N'Đã giao' " +
+            "AND (:startDate IS NULL OR d.ngay_dat_hang >= :startDate) " +
+            "AND (:endDate IS NULL OR d.ngay_dat_hang <= :endDate)",
+            nativeQuery = true)
     Long countCompletedOrders(
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate
