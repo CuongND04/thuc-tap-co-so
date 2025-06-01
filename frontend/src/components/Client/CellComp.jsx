@@ -1,9 +1,9 @@
 import React from "react";
 import { useAuthStore } from "../../store/useAuthStore";
+import { useCartStore } from "../../store/useCartStore";
 
 const CellComp = ({ prodID, imgSource, prodName, price, rating, newStat }) => {
   newStat = newStat || false;
-  const addToCart = () => {};
   const {
     userProfile,
     isCheckingAuth,
@@ -12,6 +12,7 @@ const CellComp = ({ prodID, imgSource, prodName, price, rating, newStat }) => {
     isAdding,
     removeFromFavorites,
   } = useAuthStore();
+  const { userCart, addItem } = useCartStore();
   const isFavorite = favors.some((sp) => sp.maSanPham === prodID);
   const handleToggleFavorite = async (e) => {
     e.preventDefault(); // Ngăn load lại trang khi click <a>
@@ -26,6 +27,12 @@ const CellComp = ({ prodID, imgSource, prodName, price, rating, newStat }) => {
       // Chưa yêu thích => thêm yêu thích
       await addToFavorites(userProfile.maNguoiDung, prodID);
     }
+  };
+
+  const addToCart = async (e) => {
+    e.preventDefault();
+
+    addItem(userCart.maGioHang, prodID, 1);
   };
   return (
     <div className="flex w-[25%] justify-center items-center mt-[10px] mb-[10px] ml-0 mr-0">

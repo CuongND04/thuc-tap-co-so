@@ -38,6 +38,7 @@ import SaleCreate from "./pages/Admin/SaleCreate.jsx";
 import Contact from "./pages/Client/Contact.jsx";
 import Intro from "./pages/Client/Intro.jsx";
 import FavorList from "./pages/Client/FavorList.jsx";
+import Search from "./pages/Client/Search.jsx"
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
   useEffect(() => {
@@ -61,6 +62,8 @@ const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/trang-ca-nhan" element={<Profile />} />
           <Route path="danh-muc-cun" element={<DogCategory />} />
+          <Route path="danh-muc-san-pham" element={<Search />} />
+          <Route path="danh-muc-san-pham/:id" element={<Search />} />
           <Route path="dang-nhap" element={<Login />} />
           <Route path="dang-ky" element={<Registeration />} />
           <Route path="lien-he" element={<Contact />} />

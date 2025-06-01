@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import {useNavigate, useLocation} from "react-router-dom"
 import { Loader } from "lucide-react";
 import {
   Popover,
@@ -24,20 +25,6 @@ const images = [
   "https://github.com/DoanQuocHuy2308/MatPetFamiLy/blob/master/IMG/TrangChu/TrangChu12.jpg?raw=true",
 ];
 
-const menu1 = [
-  "Chó Alaska Malamute",
-  "Chó Beagle",
-  "Chó Corgi",
-  "Chó Golden Retriever",
-  "Chó Husky Siberian",
-  "Chó Phốc Sóc – Pomeranian",
-  "Chó Poodle",
-  "Chó Pug",
-  "Chó Samoyed",
-  "Mèo Anh (Dài + Ngắn)",
-  "Mèo Chân Ngắn",
-  "Mèo Tai Cụp",
-];
 const userMenu = [
   { label: "Trang cá nhân", path: "/trang-ca-nhan" },
   { label: "Đơn hàng của tôi", path: "/don-hang" },
@@ -45,6 +32,7 @@ const userMenu = [
 ];
 
 const Header = () => {
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentUserProfile, setCurrentUserProfile] = useState(null);
   const [currentCart, setCurrentCart] = useState(null);
@@ -60,7 +48,7 @@ const Header = () => {
   } = useAuthStore();
 
   const { getAllCategories } = useCategoryStore();
-  const { getCart, isGettingCart, updateItem } = useCartStore();
+  const { getCart, isGettingCart, updateItem, deleteItem } = useCartStore();
   const [categories, setCategories] = useState([]);
 
   const next = () => {
@@ -118,6 +106,33 @@ const Header = () => {
 
     toggleEditing(index);
   };
+
+  const deleteHandler = async (index) => {
+      const res = await deleteItem(
+        userProfile.maNguoiDung,
+        currentCart.items[index].maSanPham
+      );
+
+      if (res) {
+        const res2 = await getCart(userProfile.maNguoiDung);
+        if (res2) {
+          setCurrentCart(res2);
+          console.log("changed");
+        }
+      }
+    }
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const { keyword, category } = Object.fromEntries(formData);
+    if(keyword)
+      {
+        if(category=="Tất cả danh mục") navigate(`/danh-muc-san-pham`, {state: keyword});
+        else navigate(`/danh-muc-san-pham/${category}`, {state: keyword});
+      } 
+    else console.log("keyword is empty");
+  }
 
   useEffect(() => {
     const interval = setInterval(next, 6000);
@@ -212,7 +227,7 @@ const Header = () => {
                         >
                           <div className="flex-auto">
                             <a
-                              href={`/danh-muc-cun/${cat.tenDanhMuc}`}
+                              href={`/danh-muc-san-pham/${cat.tenDanhMuc}`}
                               className="block font-semibold text-gray-900"
                             >
                               {cat.tenDanhMuc}
@@ -326,7 +341,7 @@ const Header = () => {
                         {currentCart &&
                           currentCart.items.map((prod, index) => (
                             <form
-                              key={index}
+                              key={prod.maSanPham}
                               onSubmit={updateRequest}
                               className="flex justify-between items-center mb-[10px]"
                             >
@@ -367,6 +382,18 @@ const Header = () => {
                                 </p>
                               </div>
                               <div className="w-[20%] flex justify-end">
+                                {/* Cancel btn */}
+                                {getEditingState(index) && (
+                                  <button
+                                    onClick={() => toggleEditing(index)}
+                                    className="cursor-pointer"
+                                  >
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ff0000" className="size-6">
+                                    <path fillRule="evenodd" d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
+                                  </svg>
+                                  </button>
+                                )}
+                                {/* Edit btn */}
                                 {!getEditingState(index) && (
                                   <button
                                     onClick={() => toggleEditing(index)}
@@ -392,6 +419,7 @@ const Header = () => {
                                 {getEditingState(index) && (
                                   <button
                                     type="submit"
+                                    // onClick={() => toggleEditing(index)}
                                     className="cursor-pointer"
                                   >
                                     <svg
@@ -409,7 +437,7 @@ const Header = () => {
                                   </button>
                                 )}
 
-                                <button className="cursor-pointer">
+                                <button className="cursor-pointer" type="button" onClick={() => deleteHandler(index)}>
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
@@ -492,7 +520,7 @@ const Header = () => {
           {/* Seaching Bar */}
 
           <div>
-            <form className="mt-5 ml-40">
+            <form className="mt-5 ml-40" onSubmit={handleSearch}>
               <div className="flex w-150 items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-black has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-[#de8ebe]">
                 <MagnifyingGlassIcon className="w-5 h-5" />
                 <input
@@ -504,9 +532,11 @@ const Header = () => {
                 />
                 <button
                   type="reset"
-                  className="visible peer-placeholder-shown:invisible"
+                  className="visible peer-placeholder-shown:invisible cursor-pointer"
                 >
-                  X
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ff0000" className="size-6">
+                    <path fillRule="evenodd" d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
+                  </svg>
                 </button>
                 <div className="grid grid-cols-1 shrink-0 focus-within:relative">
                   <select
