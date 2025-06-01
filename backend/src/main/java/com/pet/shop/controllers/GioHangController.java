@@ -44,12 +44,12 @@ public class GioHangController {
         }
     }
 
-    @DeleteMapping("/{maKhachHang}/xoa/{maSanPham}")
+    @DeleteMapping("/{maGioHang}/xoa/{maSanPham}")
     public ResponseEntity<ResponseObject> xoaSanPham(
-            @PathVariable Long maKhachHang,
+            @PathVariable Long maGioHang,
             @PathVariable Long maSanPham) {
         try {
-            GioHangDTO gioHang = gioHangService.xoaSanPham(maKhachHang, maSanPham);
+            GioHangDTO gioHang = gioHangService.xoaSanPham(maGioHang, maSanPham);
             return ResponseEntity.ok(new ResponseObject("success", "Xóa sản phẩm khỏi giỏ hàng thành công", gioHang));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest()

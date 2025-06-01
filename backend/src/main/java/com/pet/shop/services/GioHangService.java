@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
@@ -80,22 +81,39 @@ public class GioHangService {
     }
 
     @Transactional
-    public GioHangDTO xoaSanPham(Long maKhachHang, Long maSanPham) {
-        GioHang gioHang = gioHangRepository.findByNguoiDungMaNguoiDung(maKhachHang)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy giỏ hàng"));
-
+    public GioHangDTO xoaSanPham(Long maGioHang, Long maSanPham) {
+        // Tạo khóa chính tổng hợp
         ChiTietGioHangId chiTietGioHangId = new ChiTietGioHangId();
-        chiTietGioHangId.setMaGioHang(gioHang.getMaGioHang());
+        chiTietGioHangId.setMaGioHang(maGioHang);
         chiTietGioHangId.setMaSanPham(maSanPham);
 
-        if (!chiTietGioHangRepository.existsById(chiTietGioHangId)) {
-            throw new RuntimeException("Không tìm thấy sản phẩm trong giỏ hàng");
-        }
+        // Tìm chi tiết giỏ hàng
+        ChiTietGioHang chiTietGioHang = chiTietGioHangRepository.findById(chiTietGioHangId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm trong giỏ hàng"));
 
-        chiTietGioHangRepository.deleteById(chiTietGioHangId);
+    // Lấy sản phẩm và cập nhật lại tồn kho
+    SanPham sanPham = chiTietGioHang.getSanPham();
+    int soLuongXoa = chiTietGioHang.getSoLuong();
 
-        return convertToDTO(gioHang);
+    if (sanPham.isThuCung()) {
+        ThuCung thuCung = sanPham.getThuCung();
+        thuCung.setSoLuongTonKho(thuCung.getSoLuongTonKho() + soLuongXoa);
+    } else if (sanPham.isPhuKien()) {
+        PhuKien phuKien = sanPham.getPhuKien();
+        phuKien.setSoLuongTonKho(phuKien.getSoLuongTonKho() + soLuongXoa);
     }
+
+    // Xóa dòng chi tiết giỏ hàng
+    chiTietGioHangRepository.delete(chiTietGioHang);
+    chiTietGioHangRepository.flush();
+
+    // Reload lại giỏ hàng (nếu cần hiển thị cập nhật)
+    GioHang updatedGioHang = gioHangRepository.findById(maGioHang)
+            .orElseThrow(() -> new RuntimeException("Không tìm thấy giỏ hàng sau khi cập nhật"));
+
+    return convertToDTO(updatedGioHang);
+}
+
 
     @Transactional
     public GioHangDTO themSanPhamVaoGioHang(Long maGioHang, Long maSanPham, Integer soLuong) {
