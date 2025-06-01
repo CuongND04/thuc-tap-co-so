@@ -1,5 +1,6 @@
 package com.pet.shop.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -7,20 +8,14 @@ import java.time.format.DateTimeFormatter;
 
 @Data
 public class DoanhThuDTO {
-    private String startDateTime;
-    private String endDateTime;
-    private BigDecimal tongDoanhThu;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime startDateTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime endDateTime;
+
+    private BigDecimal doanhThuBanHang;
+    private BigDecimal tienNhapHang;
+    private BigDecimal loiNhuan;
     private long tongDonHang;
-
-    public void setStartDateTime(LocalDateTime dateTime) {
-        this.startDateTime = dateTime != null
-                ? dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-                : null;
-    }
-
-    public void setEndDateTime(LocalDateTime dateTime) {
-        this.endDateTime = dateTime != null
-                ? dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-                : null;
-    }
 }

@@ -75,6 +75,7 @@ public class AuthController {
             nguoiDung.setGioHangs(null);
             nguoiDung.setDonHangs(null);
             nguoiDung.setYeuThichs(null);
+            nguoiDung.setDanhGias(null);
             return ResponseEntity.ok(new ResponseObject("success", "Lấy thông tin người dùng thành công", nguoiDung));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)

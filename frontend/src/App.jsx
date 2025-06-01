@@ -37,6 +37,7 @@ import SaleDetail from "./pages/Admin/SaleDetail.jsx";
 import SaleCreate from "./pages/Admin/SaleCreate.jsx";
 import Contact from "./pages/Client/Contact.jsx";
 import Intro from "./pages/Client/Intro.jsx";
+import FavorList from "./pages/Client/FavorList.jsx";
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
   useEffect(() => {
@@ -64,6 +65,7 @@ const App = () => {
           <Route path="dang-ky" element={<Registeration />} />
           <Route path="lien-he" element={<Contact />} />
           <Route path="gioi-thieu" element={<Intro />} />
+          <Route path="yeu-thich" element={<FavorList />} />
           <Route path="/san-pham/:id" element={<ProductDetailClient />} />
         </Route>
 

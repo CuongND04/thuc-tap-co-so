@@ -28,7 +28,9 @@ export const useCartStore = create((set, get) => ({
   addItem: async (cartID, prodID, amount) => {
     set({ isAdding: true });
     try {
-      const res = await axiosInstance.post(`/gio-hang/them-vao-gio?maGioHang=3&maSanPham=13&soLuong=1`);
+      const res = await axiosInstance.post(
+        `/gio-hang/them-vao-gio?maGioHang=3&maSanPham=13&soLuong=1`
+      );
       toast.success("Thêm vào giỏ hàng thành công!");
     } catch (error) {
       toast.error("Thêm vào giỏ hàng thất bại!");
@@ -41,7 +43,10 @@ export const useCartStore = create((set, get) => ({
   updateItem: async (userID, prodID, amount) => {
     set({ isUpdating: true });
     try {
-      const res = await axiosInstance.put(`/gio-hang/${userID}/cap-nhat/${prodID}`, {soLuong: amount});
+      const res = await axiosInstance.put(
+        `/gio-hang/${userID}/cap-nhat/${prodID}`,
+        { soLuong: amount }
+      );
       toast.success("Cập nhật số lượng thành công!");
     } catch (error) {
       toast.error("Cập nhật thất bại!");
@@ -49,6 +54,5 @@ export const useCartStore = create((set, get) => ({
     } finally {
       set({ isUpdating: false });
     }
-  }
-
+  },
 }));
