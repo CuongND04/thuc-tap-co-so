@@ -3,18 +3,18 @@ import { useLocation, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import {
   PieChartOutlined,
-  AppstoreOutlined,
+  ShopOutlined,
   TagsOutlined,
-  ShoppingCartOutlined,
-  DownloadOutlined,
-  UploadOutlined,
+  ShoppingOutlined,
+  FileAddOutlined,
+  DollarCircleOutlined,
   UserOutlined,
   TeamOutlined,
-  FileOutlined,
-  BarChartOutlined,
+  IdcardOutlined,
+  SnippetsOutlined,
+  GiftOutlined,
+  InboxOutlined,
   SmileOutlined,
-  ShoppingOutlined,
-  HeartOutlined,
 } from "@ant-design/icons";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 const { Content, Footer, Sider } = Layout;
@@ -27,29 +27,27 @@ function getItem(label, key, icon, children) {
   };
 }
 import { Header } from "./Header";
+import { PawPrint } from "lucide-react";
 
 const items = [
   getItem("Dashboard", "/admin/dashboard", <PieChartOutlined />),
 
-  // getItem("Quản lý sản phẩm", "/admin/products", <AppstoreOutlined />),
-  getItem("Quản lý sản phẩm", "products", <AppstoreOutlined />, [
-    getItem("Thú cưng", "/admin/pet", <HeartOutlined />),
-    getItem("Phụ kiện", "/admin/accessory", <AppstoreOutlined />),
+  getItem("Quản lý sản phẩm", "products", <ShopOutlined />, [
+    getItem("Thú cưng", "/admin/pet", <PawPrint size={18} />),
+    getItem("Phụ kiện", "/admin/accessory", <GiftOutlined />),
   ]),
 
   getItem("Quản lý danh mục", "/admin/categories", <TagsOutlined />),
 
-  getItem("Quản lý đơn hàng", "orders", <ShoppingCartOutlined />, [
-    getItem("Nhập hàng", "/admin/import", <DownloadOutlined />),
-    getItem("Bán hàng", "/admin/sales", <UploadOutlined />),
+  getItem("Quản lý đơn hàng", "orders", <ShoppingOutlined />, [
+    getItem("Nhập hàng", "/admin/import", <InboxOutlined />),
+    getItem("Bán hàng", "/admin/sales", <DollarCircleOutlined />),
   ]),
 
   getItem("Quản lý tài khoản", "/admin/users", <UserOutlined />),
   getItem("Quản lý nhà cung cấp", "/admin/suppliers", <TeamOutlined />),
-  getItem("Báo cáo doanh thu", "/admin/reports", <BarChartOutlined />),
-  getItem("Hồ sơ người dùng", "/admin/profile", <BarChartOutlined />),
+  getItem("Hồ sơ người dùng", "/admin/profile", <IdcardOutlined />),
 ];
-
 const AdminLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();

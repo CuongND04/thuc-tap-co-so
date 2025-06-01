@@ -18,7 +18,7 @@ function ProductDetail() {
     removeFromFavorites,
   } = useAuthStore();
   // const { ,  } = useCartStore();
-  console.log("favors ProductDetail: ", favors);
+  // console.log("favors ProductDetail: ", favors);
   const { userCart, addItem } = useCartStore();
   const [product, setProduct] = useState([]);
   const { id } = useParams();

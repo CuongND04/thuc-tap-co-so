@@ -38,7 +38,7 @@ import SaleCreate from "./pages/Admin/SaleCreate.jsx";
 import Contact from "./pages/Client/Contact.jsx";
 import Intro from "./pages/Client/Intro.jsx";
 import FavorList from "./pages/Client/FavorList.jsx";
-import Search from "./pages/Client/Search.jsx"
+import Search from "./pages/Client/Search.jsx";
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
   useEffect(() => {
@@ -118,7 +118,6 @@ const App = () => {
             <Route path="users/create" element={<UserCreate />} />
 
             <Route path="suppliers" element={<ManageSuppliers />} />
-            <Route path="reports" element={<RevenueReports />} />
             <Route path="profile" element={<UserProfile />} />
           </Route>
         </Route>
