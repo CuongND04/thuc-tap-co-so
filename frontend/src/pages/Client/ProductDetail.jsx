@@ -1,6 +1,6 @@
 import { React, useEffect, useState } from "react";
 import { Loader } from "lucide-react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 // import "./Detail.css";
 import { useProductStore } from "../../store/useProductStore";
 import CategoryList from "../../components/Client/CategoryList";
@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 
 function ProductDetail() {
   const { getDetailProduct, isGettingDetailProduct } = useProductStore();
+  const navigate = useNavigate();
   const {
     userProfile,
     isCheckingAuth,
@@ -102,6 +103,9 @@ function ProductDetail() {
   const addToCart = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
+    const submitter = e.nativeEvent.submitter;
+    console.log("Button pressed:", submitter.name);
+
     var { amount } = Object.fromEntries(formData);
     amount = amount || 1;
 
@@ -124,6 +128,10 @@ function ProductDetail() {
       await addToFavorites(userProfile.maNguoiDung, product.maSanPham);
     }
   };
+
+  const handleBuy = () => {
+    navigate("/thanh-toan");
+  }
 
   // if (isGettingDetailProduct) {
   //   return (
@@ -179,9 +187,22 @@ function ProductDetail() {
                     <div className="function-info ml-[20px] flex justify-center items-center rounded-[10px] h-[40px] w-[120px] border-[1px] border-solid border-[#e5e5e5] bg-[#cf72aa]">
                       <button
                         className="text-[#fff] rounded-[10px] h-[35px] w-[115px] border-[2px] border-dashed border-[#e5e5e5] bg-[#de8ebe] after:mt-[10px] after:mb-[5px] after:ml-[5px] after:content-['\203A'] hover:bg-[#cf72aa] cursor-pointer"
+                        name="add"
+                        id="add"
                         type="submit"
                       >
                         Thêm vào giỏ
+                      </button>
+                    </div>
+
+                    <div className="function-info ml-[20px] flex justify-center items-center rounded-[10px] h-[40px] w-[120px] border-[1px] border-solid border-[#e5e5e5] bg-[#cf72aa]">
+                      <button
+                        className="text-[#fff] rounded-[10px] h-[35px] w-[115px] border-[2px] border-dashed border-[#e5e5e5] bg-[#de8ebe] after:mt-[10px] after:mb-[5px] after:ml-[5px] after:content-['\203A'] hover:bg-[#cf72aa] cursor-pointer"
+                        name="buy"
+                        id="buy"
+                        onClick={handleBuy}
+                      >
+                        Mua ngay
                       </button>
                     </div>
                   </form>
@@ -237,16 +258,18 @@ function ProductDetail() {
                       <div className="info-product-category">
                         <a
                           className="inline-block border-[1px] border-solid border-[#e5e5e5] pt-[4px] pb-[4px] pl-[10px] pr-[10px] rounded-[4px] mb-[5px] text-[12px]"
-                          href=""
+                          href={`/danh-muc-san-pham/${product.tenDanhMuc}`}
                         >
                           {product.tenDanhMuc}
                         </a>
-                        <a
-                          className="inline-block border-[1px] border-solid border-[#e5e5e5] pt-[4px] pb-[4px] pl-[10px] pr-[10px] rounded-[4px] mb-[5px] text-[12px]"
-                          href=""
-                        >
-                          Danh mục Cún
-                        </a>
+                      </div>
+                    </div>
+                    <div className="info-product flex">
+                      <label className="min-w-[105px] font-normal text-[14px]">
+                        Mô tả:{" "}
+                      </label>
+                      <div className="info-product-category">
+                       <p>{product.moTa}</p>
                       </div>
                     </div>
                   </div>
