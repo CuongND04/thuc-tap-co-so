@@ -1,5 +1,6 @@
 package com.pet.shop.services;
 
+import com.pet.shop.dto.*;
 import com.pet.shop.models.ChiTietDonHang;
 import com.pet.shop.models.DonHang;
 import com.pet.shop.models.SanPham;
@@ -15,16 +16,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import com.pet.shop.dto.DonHangListResponseDTO;
-import com.pet.shop.dto.DonHangDetailResponseDTO;
-import com.pet.shop.dto.ChiTietDonHangResponseDTO;
+
 import com.pet.shop.models.NguoiDung;
 import com.pet.shop.repositories.NguoiDungRepository;
 import com.pet.shop.repositories.CungCapRepository;
 import com.pet.shop.models.ChiTietDonHangId;
 import java.util.ArrayList;
-import com.pet.shop.dto.ManualTaoDonHangRequestDTO;
-import com.pet.shop.dto.ManualChiTietDonHangItemDTO;
+
 import com.pet.shop.models.PhuKien;
 import com.pet.shop.models.ThuCung;
 
@@ -188,12 +186,11 @@ public class DonHangService {
     private DonHangListResponseDTO convertToDonHangListResponseDTO(DonHang donHang) {
         DonHangListResponseDTO dto = new DonHangListResponseDTO();
         dto.setMaDonHang(donHang.getMaDonHang());
-        // Assuming ma_khach_hang corresponds to the user ID in DonHang
+
         if (donHang.getNguoiDung() != null) {
-            dto.setMaKhachHang(donHang.getNguoiDung().getMaNguoiDung());
-        } else {
-            dto.setMaKhachHang(null); // Or handle as appropriate
+            dto.setKhachHang(convertToKhachHangInfoDTO(donHang.getNguoiDung()));
         }
+
         dto.setNgayDatHang(donHang.getNgayDatHang());
         dto.setTongTien(donHang.getTongTien());
         dto.setTrangThaiDonHang(donHang.getTrangThaiDonHang());
@@ -203,13 +200,11 @@ public class DonHangService {
     private DonHangDetailResponseDTO convertToDonHangDetailResponseDTO(DonHang donHang) {
         DonHangDetailResponseDTO dto = new DonHangDetailResponseDTO();
         dto.setMaDonHang(donHang.getMaDonHang());
+
         if (donHang.getNguoiDung() != null) {
-            dto.setMaKhachHang(donHang.getNguoiDung().getMaNguoiDung());
-            dto.setTenKhachHang(donHang.getNguoiDung().getHoTen());
-        } else {
-            dto.setMaKhachHang(null);
-            dto.setTenKhachHang("N/A"); // Or handle as appropriate
+            dto.setKhachHang(convertToKhachHangInfoDTO(donHang.getNguoiDung()));
         }
+
         dto.setNgayDatHang(donHang.getNgayDatHang());
         dto.setTongTien(donHang.getTongTien());
         dto.setTrangThaiDonHang(donHang.getTrangThaiDonHang());
@@ -219,6 +214,17 @@ public class DonHangService {
                 .collect(Collectors.toList());
         dto.setChiTietDonHangs(itemDTOs);
 
+        return dto;
+    }
+
+    // Phương thức mới để convert thông tin khách hàng
+    private KhachHangInfoDTO convertToKhachHangInfoDTO(NguoiDung nguoiDung) {
+        KhachHangInfoDTO dto = new KhachHangInfoDTO();
+        dto.setMaKhachHang(nguoiDung.getMaNguoiDung());
+        dto.setHoTen(nguoiDung.getHoTen());
+        dto.setEmail(nguoiDung.getEmail());
+        dto.setSoDienThoai(nguoiDung.getSoDienThoai());
+        dto.setDiaChi(nguoiDung.getDiaChi());
         return dto;
     }
 

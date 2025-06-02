@@ -13,7 +13,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class DonHangListResponseDTO {
     private Long maDonHang;
-    private Long maKhachHang; 
+    private KhachHangInfoDTO khachHang;
     private LocalDateTime ngayDatHang;
     private BigDecimal tongTien;
     private String trangThaiDonHang;
