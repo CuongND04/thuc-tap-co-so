@@ -178,10 +178,14 @@ public class GioHangService {
 
         if (sanPham.isThuCung()) {
             ThuCung thuCung = sanPham.getThuCung();
-            thuCung.setSoLuongTonKho(thuCung.getSoLuongTonKho() - soLuong);
+            if (thuCung.getSoLuongTonKho() < existingItem.get().getSoLuong()) {
+                throw new RuntimeException("Số lượng sản phẩm trong giỏ đang lớn hơn thú cưng trong kho");
+            }
         } else if (sanPham.isPhuKien()) {
             PhuKien phuKien = sanPham.getPhuKien();
-            phuKien.setSoLuongTonKho(phuKien.getSoLuongTonKho() - soLuong);
+            if (phuKien.getSoLuongTonKho() < existingItem.get().getSoLuong()) {
+                throw new RuntimeException("Số lượng sản phẩm trong giỏ đang lớn hơn phụ kiện trong kho");
+            }
         }
 
         GioHang savedGioHang = gioHangRepository.save(gioHang);
