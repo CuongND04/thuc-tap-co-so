@@ -19,7 +19,7 @@ function ProductDetail() {
   } = useAuthStore();
   // const { ,  } = useCartStore();
   // console.log("favors ProductDetail: ", favors);
-  const { userCart, addItem } = useCartStore();
+  const { userCart, addItem, isAdding: cartLoading, getCart } = useCartStore();
   const [product, setProduct] = useState([]);
   const { id } = useParams();
   useEffect(() => {
@@ -42,7 +42,12 @@ function ProductDetail() {
     };
     fetchData();
   }, []);
-
+  useEffect(() => {
+    const fetchCart = async () => {
+      const res = await getCart(userProfile.maNguoiDung);
+    };
+    if (userProfile) fetchCart(); // Gọi hàm async bên trong useEffect
+  }, [cartLoading]);
   const inStock = () => {
     if (product) {
       if (product.soLuongTonKho > 0) return true;
@@ -75,7 +80,7 @@ function ProductDetail() {
       await addToFavorites(userProfile.maNguoiDung, product.maSanPham);
     }
   };
-  if (isGettingDetailProduct) {
+  if (isGettingDetailProduct || cartLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
         <Loader className="size-10 animate-spin" />
