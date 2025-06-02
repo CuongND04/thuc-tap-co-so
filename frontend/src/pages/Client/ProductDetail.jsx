@@ -19,35 +19,37 @@ function ProductDetail() {
   } = useAuthStore();
   // const { ,  } = useCartStore();
   // console.log("favors ProductDetail: ", favors);
-  const { userCart, addItem, isAdding: cartLoading, getCart } = useCartStore();
+  const { userCart, addItem, getCart, isUpdating, isDeleting } = useCartStore();
   const [product, setProduct] = useState([]);
   const { id } = useParams();
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await getDetailProduct(id);
-      console.log(data);
-      if (data) {
-        setProduct(data);
-      }
-    };
-    fetchData();
-  }, []);
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await getDetailProduct(id);
-      console.log(data);
-      if (data) {
-        setProduct(data);
-      }
-    };
-    fetchData();
-  }, []);
+
   useEffect(() => {
     const fetchCart = async () => {
       const res = await getCart(userProfile.maNguoiDung);
     };
     if (userProfile) fetchCart(); // Gọi hàm async bên trong useEffect
-  }, [cartLoading]);
+  }, [isUpdating, isDeleting, isAdding, userProfile]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getDetailProduct(id);
+      console.log(data);
+      if (data) {
+        setProduct(data);
+      }
+    };
+    fetchData();
+  }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getDetailProduct(id);
+      console.log(data);
+      if (data) {
+        setProduct(data);
+      }
+    };
+    fetchData();
+  }, []);
+
   const inStock = () => {
     if (product) {
       if (product.soLuongTonKho > 0) return true;
@@ -80,7 +82,7 @@ function ProductDetail() {
       await addToFavorites(userProfile.maNguoiDung, product.maSanPham);
     }
   };
-  if (isGettingDetailProduct || cartLoading) {
+  if (isGettingDetailProduct) {
     return (
       <div className="flex items-center justify-center h-screen">
         <Loader className="size-10 animate-spin" />

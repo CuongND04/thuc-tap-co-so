@@ -19,7 +19,7 @@ const CellComp = ({ prodID, imgSource, prodName, price, rating, newStat }) => {
       const res = await getCart(userProfile.maNguoiDung);
     };
     if (userProfile) fetchCart(); // Gọi hàm async bên trong useEffect
-  }, [userProfile]);
+  }, []);
   const isFavorite = favors.some((sp) => sp.maSanPham === prodID);
   const handleToggleFavorite = async (e) => {
     e.preventDefault(); // Ngăn load lại trang khi click <a>
@@ -42,13 +42,6 @@ const CellComp = ({ prodID, imgSource, prodName, price, rating, newStat }) => {
     addItem(userCart.maGioHang, prodID, 1);
   };
 
-  if (isGettingCart) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Loader className="size-10 animate-spin" />
-      </div>
-    );
-  }
   return (
     <div className="flex w-[25%] justify-center items-center mt-[10px] mb-[10px] ml-0 mr-0">
       <div className="group/a1">

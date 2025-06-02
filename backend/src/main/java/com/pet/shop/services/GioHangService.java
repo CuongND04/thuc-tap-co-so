@@ -91,17 +91,7 @@ public class GioHangService {
         ChiTietGioHang chiTietGioHang = chiTietGioHangRepository.findById(chiTietGioHangId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm trong giỏ hàng"));
 
-    // Lấy sản phẩm và cập nhật lại tồn kho
-    SanPham sanPham = chiTietGioHang.getSanPham();
-    int soLuongXoa = chiTietGioHang.getSoLuong();
 
-    if (sanPham.isThuCung()) {
-        ThuCung thuCung = sanPham.getThuCung();
-        thuCung.setSoLuongTonKho(thuCung.getSoLuongTonKho() + soLuongXoa);
-    } else if (sanPham.isPhuKien()) {
-        PhuKien phuKien = sanPham.getPhuKien();
-        phuKien.setSoLuongTonKho(phuKien.getSoLuongTonKho() + soLuongXoa);
-    }
 
     // Xóa dòng chi tiết giỏ hàng
     chiTietGioHangRepository.delete(chiTietGioHang);
@@ -117,24 +107,25 @@ public class GioHangService {
 
     @Transactional
     public GioHangDTO themSanPhamVaoGioHang(Long maGioHang, Long maSanPham, Integer soLuong) {
-        // Validate quantity
+        // Validate số lượng
         if (soLuong <= 0) {
-             throw new IllegalArgumentException("Số lượng sản phẩm phải lớn hơn 0");
+            throw new IllegalArgumentException("Số lượng sản phẩm phải lớn hơn 0");
         }
 
-        // Get cart by ID
+        // Lấy giỏ hàng
         GioHang gioHang = gioHangRepository.findById(maGioHang)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy giỏ hàng với ID: " + maGioHang));
 
+        // Lấy sản phẩm
         SanPham sanPham = sanPhamRepository.findById(maSanPham)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm với ID: " + maSanPham));
 
-        // Check if product is a pet or accessory
+        // Kiểm tra loại sản phẩm
         if (!sanPham.isThuCung() && !sanPham.isPhuKien()) {
-            throw new RuntimeException("Sản phẩm với ID " + maSanPham + " không phải là thú cưng hoặc phụ kiện");
+            throw new RuntimeException("Sản phẩm không hợp lệ (không phải thú cưng hoặc phụ kiện)");
         }
 
-        // Check if product already exists in cart
+        // Kiểm tra sản phẩm đã có trong giỏ hàng chưa
         Optional<ChiTietGioHang> existingItem = gioHang.getChiTietGioHangs().stream()
                 .filter(ct -> ct.getSanPham().getMaSanPham().equals(maSanPham))
                 .findFirst();
@@ -143,28 +134,31 @@ public class GioHangService {
         if (existingItem.isPresent()) {
             totalQuantity += existingItem.get().getSoLuong();
         }
+        System.out.println("soLuong = " + soLuong);
 
-        // Check inventory for both pets and accessories
+        System.out.println("totalQuantity = " + totalQuantity);
+        // Kiểm tra tồn kho
         if (sanPham.isThuCung()) {
             ThuCung thuCung = sanPham.getThuCung();
-            if (thuCung.getSoLuongTonKho() < soLuong) {
+            System.out.println("thuCung.getSoLuongTonKho  = " + thuCung.getSoLuongTonKho());
+
+            if (thuCung.getSoLuongTonKho() < totalQuantity) {
                 throw new RuntimeException("Số lượng thú cưng trong kho không đủ");
             }
         } else if (sanPham.isPhuKien()) {
             PhuKien phuKien = sanPham.getPhuKien();
-            if (phuKien.getSoLuongTonKho() < soLuong) {
+            System.out.println("phuKien.getSoLuongTonKho  = " + phuKien.getSoLuongTonKho());
+            if (phuKien.getSoLuongTonKho() < totalQuantity) {
                 throw new RuntimeException("Số lượng phụ kiện trong kho không đủ");
             }
         }
 
+        // Thêm mới hoặc cập nhật sản phẩm trong giỏ
         if (existingItem.isPresent()) {
-            // Update quantity if product exists
             ChiTietGioHang chiTiet = existingItem.get();
             chiTiet.setSoLuong(totalQuantity);
         } else {
-            // Add new item if product doesn't exist
             ChiTietGioHang chiTiet = new ChiTietGioHang();
-            // Correctly set the composite key
             ChiTietGioHangId chiTietId = new ChiTietGioHangId();
             chiTietId.setMaGioHang(gioHang.getMaGioHang());
             chiTietId.setMaSanPham(maSanPham);
@@ -176,23 +170,13 @@ public class GioHangService {
             gioHang.getChiTietGioHangs().add(chiTiet);
         }
 
-        if (sanPham.isThuCung()) {
-            ThuCung thuCung = sanPham.getThuCung();
-            if (thuCung.getSoLuongTonKho() < existingItem.get().getSoLuong()) {
-                throw new RuntimeException("Số lượng sản phẩm trong giỏ đang lớn hơn thú cưng trong kho");
-            }
-        } else if (sanPham.isPhuKien()) {
-            PhuKien phuKien = sanPham.getPhuKien();
-            if (phuKien.getSoLuongTonKho() < existingItem.get().getSoLuong()) {
-                throw new RuntimeException("Số lượng sản phẩm trong giỏ đang lớn hơn phụ kiện trong kho");
-            }
-        }
-
+        // Lưu lại giỏ hàng
         GioHang savedGioHang = gioHangRepository.save(gioHang);
 
-        // Return cart details
+        // Trả về DTO
         return convertToDTO(savedGioHang);
     }
+
 
     private GioHangDTO convertToDTO(GioHang gioHang) {
         GioHangDTO dto = new GioHangDTO();
