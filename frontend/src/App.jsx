@@ -114,8 +114,8 @@ const App = () => {
             <Route path="import/create" element={<ImportCreate />} />
 
             <Route path="sales" element={<SalesOrders />} />
-            <Route path="sale/detail/:maDonHang" element={<SaleDetail />} />
-            <Route path="sale/create" element={<SaleCreate />} />
+            <Route path="sales/detail/:maDonHang" element={<SaleDetail />} />
+            <Route path="sales/create" element={<SaleCreate />} />
 
             <Route path="users" element={<ManageUsers />} />
             <Route path="users/:id/detail" element={<UserDetail />} />

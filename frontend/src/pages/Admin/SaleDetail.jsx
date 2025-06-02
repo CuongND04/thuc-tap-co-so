@@ -40,7 +40,7 @@ const SaleDetail = () => {
       const data = await getSaleOrderDetail(maDonHang);
       if (data) {
         setSaleDetail(data);
-        setNewStatus(data.trangThaiDonHang); // khởi tạo trạng thái mới bằng trạng thái hiện tại
+        setNewStatus(data.trangThaiDonHang);
       }
     };
     fetchDetail();
@@ -94,7 +94,6 @@ const SaleDetail = () => {
     setIsUpdatingStatus(true);
     const updated = await updateSaleOrderStatus(maDonHang, newStatus);
     if (updated) {
-      // toast.success("Cập nhật trạng thái đơn hàng thành công");
       setSaleDetail((prev) => ({
         ...prev,
         trangThaiDonHang: updated.trangThaiDonHang,
@@ -103,8 +102,8 @@ const SaleDetail = () => {
     setIsUpdatingStatus(false);
   };
 
-  // Các trạng thái có thể chọn (bạn có thể điều chỉnh theo backend)
   const orderStatuses = ["Đang xử lý", "Đang giao", "Đã giao"];
+  const khachHang = saleDetail.khachHang;
 
   return (
     <Card>
@@ -120,10 +119,17 @@ const SaleDetail = () => {
           {saleDetail.maDonHang}
         </Descriptions.Item>
         <Descriptions.Item label="Mã khách hàng">
-          {saleDetail.maKhachHang}
+          {khachHang?.maKhachHang}
         </Descriptions.Item>
         <Descriptions.Item label="Tên khách hàng">
-          {saleDetail.tenKhachHang}
+          {khachHang?.hoTen}
+        </Descriptions.Item>
+        <Descriptions.Item label="Email">{khachHang?.email}</Descriptions.Item>
+        <Descriptions.Item label="Số điện thoại">
+          {khachHang?.soDienThoai}
+        </Descriptions.Item>
+        <Descriptions.Item label="Địa chỉ">
+          {khachHang?.diaChi}
         </Descriptions.Item>
         <Descriptions.Item label="Ngày đặt hàng">
           {parseNgayDatHang(saleDetail.ngayDatHang)?.format("DD/MM/YYYY HH:mm")}
@@ -134,7 +140,6 @@ const SaleDetail = () => {
             currency: "VND",
           })}
         </Descriptions.Item>
-
         <Descriptions.Item label="Trạng thái đơn hàng">
           <Space>
             <Select
