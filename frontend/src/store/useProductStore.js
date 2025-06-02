@@ -74,4 +74,42 @@ export const useProductStore = create((set, get) => ({
       return null;
     }
   },
+
+  // tạo đánh giá sản phẩm
+  createReview: async (reviewData) => {
+    try {
+      const res = await axiosInstance.post(`/reviews/create`, reviewData);
+      const newReview = res.data.data;
+
+      return newReview;
+    } catch (error) {
+      console.error("Lỗi khi tạo đánh giá:", error);
+      // toast.error("Không thể tạo đánh giá");
+      return null;
+    }
+  },
+  // hai tính năng update và xóa tôi
+  updateReview: async (reviewId, reviewData) => {
+    try {
+      const res = await axiosInstance.put(`/reviews/${reviewId}`, reviewData);
+      const updatedReview = res.data.data;
+
+      return updatedReview;
+    } catch (error) {
+      console.error("Lỗi khi cập nhật đánh giá:", error);
+      // toast.error("Không thể cập nhật đánh giá");
+      return null;
+    }
+  },
+
+  deleteReview: async (reviewId) => {
+    try {
+      await axiosInstance.delete(`/reviews/${reviewId}`);
+      return true;
+    } catch (error) {
+      console.error("Lỗi khi xóa đánh giá:", error);
+      // toast.error("Không thể xóa đánh giá");
+      return false;
+    }
+  },
 }));

@@ -6,6 +6,7 @@ import { useProductStore } from "../../store/useProductStore";
 import CategoryList from "../../components/Client/CategoryList";
 import { useCartStore } from "../../store/useCartStore";
 import { useAuthStore } from "../../store/useAuthStore";
+import toast from "react-hot-toast";
 
 function ProductDetail() {
   const { getDetailProduct, isGettingDetailProduct } = useProductStore();
@@ -20,8 +21,59 @@ function ProductDetail() {
   // const { ,  } = useCartStore();
   // console.log("favors ProductDetail: ", favors);
   const { userCart, addItem, getCart, isUpdating, isDeleting } = useCartStore();
+  const { createReview, updateReview, deleteReview } = useProductStore();
+
   const [product, setProduct] = useState([]);
+  const [reviewContent, setReviewContent] = useState("");
+  const [rating, setRating] = useState(0);
+  const [submitting, setSubmitting] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const { id } = useParams();
+  const [editingReviewId, setEditingReviewId] = useState(null); // id đang sửa
+
+  const handleReviewSubmit = async () => {
+    if (!rating || !reviewContent.trim()) {
+      toast.error("Vui lòng nhập nội dung và chọn số sao");
+      return;
+    }
+
+    setSubmitting(true);
+    const reviewPayload = {
+      soSao: rating,
+      noiDung: reviewContent.trim(),
+    };
+
+    let success = false;
+
+    if (editingReviewId) {
+      // Gọi hàm sửa
+      const res = await updateReview(editingReviewId, reviewPayload);
+      success = !!res;
+      if (success) toast.success("Cập nhật đánh giá thành công!");
+    } else {
+      // Gọi hàm tạo
+      const res = await createReview({
+        ...reviewPayload,
+        maSanPham: product.maSanPham,
+        maKhachHang: userProfile.maNguoiDung,
+      });
+      success = !!res;
+      if (success) toast.success("Đánh giá thành công!");
+    }
+
+    if (success) {
+      setReviewContent("");
+      setRating(0);
+      setEditingReviewId(null);
+
+      // Gọi lại API để reload danh sách đánh giá nếu cần
+      // ví dụ: await fetchProduct();
+    } else {
+      toast.error("Thao tác thất bại");
+    }
+
+    setSubmitting(false);
+  };
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -38,17 +90,7 @@ function ProductDetail() {
       }
     };
     fetchData();
-  }, []);
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await getDetailProduct(id);
-      console.log(data);
-      if (data) {
-        setProduct(data);
-      }
-    };
-    fetchData();
-  }, []);
+  }, [submitting, deleting]);
 
   const inStock = () => {
     if (product) {
@@ -82,16 +124,17 @@ function ProductDetail() {
       await addToFavorites(userProfile.maNguoiDung, product.maSanPham);
     }
   };
-  if (isGettingDetailProduct) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Loader className="size-10 animate-spin" />
-      </div>
-    );
-  }
+
+  // if (isGettingDetailProduct) {
+  //   return (
+  //     <div className="flex items-center justify-center h-screen">
+  //       <Loader className="size-10 animate-spin" />
+  //     </div>
+  //   );
+  // }
 
   return (
-    <div className="mt-15 ml-30">
+    <div className="mt-15 ml-30 w-[1200px]">
       <section className="flex">
         <aside className="w-[25%]">
           {" "}
@@ -211,59 +254,102 @@ function ProductDetail() {
               </div>
             </div>
 
-            <div className="w-[100%] border-solid border-[1px] border-[#ccc] border-l-[5px] border-l-[#cf72aa] flex gap-[10px] mb-[30px]">
-              {product.danhGias && (
-                <p className="w-[150px] m-[10px] text-[#cf72aa] font-bold text-[18px]">
-                  Đánh Giá ({product.danhGias.length})
+            <div className="w-full border border-[#ccc] border-l-[5px] border-l-[#cf72aa] flex flex-col gap-[10px] mb-[30px] p-3">
+              <div className="flex items-center justify-between">
+                <p className="text-[#cf72aa] font-bold text-[18px]">
+                  Đánh Giá ({product.danhGias?.length || 0})
                 </p>
-              )}
+                <div className="flex items-center gap-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <i
+                      key={star}
+                      className={`fa-star fa-regular cursor-pointer text-[20px] ${
+                        star <= rating ? "text-amber-500" : "text-gray-400"
+                      }`}
+                      onClick={() => setRating(star)}
+                    ></i>
+                  ))}
+                </div>
+              </div>
+
               <textarea
-                className="text-[18px] border-none w-[100%] p-[10px] focus:outline-none placeholder:text-[18px]"
-                cols="60"
-                rows="7"
-                placeholder="Đánh giá sản phẩm"
+                className="text-[18px] border border-[#ccc] rounded p-2 focus:outline-none placeholder:text-[16px]"
+                rows="4"
+                placeholder="Nhập đánh giá sản phẩm..."
+                value={reviewContent}
+                onChange={(e) => setReviewContent(e.target.value)}
               ></textarea>
+
+              <button
+                className="self-end px-4 py-2 bg-[#cf72aa] text-white rounded hover:bg-[#b25f95] disabled:opacity-50"
+                onClick={handleReviewSubmit}
+                disabled={submitting}
+              >
+                {submitting ? "Đang gửi..." : "Gửi đánh giá"}
+              </button>
             </div>
 
             {product.danhGias &&
               product.danhGias.map((dg) => (
                 <div
                   key={dg.maDanhGia}
-                  className="w-[100%] h-[100px] border-solid border-[1px] border-[#ccc] border-l-[5px] border-l-[#cf72aa] flex gap-[10px] mb-[30px]"
+                  className="w-full border border-[#ccc] border-l-[5px] border-l-[#cf72aa] flex justify-between mb-[30px]"
                 >
                   <div>
                     <h1 className="font-bold text-[18px] p-[10px]">
                       {dg.tenNguoiDung}
                     </h1>
-                    <div className="product-info-rate p-[10px] flex justify-center">
-                      {dg.soSao >= 1 ? (
-                        <i className="fa-regular fa-star text-amber-500"></i>
-                      ) : (
-                        <i className="fa-regular fa-star"></i>
-                      )}
-                      {dg.soSao >= 2 ? (
-                        <i className="fa-regular fa-star text-amber-500"></i>
-                      ) : (
-                        <i className="fa-regular fa-star"></i>
-                      )}
-                      {dg.soSao >= 3 ? (
-                        <i className="fa-regular fa-star text-amber-500"></i>
-                      ) : (
-                        <i className="fa-regular fa-star"></i>
-                      )}
-                      {dg.soSao >= 4 ? (
-                        <i className="fa-regular fa-star text-amber-500"></i>
-                      ) : (
-                        <i className="fa-regular fa-star"></i>
-                      )}
-                      {dg.soSao >= 5 ? (
-                        <i className="fa-regular fa-star text-amber-500"></i>
-                      ) : (
-                        <i className="fa-regular fa-star"></i>
-                      )}
+                    <div className="p-[10px] flex">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <i
+                          key={star}
+                          className={`fa-star fa-regular ${
+                            star <= dg.soSao
+                              ? "text-amber-500"
+                              : "text-gray-400"
+                          }`}
+                        ></i>
+                      ))}
                     </div>
+                    <p className="text-[18px] p-[10px]">{dg.noiDung}</p>
                   </div>
-                  <p className="text-[18px] p-[10px]">{dg.noiDung}</p>
+
+                  {dg.tenNguoiDung === userProfile.hoTen && (
+                    <div className="flex flex-col justify-center items-center p-2 gap-2">
+                      <button
+                        className="text-blue-500 hover:underline"
+                        onClick={() => {
+                          setRating(dg.soSao);
+                          setReviewContent(dg.noiDung);
+                          setEditingReviewId(dg.maDanhGia);
+                        }}
+                      >
+                        Sửa
+                      </button>
+                      <button
+                        className="text-red-500 hover:underline"
+                        onClick={async () => {
+                          const confirm = window.confirm(
+                            "Bạn có chắc chắn muốn xóa?"
+                          );
+                          if (confirm) {
+                            setDeleting(true);
+                            const success = await deleteReview(dg.maDanhGia);
+                            if (success) {
+                              toast.success("Xóa đánh giá thành công!");
+                              // reload lại đánh giá
+                              // ví dụ: await fetchProduct();
+                            } else {
+                              toast.error("Xóa đánh giá thất bại!");
+                            }
+                            setDeleting(false);
+                          }
+                        }}
+                      >
+                        Xóa
+                      </button>
+                    </div>
+                  )}
                 </div>
               ))}
           </div>

@@ -134,13 +134,13 @@ public class GioHangService {
         if (existingItem.isPresent()) {
             totalQuantity += existingItem.get().getSoLuong();
         }
-        System.out.println("soLuong = " + soLuong);
-
-        System.out.println("totalQuantity = " + totalQuantity);
+//        System.out.println("soLuong = " + soLuong);
+//
+//        System.out.println("totalQuantity = " + totalQuantity);
         // Kiểm tra tồn kho
         if (sanPham.isThuCung()) {
             ThuCung thuCung = sanPham.getThuCung();
-            System.out.println("thuCung.getSoLuongTonKho  = " + thuCung.getSoLuongTonKho());
+//            System.out.println("thuCung.getSoLuongTonKho  = " + thuCung.getSoLuongTonKho());
 
             if (thuCung.getSoLuongTonKho() < totalQuantity) {
                 throw new RuntimeException("Số lượng thú cưng trong kho không đủ");
