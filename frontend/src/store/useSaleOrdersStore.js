@@ -13,6 +13,7 @@ export const useSaleOrdersStore = create((set, get) => ({
     try {
       const res = await axiosInstance.get(`/don-hang`);
       set({ saleOrders: res.data.data });
+      console.log("res.data.data : ", res.data.data);
       return res.data.data;
     } catch (error) {
       console.error("Lỗi khi lấy danh sách đơn hàng:", error);

@@ -10,6 +10,8 @@ const pathNameMap = {
   "san-pham": "Sản phẩm",
   "gioi-thieu": "Giới thiệu",
   "lien-he": "Liên hệ",
+  "yeu-thich": "Danh sách yêu thích",
+  "don-hang": "Đơn hàng",
 };
 
 const Breadcrumb = () => {

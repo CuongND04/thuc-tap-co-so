@@ -39,6 +39,9 @@ import Contact from "./pages/Client/Contact.jsx";
 import Intro from "./pages/Client/Intro.jsx";
 import FavorList from "./pages/Client/FavorList.jsx";
 import Search from "./pages/Client/Search.jsx";
+import MyOrder from "./pages/Client/MyOrder.jsx";
+import DetailMyOrder from "./pages/Client/DetailMyOrder.jsx";
+import Checkout from "./pages/Client/Checkout.jsx"
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
   useEffect(() => {
@@ -69,7 +72,10 @@ const App = () => {
           <Route path="lien-he" element={<Contact />} />
           <Route path="gioi-thieu" element={<Intro />} />
           <Route path="yeu-thich" element={<FavorList />} />
+          <Route path="don-hang" element={<MyOrder />} />
+          <Route path="don-hang/:maDonHang" element={<DetailMyOrder />} />
           <Route path="/san-pham/:id" element={<ProductDetailClient />} />
+          <Route path="/thanh-toan" element={<Checkout />} />
         </Route>
 
         <Route
@@ -110,8 +116,8 @@ const App = () => {
             <Route path="import/create" element={<ImportCreate />} />
 
             <Route path="sales" element={<SalesOrders />} />
-            <Route path="sale/detail/:maDonHang" element={<SaleDetail />} />
-            <Route path="sale/create" element={<SaleCreate />} />
+            <Route path="sales/detail/:maDonHang" element={<SaleDetail />} />
+            <Route path="sales/create" element={<SaleCreate />} />
 
             <Route path="users" element={<ManageUsers />} />
             <Route path="users/:id/detail" element={<UserDetail />} />

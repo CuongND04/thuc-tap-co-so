@@ -24,7 +24,7 @@ const Footer = () => {
                 <span>
                   <strong>Điện thoại:</strong>{" "}
                   <a
-                    href="tel:0939.86.36.96"
+                    href="tel:02437562186"
                     className="text-blue-500 hover:underline"
                   >
                     024 3756 2186
@@ -63,7 +63,7 @@ const Footer = () => {
 
       {/* Nút hotline nổi */}
       <div className="fixed bottom-6 right-6 z-50">
-        <a id="hotline" href="tel:0978320093">
+        <a id="hotline" href="tel:02437562186">
           <img src="/IMG/LienHe5.png" width="200" height="200" alt="Hotline" />
         </a>
       </div>

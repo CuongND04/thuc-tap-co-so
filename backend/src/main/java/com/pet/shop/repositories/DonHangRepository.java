@@ -1,6 +1,7 @@
 package com.pet.shop.repositories;
 
 import com.pet.shop.models.DonHang;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -9,10 +10,16 @@ import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface DonHangRepository extends JpaRepository<DonHang, Long> {
 
+    @EntityGraph(attributePaths = {"nguoiDung"})
+    List<DonHang> findAll();
+
+    @EntityGraph(attributePaths = {"nguoiDung"})
+    Optional<DonHang> findById(Long id);
     // Tìm đơn hàng theo trạng thái
     List<DonHang> findByTrangThaiDonHang(String trangThaiDonHang);
 

@@ -15,8 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class DonHangDetailResponseDTO {
     private Long maDonHang;
-    private Long maKhachHang; // Assuming ma_khach_hang is the user ID
-    private String tenKhachHang; // Include customer name for details
+    private KhachHangInfoDTO khachHang;
     private LocalDateTime ngayDatHang;
     private BigDecimal tongTien;
     private String trangThaiDonHang;

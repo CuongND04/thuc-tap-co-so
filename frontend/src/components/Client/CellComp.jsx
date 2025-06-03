@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useAuthStore } from "../../store/useAuthStore";
 import { useCartStore } from "../../store/useCartStore";
 import { Loader } from "lucide-react";
+import toast from "react-hot-toast";
 
 const CellComp = ({ prodID, imgSource, prodName, price, rating, newStat }) => {
   newStat = newStat || false;
@@ -19,7 +20,7 @@ const CellComp = ({ prodID, imgSource, prodName, price, rating, newStat }) => {
       const res = await getCart(userProfile.maNguoiDung);
     };
     if (userProfile) fetchCart(); // Gọi hàm async bên trong useEffect
-  }, [userProfile]);
+  }, []);
   const isFavorite = favors.some((sp) => sp.maSanPham === prodID);
   const handleToggleFavorite = async (e) => {
     e.preventDefault(); // Ngăn load lại trang khi click <a>
@@ -38,17 +39,14 @@ const CellComp = ({ prodID, imgSource, prodName, price, rating, newStat }) => {
 
   const addToCart = async (e) => {
     e.preventDefault();
-
+    if(!userProfile) 
+    {
+      toast.error("Bạn cần đăng nhập để thực hiện chức năng này!");
+      return;  
+    }
     addItem(userCart.maGioHang, prodID, 1);
   };
 
-  if (isGettingCart) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Loader className="size-10 animate-spin" />
-      </div>
-    );
-  }
   return (
     <div className="flex w-[25%] justify-center items-center mt-[10px] mb-[10px] ml-0 mr-0">
       <div className="group/a1">
@@ -167,11 +165,7 @@ const CellComp = ({ prodID, imgSource, prodName, price, rating, newStat }) => {
             <a href={`/san-pham/${prodID}`}>{prodName}</a>
           </h3>
           <p className="font-[Arial] text-[18px] pt-0 pb-0 pr-[2px] pl-[2px] mt-[20px] mb-[20px] mr-0 ml-0 font-extrabold text-[#cf72aa]">
-            {price.toLocaleString("vi-VN", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}
-            ₫
+            {price.toLocaleString("vi-VN", { style: "currency", currency: "VND" })}
           </p>
         </div>
       </div>

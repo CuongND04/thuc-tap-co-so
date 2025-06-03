@@ -7,7 +7,14 @@ import {
   Select,
   Button,
   Space,
+  Steps,
 } from "antd";
+import {
+  CheckCircleOutlined,
+  LoadingOutlined,
+  TruckOutlined,
+  ShoppingOutlined,
+} from "@ant-design/icons";
 import { useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import { Loader } from "lucide-react";
@@ -17,7 +24,7 @@ import toast from "react-hot-toast";
 const { Title } = Typography;
 const { Option } = Select;
 
-const SaleDetail = () => {
+const DetailMyOrder = () => {
   const { maDonHang } = useParams();
   const { getSaleOrderDetail, isGettingAllSaleOrders, updateSaleOrderStatus } =
     useSaleOrdersStore();
@@ -105,77 +112,89 @@ const SaleDetail = () => {
   const orderStatuses = ["Đang xử lý", "Đang giao", "Đã giao"];
   const khachHang = saleDetail.khachHang;
 
+  const statusSteps = [
+    {
+      title: "Đang xử lý",
+      icon: <ShoppingOutlined />,
+    },
+    {
+      title: "Đang giao",
+      icon: <TruckOutlined />,
+    },
+    {
+      title: "Đã giao",
+      icon: <CheckCircleOutlined />,
+    },
+  ];
+
+  const currentStep = statusSteps.findIndex(
+    (s) => s.title === saleDetail.trangThaiDonHang
+  );
   return (
-    <Card>
-      <Title level={2}>Chi tiết đơn bán hàng</Title>
+    <div className="flex justify-center items-center">
+      <Card className="w-[1200px]">
+        <h2 className="text-3xl font-[Coiny] font-bold text-center mb-4 text-pink-600">
+          CHI TIẾT ĐƠN HÀNG SỐ {saleDetail.maDonHang}
+        </h2>
 
-      <Descriptions
-        bordered
-        column={1}
-        size="middle"
-        style={{ marginBottom: 24 }}
-      >
-        <Descriptions.Item label="Mã đơn hàng">
-          {saleDetail.maDonHang}
-        </Descriptions.Item>
-        <Descriptions.Item label="Mã khách hàng">
-          {khachHang?.maKhachHang}
-        </Descriptions.Item>
-        <Descriptions.Item label="Tên khách hàng">
-          {khachHang?.hoTen}
-        </Descriptions.Item>
-        <Descriptions.Item label="Email">{khachHang?.email}</Descriptions.Item>
-        <Descriptions.Item label="Số điện thoại">
-          {khachHang?.soDienThoai}
-        </Descriptions.Item>
-        <Descriptions.Item label="Địa chỉ">
-          {khachHang?.diaChi}
-        </Descriptions.Item>
-        <Descriptions.Item label="Ngày đặt hàng">
-          {parseNgayDatHang(saleDetail.ngayDatHang)?.format("DD/MM/YYYY HH:mm")}
-        </Descriptions.Item>
-        <Descriptions.Item label="Tổng tiền">
-          {saleDetail.tongTien.toLocaleString("vi-VN", {
-            style: "currency",
-            currency: "VND",
-          })}
-        </Descriptions.Item>
-        <Descriptions.Item label="Trạng thái đơn hàng">
-          <Space>
-            <Select
-              value={newStatus}
-              onChange={setNewStatus}
-              style={{ minWidth: 200 }}
-              disabled={isUpdatingStatus}
-            >
-              {orderStatuses.map((status) => (
-                <Option key={status} value={status}>
-                  {status}
-                </Option>
-              ))}
-            </Select>
-            <Button
-              type="primary"
-              onClick={handleUpdateStatus}
-              loading={isUpdatingStatus}
-              disabled={newStatus === saleDetail.trangThaiDonHang}
-            >
-              Cập nhật trạng thái
-            </Button>
-          </Space>
-        </Descriptions.Item>
-      </Descriptions>
+        <Descriptions
+          bordered
+          column={1}
+          size="middle"
+          style={{ marginBottom: 24 }}
+        >
+          <Descriptions.Item label="Mã đơn hàng">
+            {saleDetail.maDonHang}
+          </Descriptions.Item>
+          <Descriptions.Item label="Mã khách hàng">
+            {khachHang?.maKhachHang}
+          </Descriptions.Item>
+          <Descriptions.Item label="Tên khách hàng">
+            {khachHang?.hoTen}
+          </Descriptions.Item>
+          <Descriptions.Item label="Email">
+            {khachHang?.email}
+          </Descriptions.Item>
+          <Descriptions.Item label="Số điện thoại">
+            {khachHang?.soDienThoai}
+          </Descriptions.Item>
+          <Descriptions.Item label="Địa chỉ">
+            {khachHang?.diaChi}
+          </Descriptions.Item>
+          <Descriptions.Item label="Ngày đặt hàng">
+            {parseNgayDatHang(saleDetail.ngayDatHang)?.format(
+              "DD/MM/YYYY HH:mm"
+            )}
+          </Descriptions.Item>
+          <Descriptions.Item label="Tổng tiền">
+            {saleDetail.tongTien.toLocaleString("vi-VN", {
+              style: "currency",
+              currency: "VND",
+            })}
+          </Descriptions.Item>
+          <Descriptions.Item label="Trạng thái đơn hàng">
+            <div className="custom-steps">
+              <Steps
+                current={currentStep}
+                size="default" // "default" là lớn hơn "small"
+                items={statusSteps}
+                responsive={false}
+              />
+            </div>
+          </Descriptions.Item>
+        </Descriptions>
 
-      <Table
-        dataSource={saleDetail.chiTietDonHangs}
-        columns={columns}
-        rowKey={(record) => record.maSanPham}
-        pagination={false}
-        bordered
-        title={() => "Chi tiết sản phẩm trong đơn hàng"}
-      />
-    </Card>
+        <Table
+          dataSource={saleDetail.chiTietDonHangs}
+          columns={columns}
+          rowKey={(record) => record.maSanPham}
+          pagination={false}
+          bordered
+          title={() => "Chi tiết sản phẩm trong đơn hàng"}
+        />
+      </Card>
+    </div>
   );
 };
 
-export default SaleDetail;
+export default DetailMyOrder;
