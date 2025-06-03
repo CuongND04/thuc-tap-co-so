@@ -228,7 +228,7 @@ const MyOrder = () => {
       <div className="bg-white p-4 rounded-xl mb-10 w-[1200px]">
         <main className="bg-white py-5 px-4">
           <section className="max-w-[1200px] mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-4 text-pink-600">
+            <h2 className="text-3xl uppercase font-[Coiny] font-bold text-center mb-4 text-pink-600">
               ĐƠN HÀNG CỦA TÔI
             </h2>
           </section>

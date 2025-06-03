@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useAuthStore } from "../../store/useAuthStore";
 import { useCartStore } from "../../store/useCartStore";
 import { Loader } from "lucide-react";
+import toast from "react-hot-toast";
 
 const CellComp = ({ prodID, imgSource, prodName, price, rating, newStat }) => {
   newStat = newStat || false;
@@ -38,7 +39,11 @@ const CellComp = ({ prodID, imgSource, prodName, price, rating, newStat }) => {
 
   const addToCart = async (e) => {
     e.preventDefault();
-
+    if(!userProfile) 
+    {
+      toast.error("Bạn cần đăng nhập để thực hiện chức năng này!");
+      return;  
+    }
     addItem(userCart.maGioHang, prodID, 1);
   };
 
@@ -160,11 +165,7 @@ const CellComp = ({ prodID, imgSource, prodName, price, rating, newStat }) => {
             <a href={`/san-pham/${prodID}`}>{prodName}</a>
           </h3>
           <p className="font-[Arial] text-[18px] pt-0 pb-0 pr-[2px] pl-[2px] mt-[20px] mb-[20px] mr-0 ml-0 font-extrabold text-[#cf72aa]">
-            {price.toLocaleString("vi-VN", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}
-            ₫
+            {price.toLocaleString("vi-VN", { style: "currency", currency: "VND" })}
           </p>
         </div>
       </div>

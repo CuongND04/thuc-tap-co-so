@@ -133,7 +133,7 @@ const DetailMyOrder = () => {
   return (
     <div className="flex justify-center items-center">
       <Card className="w-[1200px]">
-        <h2 className="text-3xl font-bold text-center mb-4 text-pink-600">
+        <h2 className="text-3xl font-[Coiny] font-bold text-center mb-4 text-pink-600">
           CHI TIẾT ĐƠN HÀNG SỐ {saleDetail.maDonHang}
         </h2>
 

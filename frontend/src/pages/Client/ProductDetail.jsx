@@ -38,6 +38,11 @@ function ProductDetail() {
       return;
     }
 
+    if(!userProfile){
+      toast.error("Bạn cần đăng nhập để thực hiện chức năng này!"); 
+      return;
+    }
+
     setSubmitting(true);
     const reviewPayload = {
       soSao: rating,
@@ -102,15 +107,18 @@ function ProductDetail() {
 
   const addToCart = async (e) => {
     e.preventDefault();
+    if(!userProfile) 
+    {
+      toast.error("Bạn cần đăng nhập để thực hiện chức năng này!");
+      return;  
+    }
     const formData = new FormData(e.target);
-    const submitter = e.nativeEvent.submitter;
-    console.log("Button pressed:", submitter.name);
 
     var { amount } = Object.fromEntries(formData);
     amount = amount || 1;
 
-    console.log(userCart.maGioHang, product.maSanPham, amount);
-    addItem(userCart.maGioHang, product.maSanPham, amount);
+    addItem(userCart?.maGioHang, product.maSanPham, amount);
+
   };
   const isFavorite = favors.some((sp) => sp.maSanPham === product.maSanPham);
 
@@ -130,7 +138,8 @@ function ProductDetail() {
   };
 
   const handleBuy = () => {
-    navigate("/thanh-toan");
+    if(userCart) navigate("/thanh-toan", {state: product});
+    else toast.error("Bạn cần đăng nhập để thực hiện chức năng này!"); 
   }
 
   // if (isGettingDetailProduct) {
@@ -160,11 +169,7 @@ function ProductDetail() {
                   {product.tenSanPham}
                 </h1>
                 <h1 className="mb-[13px] font-bold text-[18px] text-[#cf72aa]">
-                  {product?.giaBan?.toLocaleString("vi-VN", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}
-                  ₫
+                  {product?.giaBan?.toLocaleString("vi-VN", { style: "currency", currency: "VND" })}
                 </h1>
 
                 <div className="w-[100%]">
@@ -201,6 +206,7 @@ function ProductDetail() {
                         name="buy"
                         id="buy"
                         onClick={handleBuy}
+                        type="button"
                       >
                         Mua ngay
                       </button>
@@ -228,6 +234,14 @@ function ProductDetail() {
                   </div>
 
                   <div className="product_meta">
+                    <div className="info-product flex">
+                      <label className="min-w-[105px] font-normal text-[14px] mb-[10px]">
+                        Mô tả:{" "}
+                      </label>
+                      <div className="info-product-category">
+                       <p>{product.moTa}</p>
+                      </div>
+                    </div>
                     <div className="info-product flex">
                       <label className="min-w-[105px] font-normal text-[14px]">
                         Mã sản phẩm:{" "}
@@ -262,14 +276,6 @@ function ProductDetail() {
                         >
                           {product.tenDanhMuc}
                         </a>
-                      </div>
-                    </div>
-                    <div className="info-product flex">
-                      <label className="min-w-[105px] font-normal text-[14px]">
-                        Mô tả:{" "}
-                      </label>
-                      <div className="info-product-category">
-                       <p>{product.moTa}</p>
                       </div>
                     </div>
                   </div>
@@ -337,7 +343,7 @@ function ProductDetail() {
                     <p className="text-[18px] p-[10px]">{dg.noiDung}</p>
                   </div>
 
-                  {dg.tenNguoiDung === userProfile.hoTen && (
+                  {dg.tenNguoiDung === userProfile?.hoTen && (
                     <div className="flex flex-col justify-center items-center p-2 gap-2">
                       <button
                         className="text-blue-500 hover:underline"

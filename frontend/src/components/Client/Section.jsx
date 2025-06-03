@@ -57,7 +57,7 @@ const Section = ({ text, maxProd, reverseSort, onlyOne, isNew }) => {
             <div className="mt-[5px] mb-[15px] ml-0 mr-0 flex justify-center items-center bg-[#de8ebe] rounded-[10px] w-[140px] h-[40px] hover:bg-[#cf72aa]">
               <a
                 className="flex justify-center items-center border-[1px] border-dashed border-[#fff] rounded-[10px] text-[16px] font-bold w-[135px] h-[35px] hover:bg-[#cf72aa] after:content-['\276F'] after:m-[10px] text-white"
-                href="/danh-muc-cun"
+                href="/danh-muc-san-pham"
               >
                 Xem Thêm
               </a>

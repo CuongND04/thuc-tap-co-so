@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useCartStore } from "../../store/useCartStore";
 import { useAuthStore } from "../../store/useAuthStore";
 
 const Cart = ({ setOpenCart }) => {
+  const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState([]);
+  const [deletingItems, setDeletingItems] = useState([]);
   const {
     userCart,
     getCart,
@@ -73,16 +76,35 @@ const Cart = ({ setOpenCart }) => {
     toggleEditing(index);
   };
 
-  const deleteHandler = async (index) => {
-    const res = await deleteItem(
-      userProfile.maNguoiDung,
-      userCart.items[index].maSanPham
-    );
-
-    if (res) {
-      const res2 = await getCart(userProfile.maNguoiDung);
-    }
+  const deleteHandler = async (index=-1, item=null) => {
+      if(index!=-1)
+      {
+        const res = await deleteItem(
+        userProfile.maNguoiDung,
+        userCart.items[index].maSanPham
+      );
+      }
+      else if(item)
+      {
+        const res = await deleteItem(
+        userProfile.maNguoiDung,
+        item.maSanPham
+      );
+      }
   };
+
+  const deleteAll = async () => {
+    if(userCart)
+    {
+      setDeletingItems([]);
+      setDeletingItems(userCart.items);
+      deletingItems.map((item) => deleteHandler(-1, item));
+    }
+  }
+
+  const handleBuy = () => {
+    navigate("/thanh-toan", {state: userCart});
+  }
   return (
     <div>
       <div className="fixed mt-[5px] top-0 right-0 min-h-[100vh] w-[380px] border-[1px] border-solid border-[#cf72aa] z-150 bg-white rounded-[10px]">
@@ -94,6 +116,27 @@ const Cart = ({ setOpenCart }) => {
         <h2 className="m-[20px] text-center text-[#cf72aa] font-[500] text-[30px] text-shadow text-shadow-black text-shadow-[2px] font-[Coiny]">
           Giỏ Hàng
         </h2>
+        <button
+          className="cursor-pointer flex items-center justify-center justify-self-end-safe rounded-md border-1 mr-1"
+          type="button"
+          onClick={() => deleteAll()}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="#ff0000"
+            className="size-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+            />
+          </svg>
+          Xoá tất cả
+        </button>
         <ul className="mr-[10px] ml-[10px]">
           {/* Danh sách sản phẩm trong giỏ hàng */}
           {userCart &&
@@ -135,11 +178,7 @@ const Cart = ({ setOpenCart }) => {
                       />
                     )}{" "}
                     x{" "}
-                    {prod.giaBan?.toLocaleString("vi-VN", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
-                    ₫
+                    {prod.giaBan?.toLocaleString("vi-VN", { style: "currency", currency: "VND" })}
                   </p>
                 </div>
                 <div className="w-[20%] flex justify-end">
@@ -234,13 +273,9 @@ const Cart = ({ setOpenCart }) => {
         </ul>
         <h1 className="w-[100%] h-[36px] bg-[#de8ebe] text-white flex justify-center items-center font-[18px]">
           Tổng tiền:{" "}
-          {userCart?.tongTien.toLocaleString("vi-VN", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}
-          ₫
+          {userCart?.tongTien.toLocaleString("vi-VN", { style: "currency", currency: "VND" })}
         </h1>
-        <button className="w-[100%] h-[36px] font-[Coiny] font-medium bg-[#ccc] text-fff text-[18px] rounded-[1px] border-solid border-[#de8ebe]">
+        <button className="w-[100%] h-[36px] font-[Coiny] font-medium bg-[#ccc] text-fff text-[18px] rounded-[1px] border-solid border-[#de8ebe] cursor-pointer" onClick={handleBuy}>
           Thanh Toán
         </button>
       </div>
