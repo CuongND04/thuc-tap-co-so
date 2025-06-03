@@ -28,7 +28,7 @@ const Registeration = () => {
         diaChi: address,
         matKhau: password,
         tenDangNhap: username,
-        quyenTruyCap: "customer",
+        quyenTruyCap: "Khách hàng",
       });
 
       setLoading(false);
@@ -36,7 +36,7 @@ const Registeration = () => {
       setSuccessMsg(response.data.message);
       updateISU(true);
 
-      navigate("/dang-nhap");
+      navigate("/");
     } catch (error) {
       if (successMsg) setSuccessMsg("");
       if (error.response.data.message) setErrMsg(error.response.data.message);

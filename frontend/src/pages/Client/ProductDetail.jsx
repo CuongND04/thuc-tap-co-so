@@ -276,6 +276,27 @@ function ProductDetail() {
                         >
                           {product.tenDanhMuc}
                         </a>
+                        {product?.tenDanhMuc?.toLowerCase().includes("chó") &&
+                        <a
+                          className="inline-block border-[1px] border-solid border-[#e5e5e5] pt-[4px] pb-[4px] pl-[10px] pr-[10px] rounded-[4px] mb-[5px] text-[12px]"
+                          href={`/danh-muc-san-pham/cho`}
+                        >
+                          Danh mục Cún
+                        </a>}
+                        {product?.tenDanhMuc?.toLowerCase().includes("mèo") &&
+                        <a
+                          className="inline-block border-[1px] border-solid border-[#e5e5e5] pt-[4px] pb-[4px] pl-[10px] pr-[10px] rounded-[4px] mb-[5px] text-[12px]"
+                          href={`/danh-muc-san-pham/meo`}
+                        >
+                          Danh mục Mèo
+                        </a>}
+                        {product?.maDanhMuc>6 &&
+                        <a
+                          className="inline-block border-[1px] border-solid border-[#e5e5e5] pt-[4px] pb-[4px] pl-[10px] pr-[10px] rounded-[4px] mb-[5px] text-[12px]"
+                          href={`/danh-muc-san-pham/phu-kien`}
+                        >
+                          Phụ kiện
+                        </a>}
                       </div>
                     </div>
                   </div>

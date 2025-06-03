@@ -11,7 +11,7 @@ const HomePage = () => {
         isNew={true}
       />
       {/* Featured Products */}
-      <Section text="Sản phẩm nổi bật" maxProd={4} />
+      <Section text="Sản phẩm nổi bật" maxProd={4} featured={true}/>
       {/* <PetSection /> */}
       <Section text="Shop bán pet thú cưng" maxProd={8} onlyOne="pet" />
       {/* <AccessoriesSection /> */}

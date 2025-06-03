@@ -161,7 +161,7 @@ const Header = () => {
               </Popover>
 
               <a
-                href="#"
+                href="/danh-muc-san-pham/phu-kien"
                 className="text-lg font-semibold text-gray-900 hover:text-[#de83be]"
               >
                 Phụ kiện

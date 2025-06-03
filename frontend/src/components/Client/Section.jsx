@@ -2,17 +2,35 @@ import { React, useState, useEffect } from "react";
 import CellComp from "./CellComp";
 import { useProductStore } from "../../store/useProductStore";
 
-const Section = ({ text, maxProd, reverseSort, onlyOne, isNew }) => {
+const Section = ({ text, maxProd, reverseSort, onlyOne, isNew, featured=false}) => {
   const { getAllProducts, isGettingAllProducts } = useProductStore();
   const [products, setProducts] = useState([]);
-  const [selectedProducts, setSelectedProducts] = useState([]);
+
+  const generateRandom = (min, max) => {
+    // Generate a random number between 1 and 100
+    return Math.floor(Math.random()
+            * (max - min + 1)) + min;
+  };
+
   maxProd > 0 ? maxProd : 8;
 
   useEffect(() => {
     const fetchProduct = async () => {
       const product = await getAllProducts();
 
-      if (reverseSort) setProducts(product.sort().reverse());
+      if (reverseSort) product.sort().reverse();
+
+      if(featured)
+      {
+        const selected = [];
+        for (let i=0; i<maxProd; i++)
+        {
+          const random = generateRandom(0, product.length-1);
+          selected.push(product[random]);
+          product.splice(product, 1);
+        }
+        setProducts(selected);
+      }
       else setProducts(product);
 
       if (onlyOne == "pet")

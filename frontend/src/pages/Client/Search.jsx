@@ -36,7 +36,17 @@ const changeSorting = (e) => {
   useEffect(() => {
       const fetchProduct = async () => {
         const product = await getAllProducts();
-        if(id) setProducts(product.filter((prod) => prod.tenDanhMuc == id));
+        if(id)
+        {
+          if(id=="phu-kien") setProducts(product.filter((prod) => prod.maDanhMuc > 6));
+
+          else if(id=="cho") setProducts(product.filter((prod) => prod.tenDanhMuc.toLowerCase().includes("chó")));
+
+          else if(id=="meo") setProducts(product.filter((prod) => prod.tenDanhMuc.toLowerCase().includes("mèo")));
+
+          else setProducts(product.filter((prod) => prod.tenDanhMuc == id));
+
+        }
         else setProducts(product);
       };
   
