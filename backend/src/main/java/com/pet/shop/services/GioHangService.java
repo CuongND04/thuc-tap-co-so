@@ -144,19 +144,6 @@ public class GioHangService {
             totalQuantity += existingItem.get().getSoLuong();
         }
 
-        // Check inventory for both pets and accessories
-        if (sanPham.isThuCung()) {
-            ThuCung thuCung = sanPham.getThuCung();
-            if (thuCung.getSoLuongTonKho() < soLuong) {
-                throw new RuntimeException("Số lượng thú cưng trong kho không đủ");
-            }
-        } else if (sanPham.isPhuKien()) {
-            PhuKien phuKien = sanPham.getPhuKien();
-            if (phuKien.getSoLuongTonKho() < soLuong) {
-                throw new RuntimeException("Số lượng phụ kiện trong kho không đủ");
-            }
-        }
-
         if (existingItem.isPresent()) {
             // Update quantity if product exists
             ChiTietGioHang chiTiet = existingItem.get();
@@ -176,18 +163,35 @@ public class GioHangService {
             gioHang.getChiTietGioHangs().add(chiTiet);
         }
 
+        // Check inventory for both pets and accessories
         if (sanPham.isThuCung()) {
             ThuCung thuCung = sanPham.getThuCung();
-            if (thuCung.getSoLuongTonKho() < existingItem.get().getSoLuong()) {
-                throw new RuntimeException("Số lượng sản phẩm trong giỏ đang lớn hơn thú cưng trong kho");
+            if (thuCung.getSoLuongTonKho() < totalQuantity) {
+                throw new RuntimeException("Số lượng thú cưng trong kho không đủ");
             }
         } else if (sanPham.isPhuKien()) {
             PhuKien phuKien = sanPham.getPhuKien();
-            if (phuKien.getSoLuongTonKho() < existingItem.get().getSoLuong()) {
-                throw new RuntimeException("Số lượng sản phẩm trong giỏ đang lớn hơn phụ kiện trong kho");
+            if (phuKien.getSoLuongTonKho() < totalQuantity) {
+                throw new RuntimeException("Số lượng phụ kiện trong kho không đủ");
             }
         }
 
+        GioHang savedGioHang = gioHangRepository.save(gioHang);
+
+        // Return cart details
+        return convertToDTO(savedGioHang);
+    }
+
+    @Transactional
+    public GioHangDTO xoaTatCaSanPham(Long maGioHang) {
+        GioHang gioHang = gioHangRepository.findById(maGioHang)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy giỏ hàng"));
+
+        // Delete all items in the cart
+        chiTietGioHangRepository.deleteAll(gioHang.getChiTietGioHangs());
+        gioHang.getChiTietGioHangs().clear();
+
+        // Save the updated cart
         GioHang savedGioHang = gioHangRepository.save(gioHang);
 
         // Return cart details

@@ -70,4 +70,15 @@ public class GioHangController {
                     .body(new ResponseObject("error", e.getMessage(), null));
         }
     }
+
+    @DeleteMapping("/{maGioHang}/xoa-tat-ca")
+    public ResponseEntity<ResponseObject> xoaTatCaSanPham(@PathVariable Long maGioHang) {
+        try {
+            GioHangDTO gioHang = gioHangService.xoaTatCaSanPham(maGioHang);
+            return ResponseEntity.ok(new ResponseObject("success", "Xóa tất cả sản phẩm khỏi giỏ hàng thành công", gioHang));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest()
+                    .body(new ResponseObject("error", e.getMessage(), null));
+        }
+    }
 }
