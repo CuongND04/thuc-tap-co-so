@@ -16,7 +16,7 @@ const FavorList = () => {
       <div>
         <main className="bg-white py-5 px-4">
           <section className="max-w-[1200px] mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-4 text-pink-600">
+            <h2 className="text-3xl font-[Coiny] font-bold text-center mb-4 text-pink-600">
               DANH SÁCH YÊU THÍCH
             </h2>
           </section>
@@ -34,7 +34,7 @@ const FavorList = () => {
             </div>
 
             <article>
-              <div className="flex flex-wrap items-center justify-between">
+              <div className="flex flex-wrap items-center justify-start">
                 {favors.length > 0 &&
                   favors.map((prod) => (
                     <CellComp

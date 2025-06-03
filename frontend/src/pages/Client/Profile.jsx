@@ -26,7 +26,7 @@ const Profile = () => {
     <div>
       <div className="wrap-bread-crumb flex justify-center items-center">
         <div className="w-[1200px]">
-          <div className="bg-white p-4 rounded-xl mb-10 space-y-6 mt-5">
+          <div className="bg-black p-4 rounded-xl mb-10 space-y-6 mt-5">
             <UserMetaCard userProfile={userProfile} />
             <UserInfoCard userProfile={userProfile} />
             {/* <UserAddressCard userProfile={userProfile} /> */}

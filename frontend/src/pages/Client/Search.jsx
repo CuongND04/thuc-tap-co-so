@@ -150,7 +150,7 @@ const changeSorting = (e) => {
                 id="sorting"
                 name="sorting"
                 onChange={changeSorting}
-                className="col-start-1 row-start-1 appearance-none rounded-md cursor-pointer py-1.5 pr-7 pl-3 text-base placeholder:text-gray-400 outline-2 outline-[#000] focus:-outline-offset-2 focus:outline-[#de8ebe]"
+                className="col-start-1 row-start-1 appearance-none rounded-md cursor-pointer py-1.5 pr-7 pl-3 text-base placeholder:text-gray-400 outline-1 outline-[#000] focus:outline-2 focus:-outline-offset-2 focus:outline-[#de8ebe]"
               >
                 <option value="1">Mã sản phẩm: A-Z</option>
                 <option value="2">Mã sản phẩm: Z-A</option>
@@ -177,7 +177,7 @@ const changeSorting = (e) => {
                 id="prodPerPage"
                 name="prodPerPage"
                 onChange={changeProdPerPage}
-                className="col-start-1 row-start-1 appearance-none rounded-md cursor-pointer py-1.5 pr-7 pl-3 text-base placeholder:text-gray-400 outline-2 outline-[#000] focus:outline-2 focus:-outline-offset-2 focus:outline-[#de8ebe]"
+                className="col-start-1 row-start-1 appearance-none rounded-md cursor-pointer py-1.5 pr-7 pl-3 text-base placeholder:text-gray-400 outline-1 outline-[#000] focus:outline-2 focus:-outline-offset-2 focus:outline-[#de8ebe]"
               >
                 <option value="4">4</option>
                 <option value="8">8</option>
@@ -191,7 +191,7 @@ const changeSorting = (e) => {
             </div>
             </div>
           </div>
-          <div className="flex flex-wrap items-center justify-between">
+          <div className="flex flex-wrap items-center justify-start">
             {currentProducts && (currentProducts.map((prod) => (
 
               <CellComp

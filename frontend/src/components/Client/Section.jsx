@@ -37,7 +37,7 @@ const Section = ({ text, maxProd, reverseSort, onlyOne, isNew }) => {
           </div>
 
           <article>
-            <div className="flex flex-wrap items-center justify-between">
+            <div className="flex flex-wrap items-center justify-start">
               {products.length > 0 &&
                 products
                   .slice(0, maxProd)

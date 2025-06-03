@@ -61,7 +61,7 @@ const CellComp = ({ prodID, imgSource, prodName, price, rating, newStat }) => {
                 </div>
               )}
               <div className="group-hover:scale-110 group-hover:bg-white/50 transform transition duration-300 ease-in-out">
-                <img src={imgSource} alt="img" width="270px" height="270px" />
+                <img src={imgSource} alt="img" width={"270px"} height="270px" />
               </div>
             </a>
             <div className="absolute hidden top-[35%] left-[27%] group-hover:block">

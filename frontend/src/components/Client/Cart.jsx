@@ -6,13 +6,13 @@ import { useAuthStore } from "../../store/useAuthStore";
 const Cart = ({ setOpenCart }) => {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState([]);
-  const [deletingItems, setDeletingItems] = useState([]);
   const {
     userCart,
     getCart,
     isGettingCart,
     updateItem,
     deleteItem,
+    deleteAllItem,
     isUpdating,
     isDeleting,
     isAdding,
@@ -76,7 +76,7 @@ const Cart = ({ setOpenCart }) => {
     toggleEditing(index);
   };
 
-  const deleteHandler = async (index=-1, item=null) => {
+  const deleteHandler = async (index=-1) => {
       if(index!=-1)
       {
         const res = await deleteItem(
@@ -84,21 +84,14 @@ const Cart = ({ setOpenCart }) => {
         userCart.items[index].maSanPham
       );
       }
-      else if(item)
-      {
-        const res = await deleteItem(
-        userProfile.maNguoiDung,
-        item.maSanPham
-      );
-      }
   };
 
   const deleteAll = async () => {
     if(userCart)
     {
-      setDeletingItems([]);
-      setDeletingItems(userCart.items);
-      deletingItems.map((item) => deleteHandler(-1, item));
+      const res = await deleteAllItem(
+      userProfile.maNguoiDung,
+      );
     }
   }
 
