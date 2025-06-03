@@ -41,7 +41,8 @@ import FavorList from "./pages/Client/FavorList.jsx";
 import Search from "./pages/Client/Search.jsx";
 import MyOrder from "./pages/Client/MyOrder.jsx";
 import DetailMyOrder from "./pages/Client/DetailMyOrder.jsx";
-import Checkout from "./pages/Client/Checkout.jsx"
+import Checkout from "./pages/Client/Checkout.jsx";
+import PaymentSuccess from "./pages/Client/PaymentSuccess.jsx";
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
   useEffect(() => {
@@ -76,6 +77,7 @@ const App = () => {
           <Route path="don-hang/:maDonHang" element={<DetailMyOrder />} />
           <Route path="/san-pham/:id" element={<ProductDetailClient />} />
           <Route path="/thanh-toan" element={<Checkout />} />
+          <Route path="payment/success" element={<PaymentSuccess />} />
         </Route>
 
         <Route

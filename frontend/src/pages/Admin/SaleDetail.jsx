@@ -7,6 +7,7 @@ import {
   Select,
   Button,
   Space,
+  Tag,
 } from "antd";
 import { useParams } from "react-router-dom";
 import dayjs from "dayjs";
@@ -19,9 +20,13 @@ const { Option } = Select;
 
 const SaleDetail = () => {
   const { maDonHang } = useParams();
-  const { getSaleOrderDetail, isGettingAllSaleOrders, updateSaleOrderStatus } =
-    useSaleOrdersStore();
-
+  const {
+    getSaleOrderDetail,
+    isGettingAllSaleOrders,
+    updateSaleOrderStatus,
+    checkPaymentStatus,
+  } = useSaleOrdersStore();
+  const [isPaid, setIsPaid] = useState(null);
   const [saleDetail, setSaleDetail] = useState(null);
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
   const [newStatus, setNewStatus] = useState(null);
@@ -45,7 +50,15 @@ const SaleDetail = () => {
     };
     fetchDetail();
   }, [maDonHang, getSaleOrderDetail]);
-
+  useEffect(() => {
+    const fetchDetail = async () => {
+      const data = await checkPaymentStatus(maDonHang);
+      if (data) {
+        setIsPaid(data);
+      }
+    };
+    fetchDetail();
+  }, [maDonHang]);
   if (isGettingAllSaleOrders || !saleDetail) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -163,6 +176,19 @@ const SaleDetail = () => {
               Cập nhật trạng thái
             </Button>
           </Space>
+        </Descriptions.Item>
+        <Descriptions.Item label="Trạng thái thanh toán">
+          <div>
+            {isPaid ? (
+              <Tag color="green" style={{ fontWeight: "bold" }}>
+                ĐÃ THANH TOÁN
+              </Tag>
+            ) : (
+              <Tag color="red" style={{ fontWeight: "bold" }}>
+                CHƯA THANH TOÁN
+              </Tag>
+            )}
+          </div>
         </Descriptions.Item>
       </Descriptions>
 

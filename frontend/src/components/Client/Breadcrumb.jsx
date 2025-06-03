@@ -12,6 +12,8 @@ const pathNameMap = {
   "lien-he": "Liên hệ",
   "yeu-thich": "Danh sách yêu thích",
   "don-hang": "Đơn hàng",
+  success: "Thành công",
+  payment: "Thanh toán",
 };
 
 const Breadcrumb = () => {

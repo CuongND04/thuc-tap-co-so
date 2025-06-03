@@ -1,5 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Table, Input, InputNumber, Space, Button, Popconfirm, Badge } from "antd";
+import {
+  Table,
+  Input,
+  InputNumber,
+  Space,
+  Button,
+  Popconfirm,
+  Badge,
+} from "antd";
 import { DeleteOutlined, EyeOutlined, SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 import { CirclePlus, Link, Loader } from "lucide-react";
@@ -10,16 +18,16 @@ import { useAuthStore } from "../../store/useAuthStore";
 import { useCartStore } from "../../store/useCartStore";
 
 const Checkout = () => {
-  const {userProfile} = useAuthStore();
+  const { userProfile } = useAuthStore();
   const { createSaleOrder } = useSaleOrdersStore();
-  const {deleteAllItem, isDeleting} = useCartStore();
+  const { deleteAllItem, isDeleting } = useCartStore();
 
   const [checkoutData, setCheckoutData] = useState([]);
   const [orderDetailArr, setOrderDetailArr] = useState([]);
   const [total, setTotal] = useState([]);
 
   const navigate = useNavigate();
-  const {state} = useLocation();
+  const { state } = useLocation();
 
   const columns = [
     {
@@ -33,7 +41,7 @@ const Checkout = () => {
       key: "hinhAnh",
       width: 150,
       maxWidth: 150,
-      render: (t, r) => <img src={`${r.hinhAnh}`} />
+      render: (t, r) => <img src={`${r.hinhAnh}`} />,
     },
     {
       title: "Tên sản phẩm",
@@ -61,53 +69,55 @@ const Checkout = () => {
     },
   ];
 
-//   if(!userProfile)
-//   {
-//     toast.error("Bạn chưa đăng nhập!");
-//     navigate("/");
-//     return;
-//   }
+  //   if(!userProfile)
+  //   {
+  //     toast.error("Bạn chưa đăng nhập!");
+  //     navigate("/");
+  //     return;
+  //   }
 
-useEffect(() => {
-    if(state?.maGioHang)setCheckoutData(state.items);
-    else setCheckoutData([{...state, thanhTien: state.giaBan, soLuong: 1}]); 
+  useEffect(() => {
+    if (state?.maGioHang) setCheckoutData(state.items);
+    else setCheckoutData([{ ...state, thanhTien: state.giaBan, soLuong: 1 }]);
   }, [state]);
 
-useEffect(() => {
-    setTotal(checkoutData.reduce((acc, current) => acc+current.giaBan*current.soLuong, 0));
+  useEffect(() => {
+    setTotal(
+      checkoutData.reduce(
+        (acc, current) => acc + current.giaBan * current.soLuong,
+        0
+      )
+    );
   }, [checkoutData]);
 
-useEffect(() => {
-    const msp = checkoutData.map(data => data.maSanPham);
-    const sl = checkoutData.map(data => data.soLuong);
+  useEffect(() => {
+    const msp = checkoutData.map((data) => data.maSanPham);
+    const sl = checkoutData.map((data) => data.soLuong);
 
-    const arr = sl.map((current, index) => ({'maSanPham': msp[index], 'soLuong':current}));
+    const arr = sl.map((current, index) => ({
+      maSanPham: msp[index],
+      soLuong: current,
+    }));
     setOrderDetailArr(arr);
   }, [checkoutData]);
 
-if(!state)
-  {
+  if (!state) {
     toast.error("Chưa có dữ liệu!");
     navigate("/");
     return;
   }
 
-const createOrder = async () => {
+  const createOrder = async () => {
     const res = await createSaleOrder({
-        maNguoiDung: userProfile.maNguoiDung,
-        chiTietDonHangs: orderDetailArr,
+      maNguoiDung: userProfile.maNguoiDung,
+      chiTietDonHangs: orderDetailArr,
     });
     console.log(res);
-    if(res)
-    {
-      const res2 = await deleteAllItem(
-      userProfile.maNguoiDung,
-      );
+    if (res) {
+      const res2 = await deleteAllItem(userProfile.maNguoiDung);
       navigate("/don-hang");
     }
-}
-
-
+  };
 
   if (isDeleting) {
     return (
@@ -116,8 +126,6 @@ const createOrder = async () => {
       </div>
     );
   }
-
-
 
   return (
     <div className="flex justify-center items-center">
@@ -137,22 +145,31 @@ const createOrder = async () => {
             pagination={false}
             bordered
             title={() => "Xác nhận đơn hàng"}
-            />
+          />
         </div>
         <div>
-          <h1 className="justify-self-center font-bold text-[18px]">Thanh toán khi nhận hàng hoặc qua số tài khoản: STK - ngân hàng với cú pháp "[Mã đơn hàng]_[Số điện thoại]"</h1>
-          <h1 className="mt-5 justify-self-end text-[24px]"><strong className="">Tổng tiền: </strong> {total.toLocaleString("vi-VN", { style: "currency", currency: "VND" })}</h1>
+          <h1 className="justify-self-center font-bold text-[18px]">
+            Quý khách có thể chọn thanh toán khi nhận hàng hoặc qua PayPal sau
+            khi đặt mua.
+          </h1>
+          <h1 className="mt-5 justify-self-end text-[24px]">
+            <strong className="">Tổng tiền: </strong>{" "}
+            {total.toLocaleString("vi-VN", {
+              style: "currency",
+              currency: "VND",
+            })}
+          </h1>
         </div>
         <div className="mt-5 ml-[20px] flex justify-center justify-self-end items-center rounded-[10px] h-[60px] w-[180px] border-[1px] border-solid border-[#e5e5e5] bg-[#cf72aa]">
-            <button
+          <button
             className="text-[#000] text-[24px] font-[Coiny] rounded-[10px] h-[95%] w-[97.5%] border-[2px] border-dashed border-[#e5e5e5] bg-[#de8ebe] after:mt-[10px] after:mb-[5px] after:ml-[5px] after:content-['\203A'] hover:bg-[#cf72aa] cursor-pointer"
             name="buy"
             id="buy"
             onClick={createOrder}
             type="button"
-            >
+          >
             Đặt hàng
-            </button>
+          </button>
         </div>
       </div>
     </div>

@@ -7,6 +7,7 @@ import com.pet.shop.models.SanPham;
 import com.pet.shop.repositories.ChiTietDonHangRepository;
 import com.pet.shop.repositories.DonHangRepository;
 import com.pet.shop.repositories.SanPhamRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -100,6 +101,10 @@ public class DonHangService {
     public Optional<DonHangDetailResponseDTO> findDonHangDetailById(Long id) {
         return donHangRepository.findById(id)
                 .map(this::convertToDonHangDetailResponseDTO);
+    }
+    public DonHang getEntityById(Long id) {
+        return donHangRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy đơn hàng với ID: " + id));
     }
 
     

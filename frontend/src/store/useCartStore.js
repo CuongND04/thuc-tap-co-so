@@ -76,10 +76,8 @@ export const useCartStore = create((set, get) => ({
   deleteAllItem: async (userID) => {
     set({ isDeleting: true });
     try {
-      const res = await axiosInstance.delete(
-        `/gio-hang/${userID}/xoa-tat-ca`
-      );
-      toast.success("Xóa tất cả sản phẩm khỏi giỏ thành công!");
+      const res = await axiosInstance.delete(`/gio-hang/${userID}/xoa-tat-ca`);
+      // toast.success("Xóa tất cả sản phẩm khỏi giỏ thành công!");
       console.log(res);
     } catch (error) {
       toast.error("Xóa thất bại!");
@@ -88,5 +86,4 @@ export const useCartStore = create((set, get) => ({
       set({ isDeleting: false });
     }
   },
-
 }));

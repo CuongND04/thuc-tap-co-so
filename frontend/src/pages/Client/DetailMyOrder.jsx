@@ -8,7 +8,9 @@ import {
   Button,
   Space,
   Steps,
+  Tag,
 } from "antd";
+import qs from "qs";
 import {
   CheckCircleOutlined,
   LoadingOutlined,
@@ -20,15 +22,20 @@ import dayjs from "dayjs";
 import { Loader } from "lucide-react";
 import { useSaleOrdersStore } from "../../store/useSaleOrdersStore";
 import toast from "react-hot-toast";
+import axiosInstance from "../../lib/axios";
 
 const { Title } = Typography;
 const { Option } = Select;
 
 const DetailMyOrder = () => {
   const { maDonHang } = useParams();
-  const { getSaleOrderDetail, isGettingAllSaleOrders, updateSaleOrderStatus } =
-    useSaleOrdersStore();
-
+  const {
+    getSaleOrderDetail,
+    isGettingAllSaleOrders,
+    updateSaleOrderStatus,
+    checkPaymentStatus,
+  } = useSaleOrdersStore();
+  const [isPaid, setIsPaid] = useState(null);
   const [saleDetail, setSaleDetail] = useState(null);
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
   const [newStatus, setNewStatus] = useState(null);
@@ -52,7 +59,15 @@ const DetailMyOrder = () => {
     };
     fetchDetail();
   }, [maDonHang, getSaleOrderDetail]);
-
+  useEffect(() => {
+    const fetchDetail = async () => {
+      const data = await checkPaymentStatus(maDonHang);
+      if (data) {
+        setIsPaid(data);
+      }
+    };
+    fetchDetail();
+  }, [maDonHang]);
   if (isGettingAllSaleOrders || !saleDetail) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -109,7 +124,6 @@ const DetailMyOrder = () => {
     setIsUpdatingStatus(false);
   };
 
-  const orderStatuses = ["Đang xử lý", "Đang giao", "Đã giao"];
   const khachHang = saleDetail.khachHang;
 
   const statusSteps = [
@@ -130,6 +144,35 @@ const DetailMyOrder = () => {
   const currentStep = statusSteps.findIndex(
     (s) => s.title === saleDetail.trangThaiDonHang
   );
+
+  const handlePayment = async () => {
+    try {
+      const usdAmount = (saleDetail.tongTien / 24000).toFixed(2); // Làm tròn đến 2 chữ số thập phân
+      console.log("usdAmount: ", usdAmount);
+      console.log({ amount: usdAmount, orderId: saleDetail.maDonHang });
+      const data = qs.stringify({
+        amount: usdAmount,
+        orderId: saleDetail.maDonHang,
+      });
+
+      const response = await axiosInstance.post("/paypal/create", data, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      });
+
+      const { redirectUrl } = response.data;
+      if (redirectUrl) {
+        window.location.href = redirectUrl;
+      } else {
+        toast.error("Không lấy được link thanh toán.");
+      }
+    } catch (error) {
+      console.error("Lỗi khi gọi API thanh toán:", error);
+      toast.error("Gặp lỗi khi thực hiện thanh toán.");
+    }
+  };
+
   return (
     <div className="flex justify-center items-center">
       <Card className="w-[1200px]">
@@ -182,8 +225,28 @@ const DetailMyOrder = () => {
               />
             </div>
           </Descriptions.Item>
+          <Descriptions.Item label="Trạng thái thanh toán">
+            <div>
+              {isPaid ? (
+                <Tag color="green" style={{ fontWeight: "bold" }}>
+                  ĐÃ THANH TOÁN
+                </Tag>
+              ) : (
+                <Tag color="red" style={{ fontWeight: "bold" }}>
+                  CHƯA THANH TOÁN
+                </Tag>
+              )}
+            </div>
+          </Descriptions.Item>
         </Descriptions>
-
+        {!isPaid && (
+          <Button
+            onClick={handlePayment}
+            className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold mb-4"
+          >
+            Thanh toán với PayPal
+          </Button>
+        )}
         <Table
           dataSource={saleDetail.chiTietDonHangs}
           columns={columns}

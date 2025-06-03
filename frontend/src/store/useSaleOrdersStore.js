@@ -84,4 +84,19 @@ export const useSaleOrdersStore = create((set, get) => ({
       return null;
     }
   },
+
+  // Kiểm tra thanh toán
+  checkPaymentStatus: async (paymentId) => {
+    try {
+      const res = await axiosInstance.get(`/payments/check/${paymentId}`);
+      // toast.success("Kiểm tra thanh toán thành công");
+      return res.data.isPaid; // hoặc res.data.status nếu bạn chỉ cần status
+    } catch (error) {
+      // console.error("Lỗi khi kiểm tra thanh toán:", error);
+      // if (error?.response?.data?.message)
+      //   toast.error(error.response.data.message);
+      // else toast.error("Không thể kiểm tra thanh toán");
+      return null;
+    }
+  },
 }));

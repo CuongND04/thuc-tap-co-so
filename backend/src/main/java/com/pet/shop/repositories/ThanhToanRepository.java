@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ThanhToanRepository extends JpaRepository<ThanhToan,Long> {
+
+    // Kiểm tra xem có thanh toán nào tồn tại với đơn hàng orderId không
+    boolean existsByDonHang_MaDonHang(Long orderId);
 }
